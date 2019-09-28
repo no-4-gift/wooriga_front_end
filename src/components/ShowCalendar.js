@@ -87,7 +87,7 @@ function ShowCalender({
     return calendar;
   }
   return (
-    <div className="CalendarWrapper">
+    <div id="calendar" className="CalendarWrapper">
       <Palette />
       <div className="show-calendar">
         <div className="head">

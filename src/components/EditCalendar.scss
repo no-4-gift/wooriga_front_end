@@ -1,9 +1,19 @@
 .CalendarWrapper {
-  width: 100%;
+
+  width: 560px;
   height: 80vh;
   margin: 0 auto;
   padding: 1rem;
 }
+
+@media (max-width: 500px) {
+  .CalendarWrapper {
+
+    width: auto;
+  }
+}
+
+
 
 .edit-calendar {
   user-select: none;

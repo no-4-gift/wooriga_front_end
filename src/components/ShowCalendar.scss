@@ -117,17 +117,18 @@
   position: relative;
   width: 100%;
   height: 50px;
-  flex: 2;
+  //flex: 2;
   overflow-y: auto;
   justify-content: space-around;
 }
 
 .member-content {
-  display: flex;
-  position: relative;
+  //display: flex;
+  //position: absolute;
+
 
   .circle {
-
+    position: relative;
     width: 10px;
     height: 10px;
     border-radius: 100%;
@@ -154,6 +155,11 @@
   }
 
   .name {
+    position: relative;
+    top: -11px;
+    left: 15px;
+
+    width: 3em;
     font-size: 10px;
     color: black;
   }
