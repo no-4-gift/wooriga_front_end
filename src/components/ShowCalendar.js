@@ -8,7 +8,6 @@ import {
 } from "react-icons/md";
 import PropTypes from "prop-types";
 import { Button } from "antd";
-import Modal from "./ShowCalendarModal";
 import Palette from "./Palette";
 function ShowCalender({
   onSelectDate,
