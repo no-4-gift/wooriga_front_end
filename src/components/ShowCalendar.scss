@@ -1,10 +1,12 @@
 .show-calendar {
   user-select: none;
   width: 100%;
+  height: 50vh;
   background: white;
   border: 1px solid black;
   margin-bottom: 1rem;
   margin-top: 1rem;
+
 
   .head {
     display: flex;
@@ -48,6 +50,8 @@
 
   // head
   .body {
+
+
     .row {
       display: flex;
       cursor: pointer;
@@ -116,22 +120,66 @@
 .member-container {
   position: relative;
   width: 100%;
-  height: 50px;
+  height: 20px;
+  display: flex;
   //flex: 2;
-  overflow-y: auto;
-  justify-content: space-around;
+  overflow-x: auto;
+  padding-top: 5px;
+
+  //justify-content: space-around;
+  &:nth-of-type(3) circle {
+    left: -10px;
+  }
+
 }
 
-.member-content {
+.circle {
+
+
+  //position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 100%;
+
+
+
+
+  &.blue {
+    background-color: #4dabf7;
+  }
+
+  &.red {
+    background-color: #ff8787;
+  }
+
+  &.green {
+    background-color: #69db7c;
+  }
+
+  &.pink {
+    background-color: #f783ac;
+  }
+
+  &.yellow {
+    background-color: #ffd43b;
+  }
+}
+
+
+/*.member-content {
   //display: flex;
   //position: absolute;
 
 
+
   .circle {
-    position: relative;
-    width: 10px;
-    height: 10px;
+    //position: relative;
+    width: 8px;
+    height: 8px;
     border-radius: 100%;
+
+
+
 
     &.blue {
       background-color: #4dabf7;
@@ -164,4 +212,4 @@
     color: black;
   }
 
-}
+}*/

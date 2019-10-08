@@ -6,6 +6,8 @@ import { createStore } from "redux";
 import rootReducer from "./store/modules";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
+import { ThemeProvider } from "styled-components";
+import familyColor from "./themes/calendarTheme";
 
 const devTools =
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
@@ -16,7 +18,9 @@ console.log(store.getState());
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <App />
+      <ThemeProvider theme={{ familyColor }}>
+        <App />
+      </ThemeProvider>
     </BrowserRouter>
   </Provider>,
   document.getElementById("root")

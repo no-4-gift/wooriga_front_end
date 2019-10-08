@@ -26,6 +26,8 @@ function ShowCalender({
       .clone()
       .startOf("month")
       .week();
+
+    console.log(`startWeek: ${startWeek}`);
     const endWeek =
       today
         .clone()
@@ -37,13 +39,33 @@ function ShowCalender({
             .endOf("month")
             .week();
     let calendar = [];
-    for (let week = startWeek; week <= endWeek; week++) {
+
+    const test = today
+      .clone()
+      .endOf("month")
+      .week();
+
+    console.log(`current ${today.clone().week(startWeek)}`);
+    console.log(`endOf month: ${today.clone().endOf("month")}`);
+    console.log(`endWeek : ${test}`);
+    console.log(`this years endweeks: ${today.clone().week(53)}`);
+    let curToday = today.clone();
+    for (let weight = 0; weight < 6; weight++) {
+      let week = startWeek + weight;
+      console.log(week);
+      if (week > 53) {
+        week = 2;
+        console.log(week);
+        curToday = today.clone().add(1, "year");
+        console.log(curToday);
+      }
       calendar.push(
         <div className="row" key={week}>
           {Array(7)
             .fill(0)
+            // eslint-disable-next-line no-loop-func
             .map((n, i) => {
-              let current = today
+              let current = curToday
                 .clone()
                 .week(week)
                 .startOf("week")
@@ -58,7 +80,7 @@ function ShowCalender({
               let selKey = selCheck.length > 0 ? "selected" : "";
 
               let isGrayed =
-                current.format("MM") === today.format("MM") ? "" : "grayed";
+                current.format("MM") === curToday.format("MM") ? "" : "grayed";
               return (
                 <div
                   onClick={() => onSelectDate(current.format("YYYY-MM-DD"))}
@@ -71,10 +93,7 @@ function ShowCalender({
 
                   <div className="member-container">
                     {thisDayMembers.map(elem => (
-                      <div className="member-content">
-                        <div className={`circle ${elem.color}`}></div>
-                        <div className="name">{elem.name}</div>
-                      </div>
+                      <div className={`circle ${elem.color}`}></div>
                     ))}
                   </div>
                 </div>
@@ -96,7 +115,7 @@ function ShowCalender({
           <button onClick={onPreMonth}>
             <MdChevronLeft />
           </button>
-          <span className="title">{today.format("MMMM YYYY")}</span>
+          <span className="title">{today.format("MM월")}</span>
           <button onClick={onNextMonth}>
             <MdChevronRight />
           </button>
