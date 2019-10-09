@@ -1,101 +1,40 @@
 import React, { Fragment } from "react";
 import styled, { css } from "styled-components";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
-import moment from "moment";
+import { colorSelector, profileColor } from "../styleUtils/colorStyle";
 
 //dummy dataes
-
-const today = moment();
-const selected = [];
-const dates = [
-  {
-    id: 1,
-    name: "아빠",
-    date: "2019-10-11",
-    color: "red"
-  },
-  {
-    id: 2,
-    name: "엄마",
-    date: "2019-10-11",
-    color: "blue"
-  },
-  {
-    id: 3,
-    name: "형",
-    date: "2019-10-11",
-    color: "green"
-  },
-  {
-    id: 4,
-    name: "나",
-    date: "2019-10-11",
-    color: "yellow"
-  },
-  {
-    id: 5,
-    name: "동생",
-    date: "2019-10-11",
-    color: "pink"
-  },
-  {
-    id: 1,
-    name: "아빠",
-    date: "2019-10-12",
-    color: "red"
-  },
-  {
-    id: 2,
-    name: "엄마",
-    date: "2019-10-12",
-    color: "blue"
-  },
-  {
-    id: 4,
-    name: "나",
-    date: "2019-10-13",
-    color: "yellow"
-  },
-  {
-    id: 3,
-    name: "형",
-    date: "2019-10-14",
-    color: "green"
-  },
-  {
-    id: 4,
-    name: "나",
-    date: "2019-10-14",
-    color: "yellow"
-  },
-  {
-    id: 5,
-    name: "동생",
-    date: "2019-10-14",
-    color: "pink"
-  }
-];
 
 const members = [
   {
     id: 1,
-    name: "아빠",
+    name: "브루스 웨인",
+    relation: "아빠",
     color: "red"
   },
   {
     id: 2,
-    name: "엄마",
+    name: "할리 퀸",
+    relation: "엄마",
     color: "blue"
   },
   {
     id: 3,
-    name: "형",
+    name: "조커",
+    relation: "형",
     color: "green"
   },
   {
     id: 4,
-    name: "나",
+    name: "데드 샷",
+    relation: "나",
     color: "yellow"
+  },
+  {
+    id: 5,
+    name: "둠스데이",
+    relation: "동생",
+    color: "pink"
   }
 ];
 
@@ -171,6 +110,11 @@ const Text = styled.span`
     css`
       background-color: #38d9a9;
     `}
+  ${props =>
+    !props.toggle &&
+    css`
+      background-color: none;
+    `}
 `;
 const MemberContainer = styled.div`
   position: relative;
@@ -182,14 +126,14 @@ const MemberContainer = styled.div`
   padding-top: 5px;
 `;
 
-const colorSelector = css`
+/*export const colorSelector = css`
   ${({ theme, color }) => {
     const selected = theme.familyColor[color];
     return css`
       background: ${selected};
     `;
   }}
-`;
+`;*/
 
 const Circle = styled.div`
   width: 8px;
@@ -200,14 +144,14 @@ const Circle = styled.div`
 `;
 
 //Show member box Style
-const profileColor = css`
+/*export const profileColor = css`
   ${({ theme, color }) => {
     const radiusColor = theme.familyColor[color];
     return css`
       border: 2px solid ${radiusColor};
     `;
   }}
-`;
+`;*/
 
 const MemberProfileBox = styled.div`
   position: relative;
@@ -285,7 +229,7 @@ function ShowMemberBox({ members }) {
   );
 }
 
-function CalendarGenerator({ today, selected, dates }) {
+function CalendarGenerator({ today, selected, dates, onClickDate, toggle }) {
   console.log(today.format("YYYY-MM-DD"));
   const startWeek = today
     .clone()
@@ -348,7 +292,13 @@ function CalendarGenerator({ today, selected, dates }) {
               current.format("MM") === curToday.format("MM") ? false : true;
             return (
               <CalendarBox key={i} grayed={isGrayed}>
-                <Text select={selKey}>{current.format("D")}</Text>
+                <Text
+                  select={selKey}
+                  toggle={toggle}
+                  onClick={() => onClickDate(current.format("YYYY-MM-DD"))}
+                >
+                  {current.format("D")}
+                </Text>
 
                 <MemberContainer>
                   {thisDayMembers.map(elem => (
@@ -364,14 +314,25 @@ function CalendarGenerator({ today, selected, dates }) {
   return calendar;
 }
 
-function Calendar() {
+function Calendar({
+  dates,
+  today,
+  toggle,
+  challengeDates,
+  onClickDate,
+  onToggle,
+  GoToChallenge,
+  onPreMonth,
+  onNextMonth,
+  onTodayMonth
+}) {
   return (
     <Fragment>
       <CalendarContainer>
         <CalendarHead>
-          <MdChevronLeft />
-          <Text>{today.format("MM월")}</Text>
-          <MdChevronRight />
+          <MdChevronLeft onClick={onPreMonth} />
+          <Text onClick={onTodayMonth}>{today.format("MM월")}</Text>
+          <MdChevronRight onClick={onNextMonth} />
         </CalendarHead>
         <CalendarBody>
           <CalendarRow>
@@ -397,11 +358,18 @@ function Calendar() {
               <Text>토</Text>
             </CalendarBox>
           </CalendarRow>
-          <CalendarGenerator today={today} selected={selected} dates={dates} />
+          <CalendarGenerator
+            today={today}
+            selected={challengeDates}
+            dates={dates}
+            toggle={toggle}
+            onClickDate={onClickDate}
+          />
         </CalendarBody>
       </CalendarContainer>
       <ShowMemberBox members={members} />
-      <Button>날짜 선택</Button>
+      {!toggle && <Button onClick={onToggle}>날짜 선택</Button>}
+      {toggle && <Button onClick={GoToChallenge}>챌린지 GO</Button>}
     </Fragment>
   );
 }

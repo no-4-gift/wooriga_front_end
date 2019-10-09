@@ -8,8 +8,9 @@ function App() {
   return (
     <BrowserRouter>
       {/* <Route path="/counter" component={src}/> */}
-      {/*<Route path="/" component={CalenderContainer} /> */}
-      <Route path="/" component={Calendar} />
+
+      <Route path="/" component={CalenderContainer} />
+      {/*<Route path="/" component={Calendar} /> */}
     </BrowserRouter>
   );
 }

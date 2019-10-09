@@ -8,11 +8,12 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import familyColor from "./themes/calendarTheme";
+import { composeWithDevTools } from "redux-devtools-extension";
 
 const devTools =
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
 
-const store = createStore(rootReducer, devTools);
+const store = createStore(rootReducer, composeWithDevTools());
 console.log(store.getState());
 
 ReactDOM.render(
