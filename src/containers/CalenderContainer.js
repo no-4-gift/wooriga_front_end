@@ -29,9 +29,9 @@ class CalenderContainer extends Component {
     CalendarActions.goCurMonth(cur);
   };
 
-  handleShowModal = () => {
+  handleShowModal = date => {
     const { CalendarActions } = this.props;
-    CalendarActions.openModal();
+    CalendarActions.openModal(date);
   };
 
   handleCloseModal = () => {
@@ -73,7 +73,7 @@ class CalenderContainer extends Component {
     console.log("날짜 선택");
     const { toggle } = this.props;
     if (toggle === false) {
-      this.handleShowModal();
+      this.handleShowModal(date);
     } else {
       this.handleSelectChallengeDates(date);
     }
@@ -87,11 +87,24 @@ class CalenderContainer extends Component {
   };
 
   render() {
-    const { dates, challengeDates, today, visible, toggle } = this.props;
+    const {
+      dates,
+      challengeDates,
+      today,
+      visible,
+      toggle,
+      selectDate
+    } = this.props;
 
     return (
       <Fragment>
-        <CalendarModal />
+        <CalendarModal
+          selectDate={selectDate}
+          visible={visible}
+          onCancle={this.handleCloseModal}
+          onDelete={this.handleDeleteSchedule}
+          onInsert={this.handleInsertSchedule}
+        />
         <Calendar
           dates={dates}
           today={today}
@@ -114,7 +127,8 @@ const mapStateToProps = ({ calendar }) => ({
   challengeDates: calendar.challengeDates,
   today: calendar.today,
   visible: calendar.visible,
-  toggle: calendar.toggle
+  toggle: calendar.toggle,
+  selectDate: calendar.selectDate
 });
 
 const mapDispatchProps = dispatch => ({

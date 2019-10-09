@@ -9,18 +9,37 @@ const DarkBackGround = styled.div`
   top: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 1;
+
   background: rgba(123, 123, 123, 0.8);
   overflow: hidden;
+  opacity: 0;
+  transition: 0.25s linear;
+  z-index: -1;
+  ${props =>
+    props.visible &&
+    css`
+      opacity: 1;
+      z-index: 2;
+    `}
 `;
 
 const ModalTemplate = styled.div`
   width: 100vw;
   background-color: white;
-  z-index: 2;
+
   position: fixed;
   left: 0;
   bottom: 0;
+  transform: translate(0, 100%);
+  transition-delay: 0.25s;
+  transition: 0.5s ease-in;
+
+  ${props =>
+    props.visible &&
+    css`
+      transform: translate(0, 0);
+      z-index: 3;
+    `}
 `;
 
 const ModalHead = styled.div`
@@ -195,13 +214,20 @@ const InsertText = styled.span`
   color: #969696;
 `;
 
-function CalendarModal({ visible }) {
+function CalendarModal({
+  visible,
+
+  onCancle,
+  onDelete,
+  onInsert,
+  selectDate
+}) {
   return (
-    <DarkBackGround>
-      <ModalTemplate>
+    <DarkBackGround visible={visible}>
+      <ModalTemplate visible={visible}>
         <ModalHead>
           <Title>일정 확인</Title>
-          <DateText>2019-10-09</DateText>
+          <DateText>{selectDate}</DateText>
         </ModalHead>
         <ModalBody>
           <ModalItemBlock>
@@ -248,7 +274,7 @@ function CalendarModal({ visible }) {
               <MemberRelationText>관계 : 우주빌런</MemberRelationText>
             </MemberProfile>
           </ModalItemBlock>
-          <InsertScheduleContainer>
+          <InsertScheduleContainer onClick={() => onInsert(selectDate)}>
             <InsertButton>
               <MdClose />
             </InsertButton>
@@ -256,8 +282,7 @@ function CalendarModal({ visible }) {
           </InsertScheduleContainer>
         </ModalBody>
         <ModalFooter>
-          <CancleButton>취소</CancleButton>
-          <OkButton>확인</OkButton>
+          <OkButton onClick={onCancle}>확인</OkButton>
         </ModalFooter>
       </ModalTemplate>
     </DarkBackGround>

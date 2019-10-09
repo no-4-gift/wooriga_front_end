@@ -46,6 +46,7 @@ const CalendarContainer = styled.div`
 
   padding-left: 10%;
   padding-right: 10%;
+  z-index: 1;
 `;
 const CalendarHead = styled.div`
   display: flex;
@@ -58,13 +59,17 @@ const CalendarHead = styled.div`
   font-size: 16px;
   line-height: 23px;
   letter-spacing: -0.02em;
-
   color: #434444;
-  span {
-    width: 22vw;
-  }
 `;
 
+const MonthText = styled.span`
+  width: 22vw;
+  text-align: center;
+`;
+const AllowButton = styled.div`
+  width: 4vw;
+  text-align: center;
+`;
 const CalendarBody = styled.div``;
 
 const CalendarRow = styled.div`
@@ -330,9 +335,13 @@ function Calendar({
     <Fragment>
       <CalendarContainer>
         <CalendarHead>
-          <MdChevronLeft onClick={onPreMonth} />
-          <Text onClick={onTodayMonth}>{today.format("MM월")}</Text>
-          <MdChevronRight onClick={onNextMonth} />
+          <AllowButton onClick={onPreMonth}>
+            <MdChevronLeft />
+          </AllowButton>
+          <MonthText onClick={onTodayMonth}>{today.format("MM월")}</MonthText>
+          <AllowButton onClick={onNextMonth}>
+            <MdChevronRight />
+          </AllowButton>
         </CalendarHead>
         <CalendarBody>
           <CalendarRow>

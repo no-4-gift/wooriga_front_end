@@ -33,7 +33,7 @@ export const deleteSchedule = dateinfo => ({
   type: DELETE_SCHEDULE,
   payload: dateinfo
 });
-export const openModal = () => ({ type: OPEN_MODAL });
+export const openModal = date => ({ type: OPEN_MODAL, payload: date });
 export const closeModal = () => ({ type: CLOSE_MODAL });
 export const toggle = () => ({ type: TOGGLE });
 export const selectChallengeDates = date => ({
@@ -131,7 +131,8 @@ const initialState = {
   challengeDates: [],
   today: momentToday,
   visible: false,
-  toggle: false
+  toggle: false,
+  selectDate: null
 };
 
 //달력 Reducer
@@ -171,12 +172,14 @@ export default function calendar(state = initialState, action) {
     case OPEN_MODAL:
       return {
         ...state,
-        visible: true
+        visible: true,
+        selectDate: action.payload
       };
     case CLOSE_MODAL:
       return {
         ...state,
-        visible: false
+        visible: false,
+        selectDate: null
       };
     case TOGGLE:
       return {
