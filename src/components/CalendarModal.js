@@ -2,6 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { colorSelector, profileColor } from "../styleUtils/colorStyle";
 import { MdClose } from "react-icons/md";
+import PropType from "prop-types";
 
 const DarkBackGround = styled.div`
   position: fixed;
@@ -89,8 +90,6 @@ const MemberProfilePhoto = styled.div`
   height: 60px;
   ${profileColor}
 
-  background: gray;
-  border: 1px solid #eb6363;
   box-sizing: border-box;
   border-radius: 30px;
 `;
@@ -215,13 +214,22 @@ const InsertText = styled.span`
 `;
 
 function CalendarModal({
+  id,
   visible,
-
+  dates,
   onCancle,
   onDelete,
   onInsert,
   selectDate
 }) {
+  const isMysdate =
+    dates
+      .filter(elem => elem.id === id)
+      .findIndex(elem => elem.date === selectDate) === -1
+      ? false
+      : true;
+  const thisDateMembers = dates.filter(elem => elem.date === selectDate);
+
   return (
     <DarkBackGround visible={visible}>
       <ModalTemplate visible={visible}>
@@ -230,56 +238,32 @@ function CalendarModal({
           <DateText>{selectDate}</DateText>
         </ModalHead>
         <ModalBody>
-          <ModalItemBlock>
-            <MemberProfilePhoto />
-            <MemberProfile>
-              <MemberNameContainer>
-                <MemerProfileName>이승준</MemerProfileName>
-                <MemberColorCircle color={"red"} />
-              </MemberNameContainer>
-              <MemberRelationText>관계 : 나</MemberRelationText>
-            </MemberProfile>
-            <DeleteButton>
-              <MdClose />
-            </DeleteButton>
-          </ModalItemBlock>
-          <ModalItemBlock>
-            <MemberProfilePhoto />
-            <MemberProfile>
-              <MemberNameContainer>
-                <MemerProfileName>타노스</MemerProfileName>
-                <MemberColorCircle color={"blue"} />
-              </MemberNameContainer>
-              <MemberRelationText>관계 : 우주빌런</MemberRelationText>
-            </MemberProfile>
-          </ModalItemBlock>
+          {thisDateMembers.map(elem => (
+            <ModalItemBlock key={elem.id}>
+              <MemberProfilePhoto color={elem.color} />
+              <MemberProfile>
+                <MemberNameContainer>
+                  <MemerProfileName>{elem.name}</MemerProfileName>
+                  <MemberColorCircle color={elem.color} />
+                </MemberNameContainer>
+                <MemberRelationText>관계 : {elem.relation}</MemberRelationText>
+              </MemberProfile>
+              {elem.id === id && (
+                <DeleteButton onClick={() => onDelete(selectDate)}>
+                  <MdClose />
+                </DeleteButton>
+              )}
+            </ModalItemBlock>
+          ))}
 
-          <ModalItemBlock>
-            <MemberProfilePhoto />
-            <MemberProfile>
-              <MemberNameContainer>
-                <MemerProfileName>타노스</MemerProfileName>
-                <MemberColorCircle color={"blue"} />
-              </MemberNameContainer>
-              <MemberRelationText>관계 : 우주빌런</MemberRelationText>
-            </MemberProfile>
-          </ModalItemBlock>
-          <ModalItemBlock>
-            <MemberProfilePhoto />
-            <MemberProfile>
-              <MemberNameContainer>
-                <MemerProfileName>타노스</MemerProfileName>
-                <MemberColorCircle color={"blue"} />
-              </MemberNameContainer>
-              <MemberRelationText>관계 : 우주빌런</MemberRelationText>
-            </MemberProfile>
-          </ModalItemBlock>
-          <InsertScheduleContainer onClick={() => onInsert(selectDate)}>
-            <InsertButton>
-              <MdClose />
-            </InsertButton>
-            <InsertText>함께 할 시간 등록하기</InsertText>
-          </InsertScheduleContainer>
+          {!isMysdate && (
+            <InsertScheduleContainer onClick={() => onInsert(selectDate)}>
+              <InsertButton>
+                <MdClose />
+              </InsertButton>
+              <InsertText>함께 할 시간 등록하기</InsertText>
+            </InsertScheduleContainer>
+          )}
         </ModalBody>
         <ModalFooter>
           <OkButton onClick={onCancle}>확인</OkButton>
@@ -290,3 +274,13 @@ function CalendarModal({
 }
 
 export default CalendarModal;
+
+CalendarModal.propTypes = {
+  id: PropType.number,
+  visible: PropType.bool,
+  dates: PropType.array,
+  onCancle: PropType.func,
+  onDelete: PropType.func,
+  onInsert: PropType.func,
+  selectDate: PropType.func
+};

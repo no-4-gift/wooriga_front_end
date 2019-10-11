@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import styled, { css } from "styled-components";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { colorSelector, profileColor } from "../styleUtils/colorStyle";
+import PropTypes from "prop-types";
 
 //dummy dataes
 
@@ -89,7 +90,7 @@ const grayed = css`
 const CalendarBox = styled.div`
   position: relative;
   width: calc(100% / 7);
-
+  height: calc(60vh / 8);
   font-size: 12pt;
   color: black;
 
@@ -384,3 +385,16 @@ function Calendar({
 }
 
 export default Calendar;
+
+Calendar.propTypes = {
+  dates: PropTypes.array,
+  today: PropTypes.object,
+  toggle: PropTypes.bool,
+  challengeDates: PropTypes.array,
+  onClickDate: PropTypes.func,
+  onToggle: PropTypes.func,
+  GoToChallenge: PropTypes.func,
+  onPreMonth: PropTypes.func,
+  onNextMonth: PropTypes.func,
+  onTodayMonth: PropTypes.func
+};

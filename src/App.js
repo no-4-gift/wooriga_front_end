@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 import CalenderContainer from "./containers/CalenderContainer";
 import "antd/dist/antd.css";
-import Calendar from "./components/Calendar";
 
 function App() {
   return (

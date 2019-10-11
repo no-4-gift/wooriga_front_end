@@ -10,8 +10,10 @@ import moment from "moment";
 //자신의 id props 필요
 
 const userInfo = {
-  id: 1,
-  name: "나",
+  id: 4,
+  name: "데드 샷",
+  relation: "나",
+
   color: "yellow"
 };
 class CalenderContainer extends Component {
@@ -95,12 +97,14 @@ class CalenderContainer extends Component {
       toggle,
       selectDate
     } = this.props;
-
+    const { id } = userInfo; //로그인 한 유저 정보는 store 나 localStorage에 저장 되어있어야함
     return (
       <Fragment>
         <CalendarModal
+          id={id}
           selectDate={selectDate}
           visible={visible}
+          dates={dates}
           onCancle={this.handleCloseModal}
           onDelete={this.handleDeleteSchedule}
           onInsert={this.handleInsertSchedule}
