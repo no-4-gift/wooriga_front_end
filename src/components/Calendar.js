@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { colorSelector, profileColor } from "../styleUtils/colorStyle";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 //dummy dataes
 
@@ -104,6 +105,12 @@ const CalendarBox = styled.div`
     color: #588dff;
     ${grayed}
   }
+
+  ${props =>
+    props.select &&
+    css`
+      background: rgba(125, 0, 0, 0.4);
+    `}
 `;
 
 const Text = styled.span`
@@ -185,6 +192,8 @@ const MemberProfileBox = styled.div`
 
 const MemberProfileContainer = styled.div`
   display: flex;
+  width: 90vw;
+  justify-content: center;
 `;
 const MemberProfile = styled.div`
   width: 40px;
@@ -202,13 +211,13 @@ const MemberProfile = styled.div`
 //button Styles
 const Button = styled.button`
   position: relative;
-  width: 134px;
+  width: 90vw;
   height: 46px;
   left: 50%;
   top: 25px;
-  transform: translate(0, 50%);
-
+  transform: translate(-50%, 50%);
   background: #eb6363;
+
   box-shadow: 0px 4px 10px rgba(250, 42, 42, 0.25);
   border-radius: 23px;
   border: none;
@@ -219,6 +228,40 @@ const Button = styled.button`
   font-size: 20px;
   line-height: 26px;
   color: white;
+  text-align: center;
+`;
+
+const ChallengeButton = styled.button`
+  position: relative;
+  width: 90vw;
+  height: 46px;
+  left: 50%;
+  top: 25px;
+  transform: translate(-50%, 50%);
+  transition: 0.5s ease-in;
+  ${props =>
+    props.disable
+      ? css`
+          background: #777777;
+        `
+      : css`
+          background: #eb6363;
+        `}
+
+  box-shadow: 0px 4px 10px rgba(250, 42, 42, 0.25);
+  border-radius: 23px;
+  border: none;
+
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 26px;
+  a {
+    text-decoration: none;
+    color: white;
+  }
+
   text-align: center;
 `;
 
@@ -243,36 +286,17 @@ function CalendarGenerator({ today, selected, dates, onClickDate, toggle }) {
     .week();
 
   console.log(`startWeek: ${startWeek}`);
-  const endWeek =
-    today
-      .clone()
-      .endOf("month")
-      .week() === 1
-      ? 53
-      : today
-          .clone()
-          .endOf("month")
-          .week();
+
   let calendar = [];
 
-  const test = today
-    .clone()
-    .endOf("month")
-    .week();
-
-  console.log(`current ${today.clone().week(startWeek)}`);
-  console.log(`endOf month: ${today.clone().endOf("month")}`);
-  console.log(`endWeek : ${test}`);
-  console.log(`this years endweeks: ${today.clone().week(53)}`);
   let curToday = today.clone();
   for (let weight = 0; weight < 6; weight++) {
     let week = startWeek + weight;
-    console.log(week);
+
     if (week > 53) {
       week = 2;
-      console.log(week);
+
       curToday = today.clone().add(1, "year");
-      console.log(curToday);
     }
     calendar.push(
       <CalendarRow key={week}>
@@ -297,9 +321,8 @@ function CalendarGenerator({ today, selected, dates, onClickDate, toggle }) {
             let isGrayed =
               current.format("MM") === curToday.format("MM") ? false : true;
             return (
-              <CalendarBox key={i} grayed={isGrayed}>
+              <CalendarBox key={i} grayed={isGrayed} select={selKey}>
                 <Text
-                  select={selKey}
                   toggle={toggle}
                   onClick={() => onClickDate(current.format("YYYY-MM-DD"))}
                 >
@@ -324,6 +347,7 @@ function Calendar({
   dates,
   today,
   toggle,
+  disable,
   challengeDates,
   onClickDate,
   onToggle,
@@ -378,8 +402,16 @@ function Calendar({
         </CalendarBody>
       </CalendarContainer>
       <ShowMemberBox members={members} />
-      {!toggle && <Button onClick={onToggle}>날짜 선택</Button>}
-      {toggle && <Button onClick={GoToChallenge}>챌린지 GO</Button>}
+      {!toggle && <Button onClick={onToggle}>챌린지 날짜 선택</Button>}
+      {toggle && (
+        <ChallengeButton
+          disabled={disable}
+          disable={disable}
+          onClick={GoToChallenge}
+        >
+          <Link to="/challenge_regist">챌린지 GO</Link>
+        </ChallengeButton>
+      )}
     </Fragment>
   );
 }

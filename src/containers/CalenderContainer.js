@@ -4,9 +4,9 @@ import { bindActionCreators } from "redux";
 import Calendar from "../components/Calendar";
 import CalendarModal from "../components/CalendarModal";
 import * as calendarActions from "../store/modules/calendar";
-
+import { Alert } from "antd";
 import moment from "moment";
-
+import styled from "styled-components";
 //자신의 id props 필요
 
 const userInfo = {
@@ -16,7 +16,16 @@ const userInfo = {
 
   color: "yellow"
 };
+
+const MyAlert = styled(Alert)`
+  position: relative;
+  top: -80vh;
+
+  z-index: 100;
+`;
+
 class CalenderContainer extends Component {
+  maxChallengeDateLength = 10;
   handleNextMonth = () => {
     const { CalendarActions } = this.props;
     CalendarActions.goNextMonth();
@@ -67,10 +76,20 @@ class CalenderContainer extends Component {
   };
 
   handleSelectChallengeDates = date => {
-    const { CalendarActions } = this.props;
-    CalendarActions.selectChallengeDates(date);
+    const { CalendarActions, dates, challengeDates } = this.props;
+    if (dates.findIndex(elem => elem.date === date) !== -1) {
+      CalendarActions.selectChallengeDates(date);
+      if (challengeDates.findIndex(elem => elem === date) !== -1)
+        return CalendarActions.alert(false);
+      if (challengeDates.length >= this.maxChallengeDateLength)
+        CalendarActions.alert(true);
+    }
   };
 
+  handleCloseAlert = () => {
+    const { CalendarActions } = this.props;
+    CalendarActions.alert(false);
+  };
   handleSelectDate = date => {
     console.log("날짜 선택");
     const { toggle } = this.props;
@@ -95,9 +114,13 @@ class CalenderContainer extends Component {
       today,
       visible,
       toggle,
-      selectDate
+      selectDate,
+      alert
     } = this.props;
     const { id } = userInfo; //로그인 한 유저 정보는 store 나 localStorage에 저장 되어있어야함
+    const disable = challengeDates.length > 0 ? false : true;
+    console.log(disable);
+
     return (
       <Fragment>
         <CalendarModal
@@ -120,7 +143,18 @@ class CalenderContainer extends Component {
           onNextMonth={this.handleNextMonth}
           onTodayMonth={this.handleGoTodayMonth}
           GoToChallenge={this.handleGoToChallenge}
+          disable={disable}
         />
+        {alert && (
+          <MyAlert
+            message="Informational Notes"
+            description="챌린지 신청 일 수는 최대 10일 입니다."
+            type="info"
+            showIcon
+            closable
+            onClose={this.handleCloseAlert}
+          />
+        )}
       </Fragment>
     );
   }
@@ -132,7 +166,8 @@ const mapStateToProps = ({ calendar }) => ({
   today: calendar.today,
   visible: calendar.visible,
   toggle: calendar.toggle,
-  selectDate: calendar.selectDate
+  selectDate: calendar.selectDate,
+  alert: calendar.alert
 });
 
 const mapDispatchProps = dispatch => ({

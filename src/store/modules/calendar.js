@@ -15,6 +15,7 @@ const CLOSE_MODAL = "calendar/CLOSE_MODAL"; //모달 창 닫기
 const TOGGLE = "calendar/TOGGLE"; // 날짜 선택 버튼 활성화 및 비활성화
 const SELECT_CHALLENGE_DATES = "calendar/SELECT_CHALLENGE_DATES"; //챌린지 일정 선택
 const GO_TO_CHALLENGE = "calendar/GO_TO_CHALLENGE"; //챌린지 신청 페이지로 이동
+const ALERT = "calendar/ALERT";
 
 //달력 Actions Creator
 export const goPreMonth = () => ({ type: PRE_MONTH });
@@ -45,7 +46,11 @@ export const goToChallenge = moment => ({
   payload: moment
 });
 
+export const alert = flag => ({ type: ALERT, payload: flag });
+
 let momentToday = moment();
+
+const MaxChallengeDateLength = 10;
 
 //초기 상태 정의
 const initialState = {
@@ -132,7 +137,8 @@ const initialState = {
   today: momentToday,
   visible: false,
   toggle: false,
-  selectDate: null
+  selectDate: null,
+  alert: false
 };
 
 //달력 Reducer
@@ -191,7 +197,9 @@ export default function calendar(state = initialState, action) {
         ...state,
         challengeDates:
           state.challengeDates.findIndex(elem => elem === action.payload) === -1
-            ? state.challengeDates.concat(action.payload)
+            ? state.challengeDates.length < MaxChallengeDateLength
+              ? state.challengeDates.concat(action.payload)
+              : state.challengeDates
             : state.challengeDates.filter(elem => elem !== action.payload)
       };
     case GO_TO_CHALLENGE:
@@ -199,6 +207,11 @@ export default function calendar(state = initialState, action) {
         ...state,
         challengeDates: [],
         today: action.payload
+      };
+    case ALERT:
+      return {
+        ...state,
+        alert: action.payload
       };
     default:
       return state;

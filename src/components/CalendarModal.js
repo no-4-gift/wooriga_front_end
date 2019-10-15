@@ -98,7 +98,7 @@ const MemberProfile = styled.div`
   position: relative;
   left: 21px;
   top: 5px;
-  width: 100px;
+  width: 150px;
   height: 60px;
 `;
 
@@ -174,7 +174,7 @@ const DeleteButton = styled.div`
   justify-content: center;
   position: relative;
   top: 5px;
-  left: 140px;
+  left: 90px;
 `;
 
 const InsertScheduleContainer = styled.div`
@@ -228,7 +228,13 @@ function CalendarModal({
       .findIndex(elem => elem.date === selectDate) === -1
       ? false
       : true;
-  const thisDateMembers = dates.filter(elem => elem.date === selectDate);
+  let thisDateMembers = dates.filter(elem => elem.date === selectDate);
+  const myIdx = thisDateMembers.findIndex(elem => elem.id === id);
+  if (myIdx !== -1) {
+    let temp = thisDateMembers[0];
+    thisDateMembers[0] = thisDateMembers[myIdx];
+    thisDateMembers[myIdx] = temp;
+  }
 
   return (
     <DarkBackGround visible={visible}>
