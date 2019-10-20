@@ -2,7 +2,6 @@ import React, { Fragment } from "react";
 import styled, { css } from "styled-components";
 import { profileColor } from "../styleUtils/colorStyle";
 import { MdKeyboardBackspace, MdToday } from "react-icons/md";
-import { symbol } from "prop-types";
 
 const BackTapContainer = styled.div`
   width: 100vw;

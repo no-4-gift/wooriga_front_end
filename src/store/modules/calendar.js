@@ -88,7 +88,7 @@ const initialState = {
       name: "둠스데이",
       relation: "동생",
       date: "2019-10-11",
-      color: "pink"
+      color: "violet"
     },
     {
       id: 1,
@@ -130,7 +130,7 @@ const initialState = {
       name: "둠스데이",
       relation: "동생",
       date: "2019-10-14",
-      color: "pink"
+      color: "violet"
     }
   ],
   challengeDates: [],
