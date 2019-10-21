@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { profileColor } from "../styleUtils/colorStyle";
 import { MdKeyboardBackspace, MdToday } from "react-icons/md";
 
