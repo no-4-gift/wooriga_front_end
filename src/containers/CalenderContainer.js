@@ -22,10 +22,12 @@ const MyAlert = styled(Alert)`
   position: relative;
   top: -80vh;
   z-index: 100;
+ 
 `;
 
 class CalenderContainer extends Component {
   maxChallengeDateLength = 10;
+  
   handleNextMonth = () => {
     const { CalendarActions } = this.props;
     CalendarActions.goNextMonth();
