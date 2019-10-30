@@ -29,7 +29,6 @@ class ChosensContainer extends Component {
     render() {
         const { checked } = this.props;
 
-        console.log("checked : ", checked);
         return (
             <Fragment>
                 <Chosens

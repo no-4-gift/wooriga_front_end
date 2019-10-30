@@ -1,12 +1,10 @@
 import React, { Fragment } from 'react';
-import { Layout, Carousel, Card, Progress } from 'antd'; 
+import { Layout, Carousel, Card, Progress  } from 'antd'; 
 import styled from 'styled-components';
 import defaultImage from '../images/default.PNG';
-
-import detailRight from '../images/detailRightButton.png';
+import calendarImage from '../images/CalendarMirrored.png';
 import Headers from './statics/HeaderLayout';
 import ChosensContainer from '../containers/ChosensContainer';
-
 
 const { Content } = Layout;
 
@@ -14,14 +12,15 @@ const { Content } = Layout;
 const ContentsTitle = styled.div`
     height : 8vh;
     padding-top : 5%;
+    margin-bottom : 5%;
     padding-left : 6%;
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-style : normal;
     
 `;
 const Contents = styled(Content)`
-    margin : 0px 20%;
+    margin : 0px 13%;
 `;
 
 const ContentsOne = styled.div``;
@@ -36,7 +35,7 @@ const OverCarousel = styled(Carousel)`
             background : black;
         }
         margin-top : 0;
-        height : 37vh;
+        height : 45vh;
         .slick-list {
             height : 100%;
         }
@@ -58,139 +57,183 @@ const OverCard = styled(Card)`
 
 // OverCardPicture Entire
 const OverCardPicture = styled.div`
-    height: 33vh;
+    height: 45vh;
     background-color : whitegray;
 `;
 
-const OverCardPictureTop = styled.div`height: 67%;`;
-const OverCardPictureBottom = styled.div`
-    margin-top : -1.5vh;
-    height : 30%;
-    padding : 0px 5%;
-    background-color : whitesmoke;
+const OverCardPictureTop = styled.div`
+    height: 60%;
+    border-radius: 10px 10px 0 0;
+    background: #EDEDED;
 `;
 
-const OverProgress = styled(Progress)`
+const OverCardPictureTopLayerOne = styled.div`
+    position : absolute;
+    z-index : 2;
+    width : 100%;
+    text-align : center;
+    padding : 4% 10%;
+    font-size : 0.7rem;
     &&{
-        .ant-progress-inner{
-            border-radius : 0px;
-        }
-        .ant-progress-success-bg, .ant-progress-bg{
-            border-radius : 0px;
-        }
-        .ant-progress-outer{
-            float :left;
-            padding-right : 0px;
-        }
         .ant-progress-bg{
-            height : 12px !important;
-        }
-        .ant-progress-text{
-            color : black;
-            font-size : 87%;
-            position: absolute;
-            left : 0px;
-            top : 1vh;
-        }
-        .ant-progress-inner{
-            background-color : lightgray;
+            height : 3px !important;
         }
     }
-    display : block;
-    font-size : 13px;
-    line-height : 0px;
+    
 `;
 
-const OverCardPictureBottomTitle = styled.span`
+const OverCardPictureTopLayerTwo = styled.div`
+    position : relative;
+    z-index : 1;
+    height: 100%;
+`;
+
+const OverCardPictureBottom = styled.div`
+    height : 28%;
+    padding : 0px 5%;
+    border : 1px solid #EDEDED;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.15);
+    border-radius: 0 0 10px 10px;
+`;
+
+const OverCardPictureBottomFixed = styled.div`
+    display : flex;
+    justify-content : space-between
+`;
+
+const OverCardPictureBottomTitle = styled.div`
     float: left;
-    font-size : 1%;
-    margin-top: 5%;
+    font-size : 1rem;
+    margin-top: 2%;
     font-weight: bold;
 `;
-const OverCardPictureBottomDetail = styled.span`
-    float : right;
-    font-size : 1%;
-    width:  70%;
-    -webkit-transform: scale(0.75);
-    position: absolute;
-    right: -3vh;
+const OverCardPictureBottomDetail = styled.div`
+    height : 25vh;
+    margin-top : 4%
 `;
 
 const OverCardPictureBottomContent = styled.div`
     clear : both;
-    font-size : 1%;
-    color : black;
-    -webkit-transform: scale(0.7);
-    position : absolute;
-    top : 85%;
-    left : -12px;
-    font-weight: bold;
+    font-size : 0.7rem;
+    position : relative;
+    top : -145%;
+`;
+const OverCardPictureBottomContentImage = styled.img`
+    float :left;
+    margin-right : 3%;
 `;
 
-const OverCardPictureBottomHashTag = styled.div`
-    position: absolute;
-    top: 93%;
-    font-size : 1%;
-    color: darkgray;
-    -webkit-transform: scale(0.9);
-    left: 10px;
+
+const OverCardPictureBottomImage = styled.img`
+    border-radius : 50%;
+    width : 5vh;
 `;
 
+const OverCardPictureBottomImageAdd = styled.div`
+    position: relative;
+    top: -8%;
+    right: -3%;
+    float: right;
+`;
+
+// Challenge Component by 승준 
+
+const ChallengeContainer = styled.div`
+  width: 100vw;
+  height: 38vh;
+  padding: 6% 6% 0 6%;
+`;
+const ChallengeList = styled.div`
+  width: 100%;
+  height: 80%;
+  overflow: auto;
+  margin-top: 27px;
+`;
+const ChallengeCard = styled.div`
+  display: flex;
+  width: 97%;
+  height: 120px;
+  background: #ffffff;
+  box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.15);
+  border-radius: 14px;
+  & + & {
+    margin-top: 1rem;
+  }
+`;
+
+const ChallengeImg = styled.div`
+  height: 100%;
+  flex: 0.25;
+  border-radius: 14px 0 0 14px;
+  box-sizing: border-box;
+  background: gray;
+`;
+const ChallengeContent = styled.div`
+  padding: 1em;
+  height: 100%;
+  flex: 0.75;
+  
+`;
+
+const ChallengeFixed = styled.div`
+    display : flex;
+    justify-content : space-between;
+    height : 5%;
+`;
+const ChallengeContentTitle = styled.div`
+  width: 100%;
+  height: 10%;
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 23px;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  color: #434444;
+`;
+const ChallengeContentDate = styled.div`
+  width: 100%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 17px;
+  letter-spacing: -0.02em;
+
+  color: #434444;
+`;
+
+const ChallengeContentProgress = styled.div`
+    margin-top : 10%;
+    width : 95%;
+    text-align : center;
+    font-size : 0.7rem;
+    &&{
+        .ant-progress-text {
+            color : dimgray;
+        }
+        .ant-progress-bg{
+            height : 5px !important;
+        }
+        .ant-progress-small.ant-progress-line, .ant-progress-small.ant-progress-line .ant-progress-text .anticon{
+            padding-right : 20%;
+        }
+    }
+`;
+
+const ChallengeContentProgressText = styled.div`
+    position : relative;
+    bottom : 3vh;
+    float :right;
+    color : dimgray;
+`;
 
 // 함께하고 있는 챌린지 Styled
-
-const DivEntireContent = styled.div`
-    height : 23vh;
-`;
-
-const DivContent = styled.div`
-    height : 50%;
-`;
-
-const DivContentImg = styled.div`
-    width : 20%;
-    float : left;
-    height : 100%;
-    text-align : right;
-    vertical-align : middle;
-    line-height: 11vh;
-`;
-const DivContentText = styled.div`
-    width : 65%;
-    float : left;
-    height : 100%;
-    margin-left : 5%;
-    vertical-align : middle;
-    line-height : 5vh;
-`;
-
-const DivContentTitle = styled.div`
-    font-size : 1%;
-    font-weight : bold;    
-`;
-const DivContentSub = styled.div`
-    font-size : 1%;
-    -webkit-transform: scale(0.7);
-    color : black;
-    font-weight : bold;
-    position : absolute;
-    left : 19%;
-`;
-
-const DivContentSubImg = styled.div`
-    margin-left : 5%;
-    position : relative;
-    top : 18%;
-    left : -1%;
-`;
-
-const DivContentRightImg = styled.div`
-    float : left;
-    height : 100%;
-    vertical-align : middle;
-    line-height : 10vh;
-    margin-left : 3%;
-`;
 
 const MyChallenge = ({ detailRouter, bottomDetailRouterOne, bottomDetailRouterTwo }) => {
     return ( 
@@ -209,28 +252,34 @@ const MyChallenge = ({ detailRouter, bottomDetailRouterOne, bottomDetailRouterTw
                         <OverCard bordered={false}>
                             <OverCardPicture>
                                 <OverCardPictureTop>
-                                    <img src ={defaultImage} alt ="default" height = "100%" width = "100%"/>
+
+                                    <OverCardPictureTopLayerOne>
+                                        1 / 2
+                                        <Progress percent={50} status="active" showInfo={false} size="small" strokeColor="#EB6363"/>
+                                    </OverCardPictureTopLayerOne>
+
+                                    <OverCardPictureTopLayerTwo>
+                                        {/* <img src ={defaultImage} alt ="default" height = "100%" width = "100%"/> */}
+                                    </OverCardPictureTopLayerTwo>
+
                                 </OverCardPictureTop>
 
-                                    <OverProgress percent={50} status="active" strokeColor="bisque" style={{height : 10, top : "-2vh"}}/>
-                                
                                 <OverCardPictureBottom>
-
-                                        <OverCardPictureBottomTitle>저녁식사</OverCardPictureBottomTitle>
+                                    <OverCardPictureBottomFixed>
+                                        <OverCardPictureBottomTitle>저녁식사하기</OverCardPictureBottomTitle>
                                         <OverCardPictureBottomDetail>
-                                            <img src ={defaultImage} alt ="default" height = "25%" width = "20%" style={{height : "4.5vh", float:"left", borderRadius : "50%", position : "relative", left : "15%", border : "3px solid bisque", msInterpolationMode : "bicubic"}}/>
-                                            <img src ={defaultImage} alt ="default" height = "25%" width = "20%" style={{height : "4.5vh", float:"left", borderRadius : "50%", position : "relative", left : "5%", border : "3px solid bisque"}}/>
-                                            <img src ={defaultImage} alt ="default" height = "25%" width = "20%" style={{height : "4.5vh", float:"left", borderRadius : "50%", position : "relative", right : "5%", border : "3px solid bisque"}}/>    
-                                            자세히 보기
+                                            <OverCardPictureBottomImage src ={defaultImage} alt ="default" height = "20%" width = "20%"/>                            
                                             
+                                            <OverCardPictureBottomImageAdd>
+                                                +5
+                                            </OverCardPictureBottomImageAdd>
                                         </OverCardPictureBottomDetail>
-
+                                    </OverCardPictureBottomFixed>
                                     <OverCardPictureBottomContent>
-                                        9월 12일 ~ 13일, 목금 | 인증횟수 2회
+                                        <OverCardPictureBottomContentImage src={calendarImage} alt="" width = "6%"/>
+                                        9월 12일 ~ 13일 목금
                                     </OverCardPictureBottomContent>
-                                    <OverCardPictureBottomHashTag>
-                                        #식사 #저녁
-                                    </OverCardPictureBottomHashTag>
+
                                 </OverCardPictureBottom>
                             </OverCardPicture>
                         </OverCard>
@@ -238,57 +287,69 @@ const MyChallenge = ({ detailRouter, bottomDetailRouterOne, bottomDetailRouterTw
                         <OverCard bordered={false}>
                             <OverCardPicture>
                                 <OverCardPictureTop>
-                                    <img src ={defaultImage} alt ="default" height = "100%" width = "100%"/>
+
+                                    <OverCardPictureTopLayerOne>
+                                        1 / 2
+                                        <Progress percent={50} status="active" showInfo={false} size="small" strokeColor="#EB6363"/>
+                                    </OverCardPictureTopLayerOne>
+
+                                    <OverCardPictureTopLayerTwo>
+                                        {/* <img src ={defaultImage} alt ="default" height = "100%" width = "100%"/> */}
+                                    </OverCardPictureTopLayerTwo>
+
                                 </OverCardPictureTop>
 
-                                    <OverProgress percent={50} status="active" strokeColor="bisque" style={{height : 10, top : "-2vh"}}/>
-                                
                                 <OverCardPictureBottom>
-
-                                        <OverCardPictureBottomTitle>저녁식사</OverCardPictureBottomTitle>
+                                    <OverCardPictureBottomFixed>
+                                        <OverCardPictureBottomTitle>저녁식사하기</OverCardPictureBottomTitle>
                                         <OverCardPictureBottomDetail>
-                                            <img src ={defaultImage} alt ="default" height = "25%" width = "20%" style={{height : "4.5vh", float:"left", borderRadius : "50%", position : "relative", left : "15%", border : "3px solid bisque", msInterpolationMode : "bicubic"}}/>
-                                            <img src ={defaultImage} alt ="default" height = "25%" width = "20%" style={{height : "4.5vh", float:"left", borderRadius : "50%", position : "relative", left : "5%", border : "3px solid bisque"}}/>
-                                            <img src ={defaultImage} alt ="default" height = "25%" width = "20%" style={{height : "4.5vh", float:"left", borderRadius : "50%", position : "relative", right : "5%", border : "3px solid bisque"}}/>    
-                                            자세히 보기
+                                            <OverCardPictureBottomImage src ={defaultImage} alt ="default" height = "20%" width = "20%"/>                            
                                             
+                                            <OverCardPictureBottomImageAdd>
+                                                +5
+                                            </OverCardPictureBottomImageAdd>
                                         </OverCardPictureBottomDetail>
-
+                                    </OverCardPictureBottomFixed>
                                     <OverCardPictureBottomContent>
+                                        <OverCardPictureBottomContentImage src={calendarImage} alt="" width = "6%"/>
                                         9월 12일 ~ 13일, 목금 | 인증횟수 2회
                                     </OverCardPictureBottomContent>
-                                    <OverCardPictureBottomHashTag>
-                                        #식사 #저녁
-                                    </OverCardPictureBottomHashTag>
+
                                 </OverCardPictureBottom>
                             </OverCardPicture>
                         </OverCard>
-                        
+
                         <OverCard bordered={false}>
                             <OverCardPicture>
                                 <OverCardPictureTop>
-                                    <img src ={defaultImage} alt ="default" height = "100%" width = "100%"/>
+
+                                    <OverCardPictureTopLayerOne>
+                                        1 / 2
+                                        <Progress percent={50} status="active" showInfo={false} size="small" strokeColor="#EB6363"/>
+                                    </OverCardPictureTopLayerOne>
+
+                                    <OverCardPictureTopLayerTwo>
+                                        {/* <img src ={defaultImage} alt ="default" height = "100%" width = "100%"/> */}
+                                    </OverCardPictureTopLayerTwo>
+
                                 </OverCardPictureTop>
 
-                                    <OverProgress percent={50} status="active" strokeColor="bisque" style={{height : 10, top : "-2vh"}}/>
-                                
                                 <OverCardPictureBottom>
-
-                                        <OverCardPictureBottomTitle>저녁식사</OverCardPictureBottomTitle>
+                                    <OverCardPictureBottomFixed>
+                                        <OverCardPictureBottomTitle>저녁식사하기</OverCardPictureBottomTitle>
                                         <OverCardPictureBottomDetail>
-                                            <img src ={defaultImage} alt ="default" height = "25%" width = "20%" style={{height : "4.5vh", float:"left", borderRadius : "50%", position : "relative", left : "15%", border : "3px solid bisque", msInterpolationMode : "bicubic"}}/>
-                                            <img src ={defaultImage} alt ="default" height = "25%" width = "20%" style={{height : "4.5vh", float:"left", borderRadius : "50%", position : "relative", left : "5%", border : "3px solid bisque"}}/>
-                                            <img src ={defaultImage} alt ="default" height = "25%" width = "20%" style={{height : "4.5vh", float:"left", borderRadius : "50%", position : "relative", right : "5%", border : "3px solid bisque"}}/>    
-                                            자세히 보기
+                                            <OverCardPictureBottomImage src ={defaultImage} alt ="default" height = "20%" width = "20%"/>                            
                                             
+                                            <OverCardPictureBottomImageAdd>
+                                                +5
+                                            </OverCardPictureBottomImageAdd>
                                         </OverCardPictureBottomDetail>
-
+                                    </OverCardPictureBottomFixed>
                                     <OverCardPictureBottomContent>
-                                        9월 12일 ~ 13일, 목금 | 인증횟수 2회
+                                        <OverCardPictureBottomContentImage src={calendarImage} alt="" width = "6%"/>
+                                        9.11 수 / 10.13 일 / ...(10일)
                                     </OverCardPictureBottomContent>
-                                    <OverCardPictureBottomHashTag>
-                                        #식사 #저녁
-                                    </OverCardPictureBottomHashTag>
+
                                 </OverCardPictureBottom>
                             </OverCardPicture>
                         </OverCard>
@@ -297,63 +358,79 @@ const MyChallenge = ({ detailRouter, bottomDetailRouterOne, bottomDetailRouterTw
                 </ContentsOne>
             </Contents>
 
-            <ContentsTitle>
-                    함께 하고 있는 챌린지
-            </ContentsTitle>
 
-            <DivEntireContent>
-                <DivContent style={{borderBottom : "1px solid lightgray"}} onClick={bottomDetailRouterOne}>
-                    <DivContentImg>
-                        <img src ={defaultImage} alt ="default" height = "80%" width = "80%"/>
-                    </DivContentImg>
 
-                    <DivContentText>
-                        <DivContentTitle>
-                            가평 1박 2일 여행
-                        </DivContentTitle>
+            <ChallengeContainer>
+                <ContentsTitle style={{paddingLeft : 0}}>
+                        함께하는 챌린지
+                </ContentsTitle>
+                <ChallengeList>
+                    <ChallengeCard>
+                        <ChallengeImg />
+                        <ChallengeContent>
 
-                        <DivContentSub style={{top: "68.5%"}}>
-                            9월 7일 ~ 8일, 토일 | 인증횟수 2회
-                        </DivContentSub>
-                        <DivContentSubImg>
-                            <img src ={defaultImage} alt ="default" height = "15%" width = "10%" style={{height : "3.5vh", float:"left", borderRadius : "50%", position : "relative", right : "5%", border : "3px solid bisque"}}/>
-                        </DivContentSubImg>
+                        <ChallengeFixed>
+                        <ChallengeContentTitle>영화보기</ChallengeContentTitle>
 
-                    </DivContentText>
+                        <OverCardPictureBottomDetail style={{marginTop : 0}}>
+                            <OverCardPictureBottomImage src ={defaultImage} alt ="default" height = "20%" width = "20%"/>                            
+                            
+                            <OverCardPictureBottomImageAdd style={{right : "15%"}}>
+                                +5
+                            </OverCardPictureBottomImageAdd>
+                        </OverCardPictureBottomDetail>
+                        </ChallengeFixed>
 
-                    <DivContentRightImg>
-                        <img src ={detailRight} alt ="default" style={{height : "4vh"}}/>
-                    </DivContentRightImg>
+                        <ChallengeContentDate>
+                            <OverCardPictureBottomContentImage src={calendarImage} alt="" width = "7%"/>
+                            09.11 수 / 10.13 일
+                        </ChallengeContentDate>
 
-                </DivContent>
+                        <ChallengeContentProgress>
+                            <Progress percent={50} showInfo={false} status="active" size="small" strokeColor="#EB6363"/> 
+                            <ChallengeContentProgressText>        
+                                1 / 2
+                            </ChallengeContentProgressText>
+                        </ChallengeContentProgress>
 
-                <DivContent onClick={bottomDetailRouterTwo}>
-                    <DivContentImg>
-                        <img src ={defaultImage} alt ="default" height = "80%" width = "80%"/>
-                    </DivContentImg>
-
-                    <DivContentText>
-                        <DivContentTitle>
-                            조조 영화 관람
-                        </DivContentTitle>
-
-                        <DivContentSub style={{top: "79.8%"}}>
-                            9월 11일, 수 | 인증횟수 1회
-                        </DivContentSub>
-
-                        <DivContentSubImg>
-                            <img src ={defaultImage} alt ="default" height = "15%" width = "10%" style={{height : "3.5vh", float:"left", borderRadius : "50%", position : "relative", right : "5%", border : "3px solid bisque"}}/>
-                        </DivContentSubImg>
-
-                    </DivContentText>
+                        </ChallengeContent>
+                    </ChallengeCard>
                     
-                    <DivContentRightImg>
-                            <img src ={detailRight} alt ="default" style={{height : "4vh"}}/>
-                    </DivContentRightImg>
+                    <ChallengeCard>
+                        <ChallengeImg />
+                        <ChallengeContent>
 
-                </DivContent>
-            </DivEntireContent>
-        
+                        <ChallengeFixed>
+                        <ChallengeContentTitle>영화보기</ChallengeContentTitle>
+
+                        <OverCardPictureBottomDetail style={{marginTop : 0}}>
+                            <OverCardPictureBottomImage src ={defaultImage} alt ="default" height = "20%" width = "20%"/>                            
+                            
+                            <OverCardPictureBottomImageAdd style={{right : "15%"}}>
+                                +5
+                            </OverCardPictureBottomImageAdd>
+                        </OverCardPictureBottomDetail>
+                        </ChallengeFixed>
+
+                        <ChallengeContentDate>
+                            <OverCardPictureBottomContentImage src={calendarImage} alt="" width = "7%"/>
+                            09.11 수 / 10.13 일
+                        </ChallengeContentDate>
+
+                        <ChallengeContentProgress>
+                            <Progress percent={50} showInfo={false} status="active" size="small" strokeColor="#EB6363"/> 
+                            <ChallengeContentProgressText>
+                                1 / 2
+                            </ChallengeContentProgressText>
+                        </ChallengeContentProgress>
+
+                        </ChallengeContent>
+                    </ChallengeCard>
+                    
+                </ChallengeList>
+            </ChallengeContainer>
+
+
         </Fragment> 
     );
 }
