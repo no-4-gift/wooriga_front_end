@@ -5,7 +5,6 @@ import { Redirect } from "react-router-dom";
 import Calendar from "../components/Calendar";
 import CalendarModal from "../components/CalendarModal";
 import * as calendarActions from "../store/modules/calendar";
-import * as challengeAddActions from "../store/modules/challengeAdd";
 import { Alert } from "antd";
 import moment from "moment";
 import styled from "styled-components";
@@ -107,11 +106,6 @@ class CalenderContainer extends Component {
     const cur = moment();
     this.handleToggle();
     CalendarActions.goToChallenge(cur);
-
-    //test//
-    const jsonChallengeDates = JSON.stringify(challengeDates);
-    console.log(JSON.parse(jsonChallengeDates));
-    //
 
     this.makeChallengeMembers();
     const queryDates = [];
@@ -220,8 +214,7 @@ const mapStateToProps = ({ calendar, login }) => ({
 });
 
 const mapDispatchProps = dispatch => ({
-  CalendarActions: bindActionCreators(calendarActions, dispatch),
-  ChallengeAddActions: bindActionCreators(challengeAddActions, dispatch)
+  CalendarActions: bindActionCreators(calendarActions, dispatch)
 });
 
 export default connect(

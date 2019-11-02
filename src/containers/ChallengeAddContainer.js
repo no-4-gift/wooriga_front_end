@@ -68,7 +68,6 @@ const challengeList = [
 
 class ChallengeAddContainer extends Component {
   componentDidMount() {
-    console.log("컴포넌트 Did Mount!!");
     window.addEventListener("scroll", this.handleScroll);
     const values = queryString.parse(this.props.location.search);
     console.log(Object.values(values));
