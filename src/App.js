@@ -7,7 +7,12 @@ import LoginConatainer from "./containers/LoginContainer";
 import myChallengeContainer from "./containers/myChallengeContainer";
 import myChallengeDetailContainer from "./containers/myChallengeDetailContainer";
 
+
 import "antd/dist/antd.css";
+
+import Invite from "./components/Invite";
+import MakeGroup from "./components/MakeGroup";
+
 
 function App() {
   return (
@@ -23,6 +28,15 @@ function App() {
         path="/mychallenge_detail"
         component={myChallengeDetailContainer}
       />
+
+
+      <Route path="/mychallenge" component={myChallengeContainer}/>
+      <Route path="/mychallenge_detail" component={myChallengeDetailContainer}/>
+      
+
+      <Route path="/makegroup" component={MakeGroup} />
+      <Route path="/invite" component={Invite} />
+
 
       {/*<Route path="/" component={Calendar} /> */}
     </BrowserRouter>

@@ -1,10 +1,12 @@
 import React, { Fragment } from "react";
+
 import { Card } from "antd";
 import styled from "styled-components";
 import defaultImage from "../images/default.PNG";
 import { MdArrowBack } from "react-icons/md";
 import questionMark from "../images/questionMark.png";
 import calendarImage from '../images/CalendarMirrored.png';
+
 
 const BackTapContainer = styled.div`
   width: 100vw;
@@ -13,6 +15,7 @@ const BackTapContainer = styled.div`
   padding-right: 7%;
   display: flex;
   align-items: center;
+
 
   display: flex;
   align-items: center;
@@ -70,9 +73,11 @@ const QuestionMarkBlock = styled.div`
     height: 100%;
     box-sizing: content-box;
   }
+
 `;
 
 // 상단 태그 
+
 
 const OverCard = styled(Card)`
     &&{
@@ -171,6 +176,7 @@ const CertifiedRequirement = styled.div`
     width: 100%;
     height : 40vh;
 
+
 `;
 const CertifiedRequirementContent = styled.div`
   background-color: rgb(238, 238, 238);
@@ -203,6 +209,7 @@ const MyChallengeDetail = ({ backRouter }) => {
         <BackButton onClick={backRouter}>
           <MdArrowBack />
         </BackButton>
+
 
         <TitleBlock>
           <span>챌린지 세부 정보</span>
@@ -282,3 +289,4 @@ const MyChallengeDetail = ({ backRouter }) => {
   );
 };
 export default MyChallengeDetail;
+
