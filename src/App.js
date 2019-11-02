@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 import CalenderContainer from "./containers/CalenderContainer";
-import ChallengeAdd from "./components/ChallengeAdd";
+import ChallengeAddContainer from "./containers/CallengeAddContainer";
 import LoginConatainer from "./containers/LoginContainer";
 
 import myChallengeContainer from "./containers/myChallengeContainer";
@@ -16,7 +16,7 @@ function App() {
 
       <Route path="/" component={CalenderContainer} exact />
       <Route path="/login" component={LoginConatainer} />
-      <Route path="/challenge_regist" component={ChallengeAdd} />
+      <Route path="/challenge_regist" component={ChallengeAddContainer} />
 
       <Route path="/mychallenge" component={myChallengeContainer} />
       <Route

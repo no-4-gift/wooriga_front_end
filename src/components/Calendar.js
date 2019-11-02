@@ -3,10 +3,10 @@ import styled, { css } from "styled-components";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { colorSelector, profileColor } from "../styleUtils/colorStyle";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 import Headers from "./statics/HeaderLayout";
 import ChosensContainer from "../containers/ChosensContainer";
-//dummy dataes
+
+//dummy dataes  members store에 있어야함
 
 const members = [
   {
@@ -110,7 +110,8 @@ const CalendarBox = styled.div`
   ${props =>
     props.select &&
     css`
-      background: rgba(125, 0, 0, 0.4);
+      background: rgba(255, 122, 0, 0.3);
+      border-radius: 3px;
     `}
 `;
 
