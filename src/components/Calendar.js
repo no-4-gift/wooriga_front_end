@@ -140,14 +140,7 @@ const MemberContainer = styled.div`
   padding-top: 5px;
 `;
 
-/*export const colorSelector = css`
-  ${({ theme, color }) => {
-    const selected = theme.familyColor[color];
-    return css`
-      background: ${selected};
-    `;
-  }}
-`;*/
+
 
 const Circle = styled.div`
   width: 8px;
@@ -156,16 +149,6 @@ const Circle = styled.div`
 
   ${colorSelector}
 `;
-
-//Show member box Style
-/*export const profileColor = css`
-  ${({ theme, color }) => {
-    const radiusColor = theme.familyColor[color];
-    return css`
-      border: 2px solid ${radiusColor};
-    `;
-  }}
-`;*/
 
 const MemberProfileBox = styled.div`
   position: relative;

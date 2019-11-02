@@ -1,76 +1,125 @@
 import React, { Fragment } from "react";
 import styled, { css } from "styled-components";
 import { profileColor } from "../styleUtils/colorStyle";
-import { MdArrowBack, MdToday } from "react-icons/md";
-import questionMark from "../images/questionMark.png";
+import { MdToday, MdDone, MdKeyboardArrowUp } from "react-icons/md";
 import PromiseCardModal from "./PromiseCardModal";
-// BackHeader Style
+import BackTap from "./statics/BackTap";
 
-const BackTapContainer = styled.div`
-  width: 100vw;
-  height: 8vh;
-  padding-left: 7%;
-  padding-right: 7%;
-  display: flex;
-  align-items: center;
+function ChallengeAdd({
+  thisRef,
+  dates,
+  members,
+  selectedMembers,
+  challengeList,
+  challengeId,
+  text,
+  visible,
+  disable,
+  activeTopButton,
+  onOpen,
+  onClose,
+  onChange,
+  onSelectChallenge,
+  onSelectMembers,
+  onTop
+}) {
+  const rowCount = Math.ceil(dates.length / 2);
 
-  display: flex;
-  align-items: center;
-  letter-spacing: -0.02em;
+  return (
+    <Fragment>
+      <PromiseCardModal
+        members={selectedMembers}
+        onChange={onChange}
+        text={text}
+        visible={visible}
+        onCancle={onClose}
+      />
 
-  color: #434444;
-  position: fixed;
-  left: 0;
-  top: 0;
-  background: white;
-  z-index: 1;
-`;
+      <BackTap title={"챌린지 등록"} targetRouter={"/"} questionRouter={"/"} />
 
-const BackButton = styled.div`
-  width: 10%;
-  height: 20px;
+      <ContentsBlock>
+        {activeTopButton === true && (
+          <TopToListButton onClick={onTop}>
+            <MdKeyboardArrowUp />
+          </TopToListButton>
+        )}
 
-  align-items: center;
-  font-family: Noto Sans KR;
-  font-size: 24px;
-  line-height: 24px;
-  letter-spacing: 0.05em;
-  color: #000000;
-`;
-const TitleBlock = styled.div`
-  width: 55%;
-  height: 24px;
+        <DateSection>
+          <SectionTitle>
+            <span>선택한 날짜를 확인해 주세요.</span>
+          </SectionTitle>
+          <DateList count={rowCount}>
+            {dates.map((elem, index) => (
+              <DateItem key={index}>
+                <span>{elem}</span>
+              </DateItem>
+            ))}
+          </DateList>
+        </DateSection>
+        <MemberSection>
+          <SectionTitle>
+            <span>함께할 가족을 선택해주세요.</span>
+          </SectionTitle>
 
-  position: relative;
-  top: 0;
-  left: 3%;
+          <ShowMembersContent>
+            <ShowMembersContainer>
+              {members.map(elem => (
+                <MemberWrapper
+                  onClick={() => onSelectMembers(elem.id)}
+                  key={elem.id}
+                >
+                  <Member src={elem.thumbnail} color={elem.color} />
+                  {elem.done && (
+                    <MemberCheck>
+                      <MdDone />
+                    </MemberCheck>
+                  )}
+                </MemberWrapper>
+              ))}
+            </ShowMembersContainer>
+          </ShowMembersContent>
+        </MemberSection>
+        <ChallengeSection>
+          <SectionTitle ref={thisRef}>
+            <span>챌린지를 선택해주세요.</span>
+          </SectionTitle>
+          <ChallengeList>
+            {challengeList.map(elem => (
+              <ChallengeCard
+                select={elem.id === challengeId ? true : false}
+                onClick={() => onSelectChallenge(elem.id)}
+              >
+                <ChallengeImg src={""} />
+                <ChallengeBody>
+                  <ChallengeTitle>
+                    <span>{elem.title}</span>
+                  </ChallengeTitle>
+                  <ChallengeDate>
+                    <span style={{ fontSize: "14px", lineHeight: "14px" }}>
+                      <MdToday />
+                    </span>
+                    <span>&nbsp;{dates.length}일</span>
+                  </ChallengeDate>
+                  <ChallengeContent>
+                    <p>{elem.content}</p>
+                  </ChallengeContent>
+                </ChallengeBody>
+              </ChallengeCard>
+            ))}
+          </ChallengeList>
+        </ChallengeSection>
+      </ContentsBlock>
 
-  span {
-    font-family: Noto Sans KR;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 20px;
-    line-height: 29px;
-    align-items: center;
-    letter-spacing: -0.02em;
+      <Footer>
+        <RegistButton disabled={disable} active={!disable} onClick={onOpen}>
+          <span>완료</span>
+        </RegistButton>
+      </Footer>
+    </Fragment>
+  );
+}
 
-    color: #434444;
-  }
-`;
-
-const QuestionMarkBlock = styled.div`
-  position: relative;
-  top: 0;
-  left: 26%;
-  width: 20px;
-  height: 20px;
-  transform: translate(50%, 0);
-  img {
-    width: 100%;
-    height: 100%;
-    box-sizing: content-box;
-  }
-`;
+export default ChallengeAdd;
 
 // Contents Body Style
 
@@ -90,7 +139,6 @@ const SectionTitle = styled.div`
     font-weight: normal;
     font-size: 14px;
     line-height: 20px;
-
     color: #434444;
   }
 `;
@@ -124,7 +172,6 @@ const DateItem = styled.div`
     font-weight: bold;
     font-size: 14px;
     line-height: 20px;
-
     color: #777777;
   }
 `;
@@ -150,18 +197,35 @@ const ShowMembersContainer = styled.div`
   min-width: fit-content;
 `;
 
-const Member = styled.div`
+const MemberWrapper = styled.div`
+  margin-right: 14px;
   width: 50px;
   height: 50px;
-  ${profileColor}
-  margin-right: 14px;
-
   &:last-child {
     margin: 0;
   }
-  border: 2px solid #f2994a;
+`;
+const Member = styled.div`
+  width: 100%;
+  height: 100%;
+  ${profileColor}
+  background-image: url(${props => props.src});
   box-sizing: border-box;
   border-radius: 30px;
+`;
+const MemberCheck = styled.div`
+  position: relative;
+  left: 0;
+  top: -100%;
+  border-radius: 30px;
+  width: 100%;
+  height: 100%;
+  background: rgba(123, 123, 123, 0.5);
+  font-size: 2rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 //챌린지 종류 Section Style
@@ -180,6 +244,12 @@ const ChallengeCard = styled.div`
   width: 100%;
   height: 120px;
   background: #ffffff;
+  ${props =>
+    props.select === true &&
+    css`
+      background: rgba(235, 99, 99, 0.2);
+      border: 2px solid #eb6363;
+    `}
   box-shadow: 3px 3px 3px 3px rgba(0, 0, 0, 0.15);
   border-radius: 14px;
   & + & {
@@ -192,7 +262,8 @@ const ChallengeImg = styled.div`
   flex: 0.25;
   border-radius: 14px 0 0 14px;
   box-sizing: border-box;
-  background: gray;
+  background-color: gray;
+  background-image: url(${props => props.src});
 `;
 const ChallengeBody = styled.div`
   padding: 1em;
@@ -228,7 +299,6 @@ const ChallengeDate = styled.div`
     font-size: 12px;
     line-height: 17px;
     letter-spacing: -0.02em;
-
     color: #434444;
   }
 `;
@@ -243,9 +313,25 @@ const ChallengeContent = styled.div`
     font-weight: normal;
     font-size: 14px;
     line-height: 20px;
-
     color: #000000;
   }
+`;
+
+//Top Button Style
+const TopToListButton = styled.div`
+  position: fixed;
+  right: 6vw;
+  bottom: 13vh;
+  width: 52px;
+  height: 52px;
+  border-radius: 30px;
+  background: #eb6363;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 40px;
+  font-weight: bold;
 `;
 
 // Footer Style
@@ -272,180 +358,18 @@ const RegistButton = styled.button`
   box-shadow: 0px 4px 10px rgba(119, 119, 119, 0.2);
   border-radius: 23px;
   border: none;
-
+  transition: 0.25s linear;
+  ${props =>
+    props.active === true &&
+    css`
+      background: #eb6363;
+    `}
   span {
     font-family: Noto Sans KR;
     font-style: normal;
     font-weight: 500;
     font-size: 20px;
     line-height: 26px;
-
     color: #ffffff;
   }
 `;
-
-function ChallengeAdd() {
-  const dates = [
-    "2019-10-15",
-    "2019-10-15",
-    "2019-10-15",
-    "2019-10-15",
-    "2019-10-15",
-    "2019-10-15",
-    "2019-10-15"
-  ];
-  const rowCount = Math.ceil(dates.length / 2);
-  return (
-    <Fragment>
-      <PromiseCardModal />
-
-      <BackTapContainer>
-        <BackButton>
-          <MdArrowBack />
-        </BackButton>
-
-        <TitleBlock>
-          <span>챌린지 등록</span>
-        </TitleBlock>
-        <QuestionMarkBlock>
-          <img src={questionMark} alt="QnA" />
-        </QuestionMarkBlock>
-      </BackTapContainer>
-
-      <ContentsBlock modalOn>
-        <DateSection>
-          <SectionTitle>
-            <span>선택한 날짜를 확인해 주세요.</span>
-          </SectionTitle>
-          <DateList count={rowCount}>
-            {dates.map((elem, index) => (
-              <DateItem key={index}>
-                <span>{elem}</span>
-              </DateItem>
-            ))}
-          </DateList>
-        </DateSection>
-        <MemberSection>
-          <SectionTitle>
-            <span>함께할 가족을 선택해주세요.</span>
-          </SectionTitle>
-
-          <ShowMembersContent>
-            <ShowMembersContainer>
-              <Member color={"red"} />
-              <Member color={"red"} />
-              <Member color={"red"} />
-              <Member color={"red"} />
-              <Member color={"red"} />
-              <Member color={"red"} />
-            </ShowMembersContainer>
-          </ShowMembersContent>
-        </MemberSection>
-        <ChallengeSection>
-          <SectionTitle>
-            <span>챌린지를 선택해주세요.</span>
-          </SectionTitle>
-          <ChallengeList>
-            <ChallengeCard>
-              <ChallengeImg />
-              <ChallengeBody>
-                <ChallengeTitle>
-                  <span>가족과 식사</span>
-                </ChallengeTitle>
-                <ChallengeDate>
-                  <span style={{ fontSize: "14px", lineHeight: "14px" }}>
-                    <MdToday />
-                  </span>
-                  <span>&nbsp;10일</span>
-                </ChallengeDate>
-                <ChallengeContent>
-                  <p>Flexible Box도 훌륭하지만 비교적 단순한 1차원</p>
-                </ChallengeContent>
-              </ChallengeBody>
-            </ChallengeCard>
-            <ChallengeCard>
-              <ChallengeImg />
-              <ChallengeBody>
-                <ChallengeTitle>
-                  <span>가족과 식사</span>
-                </ChallengeTitle>
-                <ChallengeDate>
-                  <span style={{ fontSize: "14px", lineHeight: "14px" }}>
-                    <MdToday />
-                  </span>
-                  <span>&nbsp;10일</span>
-                </ChallengeDate>
-                <ChallengeContent>
-                  <p>Flexible Box도 훌륭하지만 비교적 단순한 1차원</p>
-                </ChallengeContent>
-              </ChallengeBody>
-            </ChallengeCard>
-            <ChallengeCard>
-              <ChallengeImg />
-              <ChallengeBody>
-                <ChallengeTitle>
-                  <span>가족과 식사</span>
-                </ChallengeTitle>
-                <ChallengeDate>
-                  <span style={{ fontSize: "14px", lineHeight: "14px" }}>
-                    <MdToday />
-                  </span>
-                  <span>&nbsp;10일</span>
-                </ChallengeDate>
-                <ChallengeContent>
-                  <p>Flexible Box도 훌륭하지만 비교적 단순한 1차원</p>
-                </ChallengeContent>
-              </ChallengeBody>
-            </ChallengeCard>
-            <ChallengeCard>
-              <ChallengeImg />
-              <ChallengeBody>
-                <ChallengeTitle>
-                  <span>가족과 식사</span>
-                </ChallengeTitle>
-                <ChallengeDate>
-                  <span style={{ fontSize: "14px", lineHeight: "14px" }}>
-                    <MdToday />
-                  </span>
-                  <span>&nbsp;10일</span>
-                </ChallengeDate>
-                <ChallengeContent>
-                  <p>Flexible Box도 훌륭하지만 비교적 단순한 1차원</p>
-                </ChallengeContent>
-              </ChallengeBody>
-            </ChallengeCard>
-            <ChallengeCard>
-              <ChallengeImg />
-              <ChallengeBody>
-                <ChallengeTitle>
-                  <span>가족과 식사</span>
-                </ChallengeTitle>
-                <ChallengeDate>
-                  <span style={{ fontSize: "14px", lineHeight: "14px" }}>
-                    <MdToday />
-                  </span>
-                  <span>&nbsp;10일</span>
-                </ChallengeDate>
-                <ChallengeContent>
-                  <p>Flexible Box도 훌륭하지만 비교적 단순한 1차원</p>
-                </ChallengeContent>
-              </ChallengeBody>
-            </ChallengeCard>
-          </ChallengeList>
-        </ChallengeSection>
-      </ContentsBlock>
-
-      <Footer>
-        <RegistButton
-          onClick={() => {
-            console.log("완료버튼 클릭");
-          }}
-        >
-          <span>완료</span>
-        </RegistButton>
-      </Footer>
-    </Fragment>
-  );
-}
-
-export default ChallengeAdd;
