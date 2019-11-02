@@ -102,13 +102,48 @@ class CalenderContainer extends Component {
   };
 
   handleGoToChallenge = () => {
-    const { CalendarActions } = this.props;
+    const { CalendarActions, challengeDates } = this.props;
     const cur = moment();
     this.handleToggle();
     CalendarActions.goToChallenge(cur);
-    this.props.history.push("/challenge_regist");
+
+    this.makeChallengeMembers();
+    const queryDates = [];
+    for (let i = 0; i < this.maxChallengeDateLength; i++) queryDates[i] = "";
+    challengeDates.sort();
+    for (let i = 0; i < challengeDates.length; i++)
+      queryDates[i] = challengeDates[i];
+    let queryString = "";
+    for (let i = 0; i < this.maxChallengeDateLength; i++) {
+      queryString += `date${i + 1}=${queryDates[i]}`;
+      if (i !== this.maxChallengeDateLength - 1) queryString += "&";
+    }
+    this.props.history.push(`/challenge_regist?${queryString}`);
   };
 
+  makeChallengeMembers = () => {
+    const { ChallengeAddActions, challengeDates, dates } = this.props;
+
+    let selectedMembers = dates
+      .filter(elem => elem.date === challengeDates[0])
+      .map(elem => elem.id);
+    for (let i = 1; i < challengeDates.length; i++) {
+      let temp = dates
+        .filter(elem => elem.date === challengeDates[i])
+        .map(elem => elem.id);
+      selectedMembers = this.intersect(selectedMembers, temp);
+    }
+    console.log(selectedMembers);
+    ChallengeAddActions.setMembers(selectedMembers);
+  };
+
+  intersect = (a, b) => {
+    let tmp = {},
+      res = [];
+    for (let i = 0; i < a.length; i++) tmp[a[i]] = 1;
+    for (let i = 0; i < b.length; i++) if (tmp[b[i]]) res.push(b[i]);
+    return res;
+  };
   render() {
     const {
       dates,
