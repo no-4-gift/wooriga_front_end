@@ -4,7 +4,8 @@ import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { colorSelector, profileColor } from "../styleUtils/colorStyle";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-
+import Headers from "./statics/HeaderLayout";
+import ChosensContainer from "../containers/ChosensContainer";
 //dummy dataes
 
 const members = [
@@ -257,8 +258,12 @@ const ChallengeButton = styled.button`
   font-weight: 500;
   font-size: 20px;
   line-height: 26px;
-  a {
-    text-decoration: none;
+  span {
+    font-family: Noto Sans KR;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 26px;
     color: white;
   }
 
@@ -358,6 +363,8 @@ function Calendar({
 }) {
   return (
     <Fragment>
+      <Headers />
+      <ChosensContainer />
       <CalendarContainer>
         <CalendarHead>
           <AllowButton onClick={onPreMonth}>
@@ -409,7 +416,7 @@ function Calendar({
           disable={disable}
           onClick={GoToChallenge}
         >
-          <Link to="/challenge_regist">챌린지 GO</Link>
+          <span>챌린지 GO</span>
         </ChallengeButton>
       )}
     </Fragment>

@@ -1,5 +1,6 @@
 @import url(https://fonts.googleapis.com/earlyaccess/notosanskr.css);
+@import url(https://fonts.googleapis.com/css?family=Megrim|Noto+Sans+KR&display=swap);
 
 div {
-    font-family : 'Noto Sans KR' !important;
+    font-family: 'Noto Sans KR' !important;
 }

@@ -7,8 +7,7 @@ const BackTapContainer = styled.div`
   width: 100vw;
   height: 8vh;
   overflow: hidden;
-  padding-left: 7%;
-  padding-right: 7%;
+
   padding-top: 4%;
   padding-bottom: 4%;
   font-family: Segoe MDL2 Assets;
@@ -20,7 +19,6 @@ const BackTapContainer = styled.div`
 const Wrapper = styled.div`
   width: 100vw;
   height: 42vh;
-  padding: 7%;
 `;
 
 const Header = styled.div`
@@ -121,7 +119,7 @@ const Members = styled.div`
 const ChallengeContainer = styled.div`
   width: 100vw;
   height: 38vh;
-  padding: 6% 6% 0 6%;
+
   border-top: 1px solid #ededed;
 `;
 const ChallengeList = styled.div`

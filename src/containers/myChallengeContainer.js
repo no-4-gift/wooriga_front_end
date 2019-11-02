@@ -4,26 +4,23 @@ import MyChallenge from '../components/myChallenge';
 
 class myChallengeContainer extends Component {
 
-    detailRouter = () => {
-        console.log("Detail Routers");
+    detailRouter = (detailProps) => {
+        console.log("Detail Routers", detailProps);
         this.props.history.push('mychallenge_detail');
     };
 
-    bottomDetailRouterOne = () => {
-        console.log("Bottom Detail Routers One");
+    bottomDetailRouter = (bottomProps) => {
+        console.log("Bottom Detail Routers One", bottomProps);
         this.props.history.push('mychallenge_detail');
     }
-    bottomDetailRouterTwo = () => {
-        console.log("Bottom Detail Routers Two");
-        this.props.history.push('mychallenge_detail');
-    }
+
     render() {
         
         return (
             <MyChallenge
                 detailRouter={this.detailRouter}
-                bottomDetailRouterOne={this.bottomDetailRouterOne}
-                bottomDetailRouterTwo={this.bottomDetailRouterOne}
+                bottomDetailRouter={this.bottomDetailRouter}
+                
             />
         );
     }

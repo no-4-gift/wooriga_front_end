@@ -86,6 +86,7 @@ const OverCardPictureTopLayerTwo = styled.div`
     position : relative;
     z-index : 1;
     height: 100%;
+
 `;
 
 const OverCardPictureBottom = styled.div`
@@ -100,6 +101,7 @@ const OverCardPictureBottomFixed = styled.div`
     display : flex;
     justify-content : space-between
 `;
+
 
 const OverCardPictureBottomTitle = styled.div`
     float: left;
@@ -204,7 +206,6 @@ const ChallengeContentDate = styled.div`
   font-size: 12px;
   line-height: 17px;
   letter-spacing: -0.02em;
-
   color: #434444;
 `;
 
@@ -235,7 +236,14 @@ const ChallengeContentProgressText = styled.div`
 
 // 함께하고 있는 챌린지 Styled
 
-const MyChallenge = ({ detailRouter, bottomDetailRouterOne, bottomDetailRouterTwo }) => {
+const CarouselArray = [
+    "1",
+    "2",
+    "3"
+  ];
+
+const MyChallenge = ({ detailRouter, bottomDetailRouter }) => {
+
     return ( 
         <Fragment>
 
@@ -246,114 +254,45 @@ const MyChallenge = ({ detailRouter, bottomDetailRouterOne, bottomDetailRouterTw
                 도전중인 챌린지
             </ContentsTitle>
 
-            <Contents onClick={detailRouter}>
+            <Contents>
                 <ContentsOne>
                     <OverCarousel dotPosition={"bottom"}>
-                        <OverCard bordered={false}>
-                            <OverCardPicture>
-                                <OverCardPictureTop>
+                        {CarouselArray.map((elem, index) => 
+                            <OverCard bordered={false} key={index} onClick={() => detailRouter(elem)}>
+                                <OverCardPicture>
+                                    <OverCardPictureTop>
 
-                                    <OverCardPictureTopLayerOne>
-                                        1 / 2
-                                        <Progress percent={50} status="active" showInfo={false} size="small" strokeColor="#EB6363"/>
-                                    </OverCardPictureTopLayerOne>
+                                        <OverCardPictureTopLayerOne>
+                                            1 / 2
+                                            <Progress percent={50} status="active" showInfo={false} size="small" strokeColor="#EB6363"/>
+                                        </OverCardPictureTopLayerOne>
 
-                                    <OverCardPictureTopLayerTwo>
-                                        {/* <img src ={defaultImage} alt ="default" height = "100%" width = "100%"/> */}
-                                    </OverCardPictureTopLayerTwo>
+                                        <OverCardPictureTopLayerTwo>
+                                            {/* <img src ={defaultImage} alt ="default" height = "100%" width = "100%"/> */}
+                                        </OverCardPictureTopLayerTwo>
 
-                                </OverCardPictureTop>
+                                    </OverCardPictureTop>
 
-                                <OverCardPictureBottom>
-                                    <OverCardPictureBottomFixed>
-                                        <OverCardPictureBottomTitle>저녁식사하기</OverCardPictureBottomTitle>
-                                        <OverCardPictureBottomDetail>
-                                            <OverCardPictureBottomImage src ={defaultImage} alt ="default" height = "20%" width = "20%"/>                            
-                                            
-                                            <OverCardPictureBottomImageAdd>
-                                                +5
-                                            </OverCardPictureBottomImageAdd>
-                                        </OverCardPictureBottomDetail>
-                                    </OverCardPictureBottomFixed>
-                                    <OverCardPictureBottomContent>
-                                        <OverCardPictureBottomContentImage src={calendarImage} alt="" width = "6%"/>
-                                        9월 12일 ~ 13일 목금
-                                    </OverCardPictureBottomContent>
+                                    <OverCardPictureBottom>
+                                        <OverCardPictureBottomFixed>
+                                            <OverCardPictureBottomTitle>저녁식사하기</OverCardPictureBottomTitle>
+                                            <OverCardPictureBottomDetail>
+                                                <OverCardPictureBottomImage src ={defaultImage} alt ="default" height = "20%" width = "20%"/>                            
+                                                
+                                                <OverCardPictureBottomImageAdd>
+                                                    +5
+                                                </OverCardPictureBottomImageAdd>
+                                            </OverCardPictureBottomDetail>
+                                        </OverCardPictureBottomFixed>
+                                        <OverCardPictureBottomContent>
+                                            <OverCardPictureBottomContentImage src={calendarImage} alt="" width = "6%"/>
+                                            9월 12일 ~ 13일 목금
+                                        </OverCardPictureBottomContent>
 
-                                </OverCardPictureBottom>
-                            </OverCardPicture>
-                        </OverCard>
-                        
-                        <OverCard bordered={false}>
-                            <OverCardPicture>
-                                <OverCardPictureTop>
-
-                                    <OverCardPictureTopLayerOne>
-                                        1 / 2
-                                        <Progress percent={50} status="active" showInfo={false} size="small" strokeColor="#EB6363"/>
-                                    </OverCardPictureTopLayerOne>
-
-                                    <OverCardPictureTopLayerTwo>
-                                        {/* <img src ={defaultImage} alt ="default" height = "100%" width = "100%"/> */}
-                                    </OverCardPictureTopLayerTwo>
-
-                                </OverCardPictureTop>
-
-                                <OverCardPictureBottom>
-                                    <OverCardPictureBottomFixed>
-                                        <OverCardPictureBottomTitle>저녁식사하기</OverCardPictureBottomTitle>
-                                        <OverCardPictureBottomDetail>
-                                            <OverCardPictureBottomImage src ={defaultImage} alt ="default" height = "20%" width = "20%"/>                            
-                                            
-                                            <OverCardPictureBottomImageAdd>
-                                                +5
-                                            </OverCardPictureBottomImageAdd>
-                                        </OverCardPictureBottomDetail>
-                                    </OverCardPictureBottomFixed>
-                                    <OverCardPictureBottomContent>
-                                        <OverCardPictureBottomContentImage src={calendarImage} alt="" width = "6%"/>
-                                        9월 12일 ~ 13일, 목금 | 인증횟수 2회
-                                    </OverCardPictureBottomContent>
-
-                                </OverCardPictureBottom>
-                            </OverCardPicture>
-                        </OverCard>
-
-                        <OverCard bordered={false}>
-                            <OverCardPicture>
-                                <OverCardPictureTop>
-
-                                    <OverCardPictureTopLayerOne>
-                                        1 / 2
-                                        <Progress percent={50} status="active" showInfo={false} size="small" strokeColor="#EB6363"/>
-                                    </OverCardPictureTopLayerOne>
-
-                                    <OverCardPictureTopLayerTwo>
-                                        {/* <img src ={defaultImage} alt ="default" height = "100%" width = "100%"/> */}
-                                    </OverCardPictureTopLayerTwo>
-
-                                </OverCardPictureTop>
-
-                                <OverCardPictureBottom>
-                                    <OverCardPictureBottomFixed>
-                                        <OverCardPictureBottomTitle>저녁식사하기</OverCardPictureBottomTitle>
-                                        <OverCardPictureBottomDetail>
-                                            <OverCardPictureBottomImage src ={defaultImage} alt ="default" height = "20%" width = "20%"/>                            
-                                            
-                                            <OverCardPictureBottomImageAdd>
-                                                +5
-                                            </OverCardPictureBottomImageAdd>
-                                        </OverCardPictureBottomDetail>
-                                    </OverCardPictureBottomFixed>
-                                    <OverCardPictureBottomContent>
-                                        <OverCardPictureBottomContentImage src={calendarImage} alt="" width = "6%"/>
-                                        9.11 수 / 10.13 일 / ...(10일)
-                                    </OverCardPictureBottomContent>
-
-                                </OverCardPictureBottom>
-                            </OverCardPicture>
-                        </OverCard>
-
+                                    </OverCardPictureBottom>
+                                </OverCardPicture>
+                            </OverCard>
+                        )}
                     </OverCarousel>
                 </ContentsOne>
             </Contents>
@@ -365,7 +304,9 @@ const MyChallenge = ({ detailRouter, bottomDetailRouterOne, bottomDetailRouterTw
                         함께하는 챌린지
                 </ContentsTitle>
                 <ChallengeList>
-                    <ChallengeCard>
+                    {CarouselArray.map((elem, index) => 
+                        <ChallengeCard key={index} onClick={() => bottomDetailRouter(elem)}>
+
                         <ChallengeImg />
                         <ChallengeContent>
 
@@ -395,37 +336,8 @@ const MyChallenge = ({ detailRouter, bottomDetailRouterOne, bottomDetailRouterTw
 
                         </ChallengeContent>
                     </ChallengeCard>
-                    
-                    <ChallengeCard>
-                        <ChallengeImg />
-                        <ChallengeContent>
 
-                        <ChallengeFixed>
-                        <ChallengeContentTitle>영화보기</ChallengeContentTitle>
-
-                        <OverCardPictureBottomDetail style={{marginTop : 0}}>
-                            <OverCardPictureBottomImage src ={defaultImage} alt ="default" height = "20%" width = "20%"/>                            
-                            
-                            <OverCardPictureBottomImageAdd style={{right : "15%"}}>
-                                +5
-                            </OverCardPictureBottomImageAdd>
-                        </OverCardPictureBottomDetail>
-                        </ChallengeFixed>
-
-                        <ChallengeContentDate>
-                            <OverCardPictureBottomContentImage src={calendarImage} alt="" width = "7%"/>
-                            09.11 수 / 10.13 일
-                        </ChallengeContentDate>
-
-                        <ChallengeContentProgress>
-                            <Progress percent={50} showInfo={false} status="active" size="small" strokeColor="#EB6363"/> 
-                            <ChallengeContentProgressText>
-                                1 / 2
-                            </ChallengeContentProgressText>
-                        </ChallengeContentProgress>
-
-                        </ChallengeContent>
-                    </ChallengeCard>
+                    )}
                     
                 </ChallengeList>
             </ChallengeContainer>

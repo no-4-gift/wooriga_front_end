@@ -8,6 +8,7 @@ const {Header} = Layout;
 
 // Headers Components
 const Headers = styled(Header)`
+    width: 100vw;
     height : 8vh !important;    
     line-height : 10px !important;
     background : white !important;
@@ -16,6 +17,10 @@ const Headers = styled(Header)`
     &&{
         
     }
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1;
 `;
 
 const Logo = styled.div`

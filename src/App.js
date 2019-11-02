@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 import CalenderContainer from "./containers/CalenderContainer";
-import ChallengeRegist from "./components/ChallengeRegist";
+import ChallengeAdd from "./components/ChallengeAdd";
 import LoginConatainer from "./containers/LoginContainer";
 
+import myChallengeContainer from "./containers/myChallengeContainer";
+import myChallengeDetailContainer from "./containers/myChallengeDetailContainer";
 
-import myChallengeContainer from './containers/myChallengeContainer';
-import myChallengeDetailContainer from './containers/myChallengeDetailContainer'
 
 import "antd/dist/antd.css";
 
@@ -21,7 +21,13 @@ function App() {
 
       <Route path="/" component={CalenderContainer} exact />
       <Route path="/login" component={LoginConatainer} />
-      <Route path="/challenge_regist" component={ChallengeRegist} />
+      <Route path="/challenge_regist" component={ChallengeAdd} />
+
+      <Route path="/mychallenge" component={myChallengeContainer} />
+      <Route
+        path="/mychallenge_detail"
+        component={myChallengeDetailContainer}
+      />
 
 
       <Route path="/mychallenge" component={myChallengeContainer}/>
@@ -30,6 +36,7 @@ function App() {
 
       <Route path="/makegroup" component={MakeGroup} />
       <Route path="/invite" component={Invite} />
+
 
       {/*<Route path="/" component={Calendar} /> */}
     </BrowserRouter>

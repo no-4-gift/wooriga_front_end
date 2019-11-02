@@ -26,6 +26,7 @@ const MyAlert = styled(Alert)`
 
 class CalenderContainer extends Component {
   maxChallengeDateLength = 10;
+
   handleNextMonth = () => {
     const { CalendarActions } = this.props;
     CalendarActions.goNextMonth();
@@ -105,6 +106,7 @@ class CalenderContainer extends Component {
     const cur = moment();
     this.handleToggle();
     CalendarActions.goToChallenge(cur);
+    this.props.history.push("/challenge_regist");
   };
 
   render() {
