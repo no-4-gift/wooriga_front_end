@@ -141,6 +141,7 @@ class ChallengeAddContainer extends Component {
     const disable =
       challengeId === null ? true : selectedMembers.length === 0 ? true : false;
 
+    if (!dates) return null;
     return (
       <ChallengeAdd
         dates={dates}

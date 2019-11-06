@@ -6,7 +6,6 @@ import PromiseCardModal from "./PromiseCardModal";
 import BackTap from "./statics/BackTap";
 
 function ChallengeAdd({
-  thisRef,
   dates,
   members,
   selectedMembers,
@@ -80,7 +79,7 @@ function ChallengeAdd({
           </ShowMembersContent>
         </MemberSection>
         <ChallengeSection>
-          <SectionTitle ref={thisRef}>
+          <SectionTitle>
             <span>챌린지를 선택해주세요.</span>
           </SectionTitle>
           <ChallengeList>
