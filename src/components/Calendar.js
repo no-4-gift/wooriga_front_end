@@ -110,7 +110,8 @@ const CalendarBox = styled.div`
   ${props =>
     props.select &&
     css`
-      background: rgba(125, 0, 0, 0.4);
+      background: rgba(255, 122, 0, 0.3);
+      border-radius: 3px;
     `}
 `;
 
@@ -139,8 +140,6 @@ const MemberContainer = styled.div`
   overflow-x: auto;
   padding-top: 5px;
 `;
-
-
 
 const Circle = styled.div`
   width: 8px;
