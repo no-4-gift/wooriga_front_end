@@ -142,16 +142,16 @@ const ModalFooter = styled.div`
   align-items: center;
   justify-content: center;
 `;
-const CancleButton = styled.div`
-  font-family: Noto Sans KR;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 26px;
-  letter-spacing: -0.02em;
-  color: #969696;
-  flex: 0.9;
-`;
+// const CancleButton = styled.div`
+//   font-family: Noto Sans KR;
+//   font-style: normal;
+//   font-weight: normal;
+//   font-size: 18px;
+//   line-height: 26px;
+//   letter-spacing: -0.02em;
+//   color: #969696;
+//   flex: 0.9;
+// `;
 const OkButton = styled.div`
   font-family: Noto Sans KR;
   font-style: normal;
