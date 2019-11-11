@@ -5,8 +5,7 @@ import styled from "styled-components";
 import defaultImage from "../images/default.PNG";
 import { MdArrowBack } from "react-icons/md";
 import questionMark from "../images/questionMark.png";
-import calendarImage from '../images/CalendarMirrored.png';
-
+import circlePlus from '../images/circlePlus.PNG';
 
 const BackTapContainer = styled.div`
   width: 100vw;
@@ -175,14 +174,20 @@ const CertifiedRequirement = styled.div`
     text-align : center;
     width: 100%;
     height : 40vh;
-
-
 `;
+
 const CertifiedRequirementContent = styled.div`
   background-color: rgb(238, 238, 238);
   height: 100%;
   box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
   border-radius: 14px;
+`;
+
+const CertifiedRequirementContentFalse = styled.div`
+  height: 100%;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 14px;
+  padding-top : 25%;
 `;
 
 const CertifiedRequirementContentTriangle = styled.div`
@@ -202,7 +207,45 @@ const CertifiedRequirementContentText = styled.div`
     font-size: 0.8rem;
 `;
 
-const MyChallengeDetail = ({ backRouter }) => {
+const CertifiedRequirementContentTextFalse = styled.div`
+    font-size : 1rem;
+    font-weight : bold;
+    padding-top: 15%;
+`;
+
+
+const MyChallengeDetail = ({ 
+  backRouter,
+  pictureFlagRouter,
+  pictureFlag,
+  fileOnChange,
+  $imagePreview,
+  imagePreviewUrl,
+ }) => {
+  if (imagePreviewUrl) {
+    $imagePreview = (
+      <CertifiedRequirementContentFalse style={{paddingTop : 0}}>
+        <img id={"circlePlus"} src={imagePreviewUrl} alt="imagePreviewUrl" width ="100%" height ="100%" />
+      </CertifiedRequirementContentFalse>
+    );
+  } else {
+    $imagePreview = (
+      <>
+      <CertifiedRequirementContentFalse>
+      <label htmlFor="file-input">
+        <img src={circlePlus} alt={"circlePlus"} height ="30%"/>
+      </label>
+      
+      <input style={{display: "none"}} id="file-input" type="file" name="file" onChange={e => fileOnChange(e)}/>
+      <CertifiedRequirementContentTextFalse>오늘의 챌린지를</CertifiedRequirementContentTextFalse>
+      <CertifiedRequirementContentTextFalse
+        style={{padding : 0}}
+      >인증해주세요</CertifiedRequirementContentTextFalse>
+      </CertifiedRequirementContentFalse>
+    </>
+    );
+  }
+  console.log('imagePreviewUrl',imagePreviewUrl)
   return (
     <Fragment>
       <BackTapContainer>
@@ -236,9 +279,9 @@ const MyChallengeDetail = ({ backRouter }) => {
       </OverCard>
 
       <NumberHorizontalLayout>
-
+      {/* pictureFlagRouter은 회색 빛만 가능하도록 적용 필요. */}
         <NumberHorizontalContentBorder>
-          <NumberHorizontalContent>
+          <NumberHorizontalContent onClick={pictureFlagRouter}>
             1 
             <NumberHorizontalContentDate>12.20</NumberHorizontalContentDate>
 
@@ -246,7 +289,7 @@ const MyChallengeDetail = ({ backRouter }) => {
         </NumberHorizontalContentBorder>
 
         <NumberHorizontalContentBorder>
-          <NumberHorizontalContent>
+          <NumberHorizontalContent onClick={pictureFlagRouter}>
             2
             <NumberHorizontalContentDate>12.21</NumberHorizontalContentDate>
 
@@ -254,15 +297,15 @@ const MyChallengeDetail = ({ backRouter }) => {
         </NumberHorizontalContentBorder>
 
         <NumberHorizontalContentBorder>
-          <NumberHorizontalContent>
+          <NumberHorizontalContent onClick={pictureFlagRouter}>
             3
             <NumberHorizontalContentDate>12.22</NumberHorizontalContentDate>
 
           </NumberHorizontalContent>
-        </NumberHorizontalContentBorder>
+        </NumberHorizontalContentBorder>  
 
         <NumberHorizontalContentBorder>
-          <NumberHorizontalContent>
+          <NumberHorizontalContent onClick={pictureFlagRouter}>
             4
             <NumberHorizontalContentDate>12.23</NumberHorizontalContentDate>
 
@@ -270,7 +313,7 @@ const MyChallengeDetail = ({ backRouter }) => {
         </NumberHorizontalContentBorder>
 
         <NumberHorizontalContentBorder>
-          <NumberHorizontalContent>
+          <NumberHorizontalContent onClick={pictureFlagRouter}>
             5
             <NumberHorizontalContentDate>12.24</NumberHorizontalContentDate>
 
@@ -279,11 +322,24 @@ const MyChallengeDetail = ({ backRouter }) => {
 
       </NumberHorizontalLayout>
 
-      <CertifiedRequirement>
+      {pictureFlag? (
+        <CertifiedRequirement>
           <CertifiedRequirementContent>hi</CertifiedRequirementContent>
           <CertifiedRequirementContentTriangle></CertifiedRequirementContentTriangle>
           <CertifiedRequirementContentText>동생아! 꼭 맛있는 밥 사줄게!</CertifiedRequirementContentText>
-      </CertifiedRequirement>
+        </CertifiedRequirement>
+
+      ) : (
+        <CertifiedRequirement>
+          {$imagePreview}
+        </CertifiedRequirement>
+      ) }
+
+                
+
+
+
+      
       
     </Fragment>
   );

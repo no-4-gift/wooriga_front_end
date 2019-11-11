@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as challengeAddActions from "../store/modules/challengeAdd";
 import ChallengeAdd from "../components/ChallengeAdd";
-import queryString from "query-string";
+import queryString from "querystring";
 
 //API 호출로 받아와야하는 정보
 const data = [
