@@ -3,9 +3,8 @@ import styled, { css } from "styled-components";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { colorSelector, profileColor } from "../styleUtils/colorStyle";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import Headers from "./statics/HeaderLayout";
-import ChosensContainer from "../containers/ChosensContainer";
+import HitArea from "react-hammerjs";
+
 //dummy dataes
 
 const members = [
@@ -44,8 +43,6 @@ const members = [
 //Calendar Style
 const CalendarContainer = styled.div`
   width: 100vw;
-  height: 60vh;
-  padding-top: 5%;
 
   padding-left: 10%;
   padding-right: 10%;
@@ -90,15 +87,14 @@ const grayed = css`
 `;
 
 const CalendarBox = styled.div`
+  cursor: pointer;
   position: relative;
   width: calc(100% / 7);
-  height: calc(60vh / 8);
-  font-size: 12pt;
   color: black;
-
   ${grayed}
   &:first-child {
     color: red;
+
     ${grayed}
   }
 
@@ -115,34 +111,47 @@ const CalendarBox = styled.div`
     `}
 `;
 
-const Text = styled.span`
-  position: relative;
+const Text = styled.div`
+  font-size: 14px;
+  width: 20px;
+  height: 20px;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
   ${props =>
-    props.select &&
+    props.isChallenge &&
     css`
-      background-color: #38d9a9;
-    `}
-  ${props =>
-    !props.toggle &&
-    css`
-      background-color: none;
+      background: #eb6363;
+      border-radius: 4px;
+      color: white;
     `}
 `;
 const MemberContainer = styled.div`
   position: relative;
+  display: grid;
+  grid-template-columns: repeat(${props => props.cols}, 8px);
+  grid-template-rows: repeat(${props => props.rows}, 8px);
+  grid-gap: 4px 4px;
   width: 100%;
   height: 20px;
-  display: flex;
+  overflow: auto;
+  justify-items: center;
+  align-items: center;
   justify-content: center;
-  overflow-x: auto;
+  align-content: center;
+  /*display: flex;
+  overflow: auto;
   padding-top: 5px;
+  padding-left: 1%;
+  padding-right: 1%;*/
 `;
 
 const Circle = styled.div`
   width: 8px;
+  min-width: 8px;
+  max-width: 8px;
+  flex: 1;
   height: 8px;
   border-radius: 100%;
 
@@ -181,7 +190,7 @@ const MemberProfileContainer = styled.div`
 const MemberProfile = styled.div`
   width: 40px;
   height: 40px;
-
+  position: relative;
   background: gray;
   ${profileColor}
   box-sizing: border-box;
@@ -189,6 +198,19 @@ const MemberProfile = styled.div`
   & + & {
     margin-left: 7px;
   }
+  ${props =>
+    props.me &&
+    css`
+      &::before {
+        content: "";
+        position: absolute;
+        right: 0;
+        width: 10px;
+        height: 10px;
+        border-radius: 50px;
+        ${colorSelector}
+      }
+    `}
 `;
 
 //button Styles
@@ -197,7 +219,7 @@ const Button = styled.button`
   width: 90vw;
   height: 46px;
   left: 50%;
-  top: 25px;
+  top: 15px;
   transform: translate(-50%, 50%);
   background: #eb6363;
 
@@ -252,12 +274,17 @@ const ChallengeButton = styled.button`
   text-align: center;
 `;
 
+//자신의 id 받아와야 함
 function ShowMemberBox({ members }) {
   return (
     <MemberProfileBox>
       <MemberProfileContainer>
         {members.map(member => (
-          <MemberProfile key={member.id} color={member.color} />
+          <MemberProfile
+            me={member.id === 1 ? true : false}
+            key={member.id}
+            color={member.color}
+          />
         ))}
       </MemberProfileContainer>
       <div>가족과 함께할 시간을 만들어봐요.</div>
@@ -299,7 +326,13 @@ function CalendarGenerator({ today, selected, dates, onClickDate, toggle }) {
             let thisDayMembers = dates.filter(
               elem => elem.date === current.format("YYYY-MM-DD")
             );
-
+            const rows = Math.ceil(thisDayMembers.length / 3);
+            const cols =
+              thisDayMembers.length < 3
+                ? thisDayMembers.length < 2
+                  ? 1
+                  : 2
+                : 3;
             let selCheck = selected.filter(
               elem => elem === current.format("YYYY-MM-DD")
             );
@@ -310,13 +343,15 @@ function CalendarGenerator({ today, selected, dates, onClickDate, toggle }) {
             return (
               <CalendarBox key={i} grayed={isGrayed} select={selKey}>
                 <Text
-                  toggle={toggle}
+                  isChallenge={
+                    current.format("YYYY-MM-DD") === "2019-10-04" ? true : false
+                  }
                   onClick={() => onClickDate(current.format("YYYY-MM-DD"))}
                 >
                   {current.format("D")}
                 </Text>
 
-                <MemberContainer>
+                <MemberContainer rows={rows} cols={cols}>
                   {thisDayMembers.map(elem => (
                     <Circle key={elem.id} color={elem.color}></Circle>
                   ))}
@@ -341,12 +376,11 @@ function Calendar({
   GoToChallenge,
   onPreMonth,
   onNextMonth,
-  onTodayMonth
+  onTodayMonth,
+  onSwipe
 }) {
   return (
     <Fragment>
-      <Headers />
-      <ChosensContainer />
       <CalendarContainer>
         <CalendarHead>
           <AllowButton onClick={onPreMonth}>
@@ -357,39 +391,42 @@ function Calendar({
             <MdChevronRight />
           </AllowButton>
         </CalendarHead>
-        <CalendarBody>
-          <CalendarRow>
-            <CalendarBox>
-              <Text>일</Text>
-            </CalendarBox>
-            <CalendarBox>
-              <Text>월</Text>
-            </CalendarBox>
-            <CalendarBox>
-              <Text>화</Text>
-            </CalendarBox>
-            <CalendarBox>
-              <Text>수</Text>
-            </CalendarBox>
-            <CalendarBox>
-              <Text>목</Text>
-            </CalendarBox>
-            <CalendarBox>
-              <Text>금</Text>
-            </CalendarBox>
-            <CalendarBox>
-              <Text>토</Text>
-            </CalendarBox>
-          </CalendarRow>
-          <CalendarGenerator
-            today={today}
-            selected={challengeDates}
-            dates={dates}
-            toggle={toggle}
-            onClickDate={onClickDate}
-          />
-        </CalendarBody>
+        <HitArea onSwipe={onSwipe}>
+          <CalendarBody>
+            <CalendarRow>
+              <CalendarBox>
+                <Text>일</Text>
+              </CalendarBox>
+              <CalendarBox>
+                <Text>월</Text>
+              </CalendarBox>
+              <CalendarBox>
+                <Text>화</Text>
+              </CalendarBox>
+              <CalendarBox>
+                <Text>수</Text>
+              </CalendarBox>
+              <CalendarBox>
+                <Text>목</Text>
+              </CalendarBox>
+              <CalendarBox>
+                <Text>금</Text>
+              </CalendarBox>
+              <CalendarBox>
+                <Text>토</Text>
+              </CalendarBox>
+            </CalendarRow>
+            <CalendarGenerator
+              today={today}
+              selected={challengeDates}
+              dates={dates}
+              toggle={toggle}
+              onClickDate={onClickDate}
+            />
+          </CalendarBody>
+        </HitArea>
       </CalendarContainer>
+
       <ShowMemberBox members={members} />
       {!toggle && <Button onClick={onToggle}>챌린지 날짜 선택</Button>}
       {toggle && (

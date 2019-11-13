@@ -84,12 +84,20 @@ const initialState = {
       color: "yellow"
     },
     {
+      id: 6,
+      name: "먀먀먀",
+      relation: "애완견",
+      date: "2019-10-11",
+      color: "black"
+    },
+    {
       id: 5,
       name: "둠스데이",
       relation: "동생",
       date: "2019-10-11",
       color: "violet"
     },
+
     {
       id: 1,
       name: "브루스 웨인",

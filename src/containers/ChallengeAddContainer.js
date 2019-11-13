@@ -11,25 +11,29 @@ const data = [
     id: 1,
     name: "브루스 웨인",
     relation: "아빠",
-    color: "red"
+    color: "red",
+    thumbnail: ""
   },
   {
     id: 2,
     name: "할리 퀸",
     relation: "엄마",
-    color: "blue"
+    color: "blue",
+    thumbnail: ""
   },
   {
     id: 3,
     name: "조커",
     relation: "형",
-    color: "green"
+    color: "green",
+    thumbnail: ""
   },
   {
     id: 4,
     name: "데드 샷",
     relation: "나",
-    color: "yellow"
+    color: "yellow",
+    thumbnail: ""
   }
 ];
 
@@ -139,7 +143,7 @@ class ChallengeAddContainer extends Component {
     } = this.props;
     const selectedMembers = members.filter(elem => elem.done === true);
     const disable =
-      challengeId === null ? true : selectedMembers.length === 0 ? true : false;
+      challengeId === -1 ? true : selectedMembers.length === 0 ? true : false;
 
     if (!dates) return null;
     return (

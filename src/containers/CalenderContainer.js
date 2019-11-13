@@ -4,6 +4,8 @@ import { bindActionCreators } from "redux";
 import { Redirect } from "react-router-dom";
 import Calendar from "../components/Calendar";
 import CalendarModal from "../components/CalendarModal";
+import Headers from "../components/statics/HeaderLayout";
+import ChosensContainer from "./ChosensContainer";
 import * as calendarActions from "../store/modules/calendar";
 import { Alert } from "antd";
 import moment from "moment";
@@ -41,6 +43,19 @@ class CalenderContainer extends Component {
     CalendarActions.goCurMonth(cur);
   };
 
+  handleSwipe = event => {
+    const direction = event.direction;
+    if (direction === 2) {
+      console.log("swipe Left!");
+
+      this.handleNextMonth();
+    }
+    if (direction === 4) {
+      console.log("swipe Right!");
+
+      this.handlePreMonth();
+    }
+  };
   handleShowModal = date => {
     const { CalendarActions } = this.props;
     CalendarActions.openModal(date);
@@ -135,7 +150,7 @@ class CalenderContainer extends Component {
     console.log(disable);
     console.log(`id is ${id}`);
 
-    if (id) {
+    if (true) {
       return (
         <Fragment>
           <CalendarModal
@@ -147,6 +162,8 @@ class CalenderContainer extends Component {
             onDelete={this.handleDeleteSchedule}
             onInsert={this.handleInsertSchedule}
           />
+          <Headers />
+          <ChosensContainer />
           <Calendar
             dates={dates}
             today={today}
@@ -157,6 +174,7 @@ class CalenderContainer extends Component {
             onPreMonth={this.handlePreMonth}
             onNextMonth={this.handleNextMonth}
             onTodayMonth={this.handleGoTodayMonth}
+            onSwipe={this.handleSwipe}
             GoToChallenge={this.handleGoToChallenge}
             disable={disable}
           />
@@ -193,7 +211,4 @@ const mapDispatchProps = dispatch => ({
   CalendarActions: bindActionCreators(calendarActions, dispatch)
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchProps
-)(CalenderContainer);
+export default connect(mapStateToProps, mapDispatchProps)(CalenderContainer);

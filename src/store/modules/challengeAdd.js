@@ -1,3 +1,5 @@
+import { takeEvery, put, call } from "redux-saga/effects";
+
 const SET_DATES = "challengeAdd/SET_DATES";
 const SET_MEMBERS = "challengeAdd/SET_MEMBERS";
 const SELECT_MEMBERS = "challengeAdd/SELECT_MEMBERS";
@@ -5,6 +7,12 @@ const SELECT_CHALLENGE = "challengeAdd/SELECT_CHALLENGE";
 const TOGGLE_VISIBLE = "challengeAdd/TOGGLE_VISIBLE";
 const SET_TEXT = "challengeAdd/SET_TEXT";
 const ACTIVE_TOP_BUTTON = "challengeAdd/ACTIVE_TOP_BUTTON";
+
+//ASYNC ACTION
+
+const GET_DATA = "challengeAdd/GET_DATA";
+const GET_DATA_SUCCESS = "challengeAdd/GET_DATA_SUCCESS";
+const GET_DATA_ERROR = "challengeAdd/GET_DATA_ERROR";
 
 export const setDates = dates => ({ type: SET_DATES, payload: dates });
 export const setMembers = data => ({ type: SET_MEMBERS, payload: data });
@@ -20,10 +28,31 @@ export const setActiveTopButton = value => ({
   payload: value
 });
 
+function* getDataSaga() {
+  try {
+    const response = yield call(); // () 안에 Promise Create 함수 넣어야함.
+
+    yield put({
+      type: GET_DATA_SUCCESS,
+      payload: response
+    });
+  } catch (e) {
+    yield put({
+      type: GET_DATA_ERROR,
+      payload: e,
+      error: true
+    });
+  }
+}
+
+export function* ChallengeAddSaga() {
+  yield takeEvery(GET_DATA, getDataSaga);
+}
+
 const initState = {
   members: [],
   dates: [],
-  challengeId: null,
+  challengeId: -1,
   visible: false,
   text: "",
   activeTopButton: false,
