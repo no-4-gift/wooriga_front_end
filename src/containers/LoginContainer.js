@@ -17,6 +17,7 @@ class LoginContainer extends Component {
 
   //KaKao Login
   responseKakao = res => {
+    console.log(res);
     this.setState({
       id: res.profile.id,
       name: res.profile.properties.nickname
@@ -74,7 +75,4 @@ const mapDispatchToProps = dispatch => ({
   LoginActions: bindActionCreators(loginActions, dispatch)
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LoginContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer);

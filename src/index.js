@@ -3,22 +3,29 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
-import { createStore } from "redux";
-import rootReducer from "./store/modules";
+import { createStore, applyMiddleware } from "redux";
+import rootReducer, { rootSaga } from "./store/modules";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import familyColor from "./themes/calendarTheme";
 import { composeWithDevTools } from "redux-devtools-extension";
 import "./index.css";
-const store = createStore(rootReducer, composeWithDevTools());
-console.log(store.getState());
+import createSagaMiddleware from "redux-saga";
 
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(sagaMiddleware))
+);
+
+console.log(store.getState());
+sagaMiddleware.run(rootSaga);
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <ThemeProvider theme={{ familyColor }}>
-        <App/>
+        <App />
       </ThemeProvider>
     </BrowserRouter>
   </Provider>,

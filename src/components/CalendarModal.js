@@ -8,13 +8,13 @@ const DarkBackGround = styled.div`
   position: fixed;
   left: 0;
   top: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 
   background: rgba(123, 123, 123, 0.8);
   overflow: hidden;
   opacity: 0;
-  transition: 0.25s linear;
+  transition: all 0.25s linear;
   z-index: -1;
   ${props =>
     props.visible &&
@@ -33,7 +33,7 @@ const ModalTemplate = styled.div`
   bottom: 0;
   transform: translate(0, 100%);
   transition-delay: 0.25s;
-  transition: 0.5s ease-in;
+  transition: all 0.5s ease-in;
 
   ${props =>
     props.visible &&
@@ -78,6 +78,108 @@ const ModalBody = styled.div`
   max-height: 50vh;
   overflow: auto;
 `;
+
+const Section = styled.div`
+  width: 100%;
+  & + & {
+    margin-top: 14px;
+  }
+`;
+const SectionTitle = styled.div`
+  width: 100%;
+  height: 34px;
+  padding: 6px 56px 10px 24px;
+  span {
+    font-family: Noto Sans KR;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+
+    letter-spacing: -0.02em;
+
+    color: #434444;
+  }
+`;
+
+const SectionBody = styled.div`
+  width: 100%;
+`;
+
+//챌린지 목록 스타일
+
+const ChallengeItem = styled.div`
+  position: relative;
+  width: 100%;
+  height: 64px;
+  background: #fafafa;
+  border: 1px solid #f5f5f5;
+`;
+
+const ChallengeIcon = styled.div`
+  position: absolute;
+  left: 24px;
+  top: 22px;
+  width: 20px;
+  height: 20px;
+  background: #eb6363;
+  border-radius: 4px;
+  text-align: center;
+`;
+const ChallengeContent = styled.div`
+  position: absolute;
+  top: 13px;
+  left: 63px;
+  width: 168px;
+  display: flex;
+  flex-direction: column;
+`;
+const ChallengeContentTitle = styled.span`
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 23px;
+  letter-spacing: -0.02em;
+
+  color: #434444;
+`;
+
+const ChallengeContentDates = styled.span`
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 17px;
+  letter-spacing: -0.02em;
+
+  color: #434444;
+`;
+const ChallengeMaker = styled.div`
+  position: absolute;
+  top: 14px;
+  right: 24px;
+  width: 36px;
+  height: 36px;
+  ${profileColor}
+  box-sizing: border-box;
+  border-radius: 20px;
+  background-image: url(${props => props.profile});
+  background-size: contain;
+
+  &::before {
+    content: "|";
+
+    position: relative;
+    left: -20px;
+    top: -14px;
+    font-size: 36px;
+    color: #ededed;
+  }
+`;
+
+//일정이 비어있는 멤버들 스타일
+
 const ModalItemBlock = styled.div`
   width: 100%;
   height: 100px;
@@ -92,6 +194,8 @@ const MemberProfilePhoto = styled.div`
 
   box-sizing: border-box;
   border-radius: 30px;
+  background-image: url(${props => props.profile});
+  background-size: contain;
 `;
 
 const MemberProfile = styled.div`
@@ -215,8 +319,10 @@ const InsertText = styled.span`
 
 function CalendarModal({
   id,
+  members,
   visible,
   dates,
+  challengeBarInfo,
   onCancle,
   onDelete,
   onInsert,
@@ -228,13 +334,17 @@ function CalendarModal({
       .findIndex(elem => elem.date === selectDate) === -1
       ? false
       : true;
-  let thisDateMembers = dates.filter(elem => elem.date === selectDate);
+  let thisDateMembers = dates.filter(elem => elem.emptyDate === selectDate);
   const myIdx = thisDateMembers.findIndex(elem => elem.id === id);
   if (myIdx !== -1) {
     let temp = thisDateMembers[0];
     thisDateMembers[0] = thisDateMembers[myIdx];
     thisDateMembers[myIdx] = temp;
   }
+  const thisDateChallenge = challengeBarInfo.filter(
+    elem => elem.date.findIndex(elem => elem === selectDate) !== -1
+  );
+  console.log(thisDateChallenge);
 
   return (
     <DarkBackGround visible={visible}>
@@ -244,23 +354,86 @@ function CalendarModal({
           <DateText>{selectDate}</DateText>
         </ModalHead>
         <ModalBody>
-          {thisDateMembers.map(elem => (
-            <ModalItemBlock key={elem.id}>
-              <MemberProfilePhoto color={elem.color} />
-              <MemberProfile>
-                <MemberNameContainer>
-                  <MemerProfileName>{elem.name}</MemerProfileName>
-                  <MemberColorCircle color={elem.color} />
-                </MemberNameContainer>
-                <MemberRelationText>관계 : {elem.relation}</MemberRelationText>
-              </MemberProfile>
-              {elem.id === id && (
-                <DeleteButton onClick={() => onDelete(selectDate)}>
-                  <MdClose />
-                </DeleteButton>
-              )}
-            </ModalItemBlock>
-          ))}
+          {   thisDateChallenge.length > 0 &&
+            <Section>
+              <SectionTitle>
+                <span>해야할 챌린지</span>
+              </SectionTitle>
+              <SectionBody>
+             
+                  {thisDateChallenge.map((elem, index) => (
+                    <ChallengeItem key={index}>
+                      <ChallengeIcon>
+                        <svg
+                          width="12"
+                          height="13"
+                          viewBox="0 0 12 13"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M1 13V6.77778M1 6.77778V1H6.65217V2.77778H11V9H6.65217V6.77778H1Z"
+                            stroke="white"
+                          />
+                        </svg>
+                      </ChallengeIcon>
+                      <ChallengeContent>
+                        <ChallengeContentTitle>
+                          <span>{elem.challengeTitle}</span>
+                        </ChallengeContentTitle>
+                        <ChallengeContentDates>
+                          <span>
+                            {selectDate}{" "}
+                            {elem.date.length > 1
+                              ? `+(${elem.date.length - 1})`
+                              : ""}
+                          </span>
+                        </ChallengeContentDates>
+                      </ChallengeContent>
+                      <ChallengeMaker
+                        profile={
+                          members[
+                            members.findIndex(
+                              member => member.uid === elem.chiefId
+                            )
+                          ].profile
+                        }
+                        color={elem.chiefColor}
+                      />
+                    </ChallengeItem>
+                  ))}
+              </SectionBody>
+            </Section>
+          }
+          <Section>
+            <SectionTitle>
+              <span>함께 할 수 있는 가족</span>
+            </SectionTitle>
+            <SectionBody>
+              {thisDateMembers.map(elem => (
+                <ModalItemBlock key={elem.uid}>
+                  <MemberProfilePhoto
+                    profile={elem.profile}
+                    color={elem.color}
+                  />
+                  <MemberProfile>
+                    <MemberNameContainer>
+                      <MemerProfileName>{elem.name}</MemerProfileName>
+                      <MemberColorCircle color={elem.color} />
+                    </MemberNameContainer>
+                    <MemberRelationText>
+                      관계 : {elem.relationship}
+                    </MemberRelationText>
+                  </MemberProfile>
+                  {elem.id === id && (
+                    <DeleteButton onClick={() => onDelete(selectDate)}>
+                      <MdClose />
+                    </DeleteButton>
+                  )}
+                </ModalItemBlock>
+              ))}
+            </SectionBody>
+          </Section>
 
           {!isMysdate && (
             <InsertScheduleContainer onClick={() => onInsert(selectDate)}>
@@ -283,10 +456,12 @@ export default CalendarModal;
 
 CalendarModal.propTypes = {
   id: PropType.number,
+  members: PropType.array,
   visible: PropType.bool,
   dates: PropType.array,
+  challengeBarInfo: PropType.array,
   onCancle: PropType.func,
   onDelete: PropType.func,
   onInsert: PropType.func,
-  selectDate: PropType.func
+  selectDate: PropType.string
 };

@@ -5,6 +5,7 @@ import { Redirect } from "react-router-dom";
 import Calendar from "../components/Calendar";
 import CalendarModal from "../components/CalendarModal";
 import * as calendarActions from "../store/modules/calendar";
+import * as familyActions from "../store/modules/family";
 import { Alert } from "antd";
 import moment from "moment";
 import styled from "styled-components";
@@ -18,6 +19,9 @@ const userInfo = {
   color: "yellow"
 };
 
+const familyId = "wooriga";
+const userId = 1615409;
+
 const MyAlert = styled(Alert)`
   position: relative;
   top: -80vh;
@@ -27,8 +31,26 @@ const MyAlert = styled(Alert)`
 class CalenderContainer extends Component {
   maxChallengeDateLength = 10;
 
+  componentDidMount() {
+    const { CalendarActions, FamilyActions, today } = this.props;
+    const year = today.format("YYYY");
+    const month = today.format("MM");
+    console.log(month);
+    CalendarActions.getCalendarData(familyId, year, month);
+    FamilyActions.getFamilyData(familyId);
+  }
+
   handleNextMonth = () => {
-    const { CalendarActions } = this.props;
+    const { CalendarActions, today } = this.props;
+    const year = today
+      .clone()
+      .add(1, "month")
+      .format("YYYY");
+    const month = today
+      .clone()
+      .add(1, "month")
+      .format("MM");
+    console.log(month);
     CalendarActions.goNextMonth();
   };
   handlePreMonth = () => {
@@ -41,6 +63,19 @@ class CalenderContainer extends Component {
     CalendarActions.goCurMonth(cur);
   };
 
+  handleSwipe = event => {
+    const direction = event.direction;
+    if (direction === 2) {
+      console.log("swipe Left!");
+
+      this.handleNextMonth();
+    }
+    if (direction === 4) {
+      console.log("swipe Right!");
+
+      this.handlePreMonth();
+    }
+  };
   handleShowModal = date => {
     const { CalendarActions } = this.props;
     CalendarActions.openModal(date);
@@ -52,7 +87,8 @@ class CalenderContainer extends Component {
   };
 
   handleInsertSchedule = date => {
-    const { CalendarActions } = this.props;
+    const { CalendarActions, members } = this.props;
+    const userInfo = members.filter(elem => elem.uid === userId)[0];
     const newObj = {
       ...userInfo,
       date: date
@@ -62,7 +98,8 @@ class CalenderContainer extends Component {
   };
 
   handleDeleteSchedule = date => {
-    const { CalendarActions } = this.props;
+    const { CalendarActions, members } = this.props;
+    const userInfo = members.filter(elem => elem.uid === userId)[0];
     const newObj = {
       ...userInfo,
       date: date
@@ -122,63 +159,87 @@ class CalenderContainer extends Component {
 
   render() {
     const {
+      calendarLoading,
+      calendarError,
+      challengeBarInfo,
       dates,
       challengeDates,
       today,
       visible,
       toggle,
       selectDate,
-      alert
+      alert,
+      familyLoading,
+      members,
+      familyError
     } = this.props;
-    const id = parseInt(window.sessionStorage.getItem("id")); //로그인 한 유저 정보는 store 나 localStorage에 저장 되어있어야함
+    //const id = parseInt(window.sessionStorage.getItem("id")); //로그인 한 유저 정보는 store 나 localStorage에 저장 되어있어야함
     const disable = challengeDates.length > 0 ? false : true;
     console.log(disable);
-    console.log(`id is ${id}`);
-
-    if (id) {
-      return (
-        <Fragment>
-          <CalendarModal
-            id={id}
-            selectDate={selectDate}
-            visible={visible}
-            dates={dates}
-            onCancle={this.handleCloseModal}
-            onDelete={this.handleDeleteSchedule}
-            onInsert={this.handleInsertSchedule}
-          />
-          <Calendar
-            dates={dates}
-            today={today}
-            toggle={toggle}
-            challengeDates={challengeDates}
-            onClickDate={this.handleSelectDate}
-            onToggle={this.handleToggle}
-            onPreMonth={this.handlePreMonth}
-            onNextMonth={this.handleNextMonth}
-            onTodayMonth={this.handleGoTodayMonth}
-            GoToChallenge={this.handleGoToChallenge}
-            disable={disable}
-          />
-          {alert && (
-            <MyAlert
-              message="Informational Notes"
-              description="챌린지 신청 일 수는 최대 10일 입니다."
-              type="info"
-              showIcon
-              closable
-              onClose={this.handleCloseAlert}
+    //console.log(`id is ${id}`);
+    const challengeAcitveDates =
+      challengeBarInfo.length > 0
+        ? challengeBarInfo.map(elem => elem.date)
+        : [];
+    console.log(challengeAcitveDates);
+    if (true) {
+      if (calendarLoading === true || familyLoading === true) {
+        return <div>Loading....</div>;
+      } else if (calendarError || familyError) {
+        return <div>Error!!!</div>;
+      } else {
+        return (
+          <Fragment>
+            <CalendarModal
+              id={userId}
+              challengeBarInfo={challengeBarInfo}
+              members={members}
+              selectDate={selectDate}
+              visible={visible}
+              dates={dates}
+              onCancle={this.handleCloseModal}
+              onDelete={this.handleDeleteSchedule}
+              onInsert={this.handleInsertSchedule}
             />
-          )}
-        </Fragment>
-      );
+            <Calendar
+              dates={dates}
+              members={members}
+              userId={userId}
+              today={today}
+              toggle={toggle}
+              challengeDates={challengeDates}
+              onClickDate={this.handleSelectDate}
+              onToggle={this.handleToggle}
+              onPreMonth={this.handlePreMonth}
+              onNextMonth={this.handleNextMonth}
+              onTodayMonth={this.handleGoTodayMonth}
+              onSwipe={this.handleSwipe}
+              GoToChallenge={this.handleGoToChallenge}
+              disable={disable}
+            />
+            {alert && (
+              <MyAlert
+                message="Informational Notes"
+                description="챌린지 신청 일 수는 최대 10일 입니다."
+                type="info"
+                showIcon
+                closable
+                onClose={this.handleCloseAlert}
+              />
+            )}
+          </Fragment>
+        );
+      }
     } else {
       return <Redirect to="/login" />;
     }
   }
 }
 
-const mapStateToProps = ({ calendar, login }) => ({
+const mapStateToProps = ({ calendar, login, family }) => ({
+  calendarLoading: calendar.loading,
+  calendarError: calendar.error,
+  challengeBarInfo: calendar.challengeBarInfo,
   dates: calendar.dates,
   challengeDates: calendar.challengeDates,
   today: calendar.today,
@@ -186,14 +247,15 @@ const mapStateToProps = ({ calendar, login }) => ({
   toggle: calendar.toggle,
   selectDate: calendar.selectDate,
   alert: calendar.alert,
-  logged: login.logged
+  logged: login.logged,
+  familyLoading: family.loading,
+  members: family.members,
+  familyError: family.error
 });
 
 const mapDispatchProps = dispatch => ({
-  CalendarActions: bindActionCreators(calendarActions, dispatch)
+  CalendarActions: bindActionCreators(calendarActions, dispatch),
+  FamilyActions: bindActionCreators(familyActions, dispatch)
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchProps
-)(CalenderContainer);
+export default connect(mapStateToProps, mapDispatchProps)(CalenderContainer);

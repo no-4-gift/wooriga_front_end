@@ -4,6 +4,7 @@ import { profileColor } from "../styleUtils/colorStyle";
 import { MdToday, MdDone, MdKeyboardArrowUp } from "react-icons/md";
 import PromiseCardModal from "./PromiseCardModal";
 import BackTap from "./statics/BackTap";
+import PropTypes, { number } from "prop-types";
 
 function ChallengeAdd({
   dates,
@@ -37,12 +38,9 @@ function ChallengeAdd({
       <BackTap title={"챌린지 등록"} targetRouter={"/"} questionRouter={"/"} />
 
       <ContentsBlock>
-        {activeTopButton === true && (
-          <TopToListButton onClick={onTop}>
-            <MdKeyboardArrowUp />
-          </TopToListButton>
-        )}
-
+        <TopToListButton active={activeTopButton} onClick={onTop}>
+          <MdKeyboardArrowUp />
+        </TopToListButton>
         <DateSection>
           <SectionTitle>
             <span>선택한 날짜를 확인해 주세요.</span>
@@ -85,6 +83,7 @@ function ChallengeAdd({
           <ChallengeList>
             {challengeList.map(elem => (
               <ChallengeCard
+                key={elem.id}
                 select={elem.id === challengeId ? true : false}
                 onClick={() => onSelectChallenge(elem.id)}
               >
@@ -119,6 +118,30 @@ function ChallengeAdd({
 }
 
 export default ChallengeAdd;
+
+ChallengeAdd.propTypes = {
+  dates: PropTypes.array.isRequired,
+  members: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      thumbnail: PropTypes.string.isRequired,
+      color: PropTypes.string.isRequired
+    })
+  ),
+  selectedMembers: PropTypes.array.isRequired,
+  challengeList: PropTypes.array.isRequired,
+  challengeId: PropTypes.number.isRequired,
+  text: PropTypes.string.isRequired,
+  visible: PropTypes.bool.isRequired,
+  disable: PropTypes.bool.isRequired,
+  activeTopButton: PropTypes.bool.isRequired,
+  onOpen: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onSelectChallenge: PropTypes.func.isRequired,
+  onSelectMembers: PropTypes.func.isRequired,
+  onTop: PropTypes.func.isRequired
+};
 
 // Contents Body Style
 
@@ -331,6 +354,13 @@ const TopToListButton = styled.div`
   color: white;
   font-size: 40px;
   font-weight: bold;
+  opacity: 0;
+  transition: 0.25s linear;
+  ${props =>
+    props.active &&
+    css`
+      opacity: 1;
+    `}
 `;
 
 // Footer Style
