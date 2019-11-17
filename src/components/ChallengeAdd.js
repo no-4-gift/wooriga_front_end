@@ -38,12 +38,9 @@ function ChallengeAdd({
       <BackTap title={"챌린지 등록"} targetRouter={"/"} questionRouter={"/"} />
 
       <ContentsBlock>
-        {activeTopButton === true && (
-          <TopToListButton onClick={onTop}>
-            <MdKeyboardArrowUp />
-          </TopToListButton>
-        )}
-
+        <TopToListButton active={activeTopButton} onClick={onTop}>
+          <MdKeyboardArrowUp />
+        </TopToListButton>
         <DateSection>
           <SectionTitle>
             <span>선택한 날짜를 확인해 주세요.</span>
@@ -357,6 +354,13 @@ const TopToListButton = styled.div`
   color: white;
   font-size: 40px;
   font-weight: bold;
+  opacity: 0;
+  transition: 0.25s linear;
+  ${props =>
+    props.active &&
+    css`
+      opacity: 1;
+    `}
 `;
 
 // Footer Style

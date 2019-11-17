@@ -7,7 +7,7 @@ import HitArea from "react-hammerjs";
 
 //dummy dataes
 
-const members = [
+/*const members = [
   {
     id: 1,
     name: "브루스 웨인",
@@ -38,7 +38,7 @@ const members = [
     relation: "동생",
     color: "pink"
   }
-];
+];*/
 
 //Calendar Style
 const CalendarContainer = styled.div`
@@ -275,13 +275,13 @@ const ChallengeButton = styled.button`
 `;
 
 //자신의 id 받아와야 함
-function ShowMemberBox({ members }) {
+function ShowMemberBox({ members, userId }) {
   return (
     <MemberProfileBox>
       <MemberProfileContainer>
         {members.map(member => (
           <MemberProfile
-            me={member.id === 1 ? true : false}
+            me={member.id === userId ? true : false}
             key={member.id}
             color={member.color}
           />
@@ -292,7 +292,7 @@ function ShowMemberBox({ members }) {
   );
 }
 
-function CalendarGenerator({ today, selected, dates, onClickDate, toggle }) {
+function CalendarGenerator({ today, selected, dates, onClickDate }) {
   console.log(today.format("YYYY-MM-DD"));
   const startWeek = today
     .clone()
@@ -324,7 +324,7 @@ function CalendarGenerator({ today, selected, dates, onClickDate, toggle }) {
               .startOf("week")
               .add(n + i, "day");
             let thisDayMembers = dates.filter(
-              elem => elem.date === current.format("YYYY-MM-DD")
+              elem => elem.emptyDate === current.format("YYYY-MM-DD")
             );
             const rows = Math.ceil(thisDayMembers.length / 3);
             const cols =
@@ -343,9 +343,7 @@ function CalendarGenerator({ today, selected, dates, onClickDate, toggle }) {
             return (
               <CalendarBox key={i} grayed={isGrayed} select={selKey}>
                 <Text
-                  isChallenge={
-                    current.format("YYYY-MM-DD") === "2019-10-04" ? true : false
-                  }
+                  isChallenge={current.format("YYYY-MM-DD") ? true : false}
                   onClick={() => onClickDate(current.format("YYYY-MM-DD"))}
                 >
                   {current.format("D")}
@@ -367,6 +365,8 @@ function CalendarGenerator({ today, selected, dates, onClickDate, toggle }) {
 
 function Calendar({
   dates,
+  members,
+  userId,
   today,
   toggle,
   disable,
@@ -427,7 +427,7 @@ function Calendar({
         </HitArea>
       </CalendarContainer>
 
-      <ShowMemberBox members={members} />
+      <ShowMemberBox members={members} userId={userId} />
       {!toggle && <Button onClick={onToggle}>챌린지 날짜 선택</Button>}
       {toggle && (
         <ChallengeButton
@@ -445,14 +445,16 @@ function Calendar({
 export default Calendar;
 
 Calendar.propTypes = {
-  dates: PropTypes.array,
-  today: PropTypes.object,
-  toggle: PropTypes.bool,
-  challengeDates: PropTypes.array,
-  onClickDate: PropTypes.func,
-  onToggle: PropTypes.func,
-  GoToChallenge: PropTypes.func,
-  onPreMonth: PropTypes.func,
-  onNextMonth: PropTypes.func,
-  onTodayMonth: PropTypes.func
+  dates: PropTypes.array.isRequired,
+  members: PropTypes.array.isRequired,
+  userId: PropTypes.number.isRequired,
+  today: PropTypes.object.isRequired,
+  toggle: PropTypes.bool.isRequired,
+  challengeDates: PropTypes.array.isRequired,
+  onClickDate: PropTypes.func.isRequired,
+  onToggle: PropTypes.func.isRequired,
+  GoToChallenge: PropTypes.func.isRequired,
+  onPreMonth: PropTypes.func.isRequired,
+  onNextMonth: PropTypes.func.isRequired,
+  onTodayMonth: PropTypes.func.isRequired
 };
