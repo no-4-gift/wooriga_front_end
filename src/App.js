@@ -27,13 +27,7 @@ function App() {
         path="/mychallenge_detail"
         component={myChallengeDetailContainer}
       />
-
-      <Route path="/mychallenge" component={myChallengeContainer} />
-      <Route
-        path="/mychallenge_detail"
-        component={myChallengeDetailContainer}
-      />
-
+      
       <Route path="/makegroup" component={MakeGroup} />
       <Route path="/invite" component={Invite} />
 

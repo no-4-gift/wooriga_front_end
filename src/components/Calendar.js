@@ -3,7 +3,9 @@ import styled, { css } from "styled-components";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { colorSelector, profileColor } from "../styleUtils/colorStyle";
 import PropTypes from "prop-types";
+
 import HitArea from "react-hammerjs";
+
 
 //dummy dataes
 
