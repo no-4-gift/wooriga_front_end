@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-
+import PromiseCardModal from "./PromiseCardModal"
 import { Card } from "antd";
 import styled from "styled-components";
 import defaultImage from "../images/default.PNG";
@@ -135,18 +135,38 @@ const OverCardPictureBottomImage = styled.img`
 const NumberHorizontalLayout = styled.div`
     padding : 0 5%;
     height : 14vh;
+    width:100%;
+    float:left;
+    overflow-x:scroll;
+    white-space:nowrap;
+    -ms-overflow-style: none; // IE에서 스크롤바 감춤
+    &::-webkit-scrollbar { 
+      display: none !important; // 윈도우 크롬 등
+    }
 `;
 
 const NumberHorizontalContentBorder = styled.div`
-
+    display:inline-block;
     width: 17vw;
-    margin-right : 1%;
+    margin-right : 2%;
     border-radius : 50%;
     height: 60px;
-    float : left;
+    white-space:normal;
     text-align : center;
     background: #EB6363;
-    box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15);
+`;
+
+const NumberHorizontalContentBorderFalse = styled.div`
+    display:inline-block;
+    width: 17vw;
+    margin-right : 2%;
+    border-radius : 50%;
+    height: 60px;
+    white-space:normal;
+    text-align : center;
+    background: white;
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15);
 `;
 
 const NumberHorizontalContent = styled.div`
@@ -162,6 +182,20 @@ const NumberHorizontalContent = styled.div`
     font-weight : bold;
 `;
 
+const NumberHorizontalContentFalse = styled.div`
+    padding-top : 10%;
+    width : 56.13px;
+    height : 56.13px;
+    position: relative;
+    border-radius : 50%;
+    border : 1px solid gray;
+    top: 3%;
+    left: 4.4%;
+    color: gray;
+    font-weight : bold;
+`;
+
+
 const NumberHorizontalContentDate = styled.div`
     font-size : 0.7rem;
     margin-top: 8%;
@@ -170,6 +204,7 @@ const NumberHorizontalContentDate = styled.div`
 // NumberHorizontal Components
 
 const CertifiedRequirement = styled.div`
+    clear : both;
     padding: 0 15%;
     text-align : center;
     width: 100%;
@@ -213,6 +248,77 @@ const CertifiedRequirementContentTextFalse = styled.div`
     padding-top: 15%;
 `;
 
+// 밥 사줄게 밑 부분 작업
+
+
+const ChallengeMemberLayout = styled.div`
+    height : 50vh;
+    margin : 0 10%;
+    margin-top : 28%;
+    
+`;
+
+const ChallengeMemberTitle = styled.div`
+    font-size : 1rem;
+    font-weight : bold;
+`;
+
+const ChallengeLeader = styled.div`
+    height: 46px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    margin-top : 5%;
+`;
+
+const ChallengeLeaderImage = styled.img`
+    border: 2px solid #FDBE1C;
+    box-sizing: border-box;
+    border-radius: 50px;
+    width : 5vh;
+    height : 5vh;
+    margin-top : 2%;
+    margin-left : 3%;
+    float:left;
+`;
+
+const ChallengeLeaderName = styled.div`
+    font-weight: bold;
+    position: relative;
+    top: 18%;
+    left: 3%;
+    float: left;
+`;
+
+const ChallengeLeaderTag = styled.div`
+    width: auto;
+    padding : 0 4%;
+    float: left;
+    margin-left: 5%;
+    margin-top: 3.5%;
+    background: #BC61F4;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+    font-size : 0.8rem;
+`;
+
+const Challenger= styled.div`
+    text-align: right;
+    position: relative;
+    right: 5%;
+    top : 18%;
+    color: #EB6363;
+    font-size: 0.8rem;
+    font-weight : bold;
+`;
+
+const ChallengeMember = styled.div`
+    height: 46px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    margin-top : 5%;
+`;
+
 
 const MyChallengeDetail = ({ 
   backRouter,
@@ -221,6 +327,13 @@ const MyChallengeDetail = ({
   fileOnChange,
   $imagePreview,
   imagePreviewUrl,
+  visible,
+  text,
+  selectedMembers,
+  onOpen,
+  onClose,
+  onChange,
+  successInfo,
  }) => {
   if (imagePreviewUrl) {
     $imagePreview = (
@@ -245,9 +358,18 @@ const MyChallengeDetail = ({
     </>
     );
   }
-  console.log('imagePreviewUrl',imagePreviewUrl)
+
   return (
     <Fragment>
+
+      <PromiseCardModal
+              members={selectedMembers}
+              onChange={onChange}
+              text={text}
+              visible={visible}
+              onCancle={onClose}
+      />
+
       <BackTapContainer>
         <BackButton onClick={backRouter}>
           <MdArrowBack />
@@ -280,65 +402,82 @@ const MyChallengeDetail = ({
 
       <NumberHorizontalLayout>
       {/* pictureFlagRouter은 회색 빛만 가능하도록 적용 필요. */}
-        <NumberHorizontalContentBorder>
-          <NumberHorizontalContent onClick={pictureFlagRouter}>
-            1 
+      {successInfo.map((data, index) => {
+        if(data === true) {
+          return <NumberHorizontalContentBorder key={index}>
+          <NumberHorizontalContent onClick={()=>pictureFlagRouter(index)}>
+            {index}
             <NumberHorizontalContentDate>12.20</NumberHorizontalContentDate>
 
           </NumberHorizontalContent>
         </NumberHorizontalContentBorder>
-
-        <NumberHorizontalContentBorder>
-          <NumberHorizontalContent onClick={pictureFlagRouter}>
-            2
+        }
+        else {
+          return <NumberHorizontalContentBorderFalse key={index}>
+          <NumberHorizontalContentFalse onClick={()=>pictureFlagRouter(index)}>
+            {index}
             <NumberHorizontalContentDate>12.21</NumberHorizontalContentDate>
 
-          </NumberHorizontalContent>
-        </NumberHorizontalContentBorder>
-
-        <NumberHorizontalContentBorder>
-          <NumberHorizontalContent onClick={pictureFlagRouter}>
-            3
-            <NumberHorizontalContentDate>12.22</NumberHorizontalContentDate>
-
-          </NumberHorizontalContent>
-        </NumberHorizontalContentBorder>  
-
-        <NumberHorizontalContentBorder>
-          <NumberHorizontalContent onClick={pictureFlagRouter}>
-            4
-            <NumberHorizontalContentDate>12.23</NumberHorizontalContentDate>
-
-          </NumberHorizontalContent>
-        </NumberHorizontalContentBorder>
-
-        <NumberHorizontalContentBorder>
-          <NumberHorizontalContent onClick={pictureFlagRouter}>
-            5
-            <NumberHorizontalContentDate>12.24</NumberHorizontalContentDate>
-
-          </NumberHorizontalContent>
-        </NumberHorizontalContentBorder>
-
+          </NumberHorizontalContentFalse>
+        </NumberHorizontalContentBorderFalse>
+        }
+        
+      })}
       </NumberHorizontalLayout>
 
       {pictureFlag? (
         <CertifiedRequirement>
           <CertifiedRequirementContent>hi</CertifiedRequirementContent>
           <CertifiedRequirementContentTriangle></CertifiedRequirementContentTriangle>
-          <CertifiedRequirementContentText>동생아! 꼭 맛있는 밥 사줄게!</CertifiedRequirementContentText>
+          <CertifiedRequirementContentText onClick={onOpen}>동생아! 꼭 맛있는 밥 사줄게!</CertifiedRequirementContentText>
         </CertifiedRequirement>
 
       ) : (
         <CertifiedRequirement>
           {$imagePreview}
+          <CertifiedRequirementContentTriangle></CertifiedRequirementContentTriangle>
+          <CertifiedRequirementContentText onClick={onOpen}>동생아! 꼭 맛있는 밥 사줄게!</CertifiedRequirementContentText>
         </CertifiedRequirement>
       ) }
 
                 
+       
 
+        <ChallengeMemberLayout>
 
+          <ChallengeMemberTitle>
+            챌린지 구성원
+          </ChallengeMemberTitle>
 
+          <ChallengeLeader>
+            <ChallengeLeaderImage src={defaultImage} alt="default"/> 
+            <ChallengeLeaderTag>멋쟁이아빠</ChallengeLeaderTag>
+            <ChallengeLeaderName>정진리</ChallengeLeaderName>
+            <Challenger>도전자</Challenger>
+          </ChallengeLeader>
+
+          <div style={{borderBottom : "1px solid lightgray", marginTop : "5%"}}></div>
+
+          <ChallengeMember>
+            
+          </ChallengeMember>
+
+          <ChallengeMember>
+            
+          </ChallengeMember>
+
+          <ChallengeMember>
+            
+          </ChallengeMember>
+
+          <ChallengeMember>
+            
+          </ChallengeMember>
+
+          <ChallengeMember>
+            
+          </ChallengeMember>
+        </ChallengeMemberLayout>
       
       
     </Fragment>

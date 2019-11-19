@@ -4,7 +4,8 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
 import { createStore, applyMiddleware } from "redux";
-import rootReducer, { rootSaga } from "./store/modules";
+import rootReducer from "./store/modules";
+import rootSaga from "./store/sagas";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
