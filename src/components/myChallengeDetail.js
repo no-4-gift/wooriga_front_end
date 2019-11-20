@@ -6,7 +6,7 @@ import defaultImage from "../images/default.PNG";
 import { MdArrowBack } from "react-icons/md";
 import questionMark from "../images/questionMark.png";
 import circlePlus from '../images/circlePlus.PNG';
-
+import userImage from '../images/user.PNG';
 const BackTapContainer = styled.div`
   width: 100vw;
   height: 8vh;
@@ -95,7 +95,7 @@ const OverCardPicture = styled.div`
 
 const OverCardPictureBottom = styled.div`
     height : 28%;
-    padding : 0px 5%;
+    padding : 0px 4%;
     box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
     border-radius: 10px 10px 10px 10px;
 `;
@@ -108,26 +108,45 @@ const OverCardPictureBottomFixed = styled.div`
 const OverCardPictureBottomTitle = styled.div`
     float: left;
     font-size : 1rem;
-    margin-top: 4%;
-    margin-left: 5%;
+    margin-top: 5%;
+    margin-left: 2%;
     font-weight: bold;
-`;
-const OverCardPictureBottomDetail = styled.div`
-    height : 25vh;
-    margin-top : 8%
+    color: rgba(0, 0, 0, 0.75);
 `;
 
-const OverCardPictureBottomContent = styled.div`
-    clear : both;
-    font-size : 0.7rem;
-    position : relative;
-    top : -170%;
-    left: 5%;
+const OverCardPictureBottomTitleSub = styled.div`
+    position: absolute;
+    top: 50%;
+    font-size : 1rem;
+    margin-top: 5.5%;
+    margin-left: 1.5%;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.75);
+`;
+const OverCardPictureBottomDetail = styled.div`
+    height: 9vh;
+    margin-top: 4%;
+    width: 18%;
+    text-align: right;
+    border-left: 1px solid lightgray;
 `;
 
 const OverCardPictureBottomImage = styled.img`
+    border: 2px solid #FDBE1C;
+    box-sizing: border-box;
     border-radius : 50%;
     width : 5vh;
+    height :5vh;
+`;
+
+const OverCardPictureBottomUserImage = styled.img`
+    
+    width: 3vh;
+    height: 3vh;
+`;
+
+const OverCardPictureBottomUser = styled.span`
+
 `;
 
 // Challenge Component by 승준 
@@ -147,7 +166,7 @@ const NumberHorizontalLayout = styled.div`
 
 const NumberHorizontalContentBorder = styled.div`
     display:inline-block;
-    width: 17vw;
+    width: 62px;
     margin-right : 2%;
     border-radius : 50%;
     height: 60px;
@@ -159,7 +178,7 @@ const NumberHorizontalContentBorder = styled.div`
 
 const NumberHorizontalContentBorderFalse = styled.div`
     display:inline-block;
-    width: 17vw;
+    width: 62px;
     margin-right : 2%;
     border-radius : 50%;
     height: 60px;
@@ -176,8 +195,8 @@ const NumberHorizontalContent = styled.div`
     position: relative;
     border-radius : 50%;
     border : 1px solid white;
-    top: 3%;
-    left: 4.4%;
+    top: 2px;
+    left: 3px;
     color: white;
     font-weight : bold;
 `;
@@ -189,8 +208,8 @@ const NumberHorizontalContentFalse = styled.div`
     position: relative;
     border-radius : 50%;
     border : 1px solid gray;
-    top: 3%;
-    left: 4.4%;
+    top: 2px;
+    left: 3px;
     color: gray;
     font-weight : bold;
 `;
@@ -252,7 +271,6 @@ const CertifiedRequirementContentTextFalse = styled.div`
 
 
 const ChallengeMemberLayout = styled.div`
-    height : 50vh;
     margin : 0 10%;
     margin-top : 28%;
     
@@ -284,7 +302,7 @@ const ChallengeLeaderImage = styled.img`
 const ChallengeLeaderName = styled.div`
     font-weight: bold;
     position: relative;
-    top: 18%;
+    top: 20%;
     left: 3%;
     float: left;
 `;
@@ -295,11 +313,11 @@ const ChallengeLeaderTag = styled.div`
     float: left;
     margin-left: 5%;
     margin-top: 3.5%;
-    background: #BC61F4;
     border-radius: 10px;
     color: white;
     text-align: center;
     font-size : 0.8rem;
+    background: #FDBE1C;
 `;
 
 const Challenger= styled.div`
@@ -319,6 +337,73 @@ const ChallengeMember = styled.div`
     margin-top : 5%;
 `;
 
+const ChallengeMemberImage = styled.img`
+    border: 2px solid ${props => props.color};
+    box-sizing: border-box;
+    border-radius: 50px;
+    width : 5vh;
+    height : 5vh;
+    margin-top : 2%;
+    margin-left : 3%;
+    float:left;
+`;
+
+const ChallengeMemberName = styled.div`
+    font-weight: bold;
+    position: relative;
+    top: 20%;
+    left: 3%;
+    float: left;
+`;
+
+const ChallengeMemberTag = styled.div`
+    width: auto;
+    padding : 0 4%;
+    float: left;
+    margin-left: 5%;
+    margin-top: 3.5%;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+    font-size : 0.8rem;
+
+    background: ${props => props.color};
+`;
+
+const Resident = styled.div`
+    text-align: right;
+    position: relative;
+    right: 5%;
+    top : 18%;
+    color: lightgray;
+    font-size: 0.8rem;
+    font-weight : bold;
+`;
+
+const ChallengeInfo = styled.div`
+    margin : 0 10%;
+    margin-top : 5%;
+`;
+
+const ChallengeInfoTitle = styled.div`
+    font-size: 1rem;
+    font-weight: bold;
+`;
+
+const ChallengeInfoGoodSentence = styled.div`
+    background-color: #EB6363;
+    color: white;
+    font-size: 0.8rem;
+    border-radius: 5px;
+    padding: 3%;
+    margin: 5% 0;
+`;
+
+const ChallengeInfoContent = styled.div`
+    line-height : 25px;
+`;
+
+
 
 const MyChallengeDetail = ({ 
   backRouter,
@@ -333,8 +418,11 @@ const MyChallengeDetail = ({
   onOpen,
   onClose,
   onChange,
+  onSubmit,
   successInfo,
+  members
  }) => {
+   // imagePreview
   if (imagePreviewUrl) {
     $imagePreview = (
       <CertifiedRequirementContentFalse style={{paddingTop : 0}}>
@@ -368,6 +456,7 @@ const MyChallengeDetail = ({
               text={text}
               visible={visible}
               onCancle={onClose}
+              onSubmit={onSubmit}
       />
 
       <BackTapContainer>
@@ -388,14 +477,21 @@ const MyChallengeDetail = ({
         <OverCardPicture>
             <OverCardPictureBottom>
                 <OverCardPictureBottomFixed>
-                    <OverCardPictureBottomTitle>저녁식사하기</OverCardPictureBottomTitle>
+                    <OverCardPictureBottomTitle>{`정다은, 정진리`} 외 {`3`}명과</OverCardPictureBottomTitle>
+                    <OverCardPictureBottomTitleSub>{`가족회의`}</OverCardPictureBottomTitleSub>
                     <OverCardPictureBottomDetail>
-                        <OverCardPictureBottomImage src ={defaultImage} alt ="default" height = "20%" width = "20%"/>
+                        <div style={{marginRight : "7%"}}>
+                          <OverCardPictureBottomImage src ={defaultImage} alt ="default" height = "20%" width = "20%"/>
+                        </div>
+                        
+                        <div style={{marginTop : "5%"}}>
+                          <OverCardPictureBottomUserImage src={userImage} alt="" width ="10%" />
+                          <OverCardPictureBottomUser>{`6명`}</OverCardPictureBottomUser>
+                        </div>
+                        
                     </OverCardPictureBottomDetail>
                 </OverCardPictureBottomFixed>
-                <OverCardPictureBottomContent>
-                    12.20 금 / 12.21 토 / ...
-                </OverCardPictureBottomContent>
+                
             </OverCardPictureBottom>
         </OverCardPicture>
       </OverCard>
@@ -405,18 +501,18 @@ const MyChallengeDetail = ({
       {successInfo.map((data, index) => {
         if(data === true) {
           return <NumberHorizontalContentBorder key={index}>
-          <NumberHorizontalContent onClick={()=>pictureFlagRouter(index)}>
+          <NumberHorizontalContent onClick={()=>pictureFlagRouter(data)}>
             {index}
-            <NumberHorizontalContentDate>12.20</NumberHorizontalContentDate>
+            <NumberHorizontalContentDate>{`12.20`}</NumberHorizontalContentDate>
 
           </NumberHorizontalContent>
         </NumberHorizontalContentBorder>
         }
         else {
           return <NumberHorizontalContentBorderFalse key={index}>
-          <NumberHorizontalContentFalse onClick={()=>pictureFlagRouter(index)}>
+          <NumberHorizontalContentFalse onClick={()=>pictureFlagRouter(data)}>
             {index}
-            <NumberHorizontalContentDate>12.21</NumberHorizontalContentDate>
+            <NumberHorizontalContentDate>{`12.21`}</NumberHorizontalContentDate>
 
           </NumberHorizontalContentFalse>
         </NumberHorizontalContentBorderFalse>
@@ -429,14 +525,14 @@ const MyChallengeDetail = ({
         <CertifiedRequirement>
           <CertifiedRequirementContent>hi</CertifiedRequirementContent>
           <CertifiedRequirementContentTriangle></CertifiedRequirementContentTriangle>
-          <CertifiedRequirementContentText onClick={onOpen}>동생아! 꼭 맛있는 밥 사줄게!</CertifiedRequirementContentText>
+          <CertifiedRequirementContentText onClick={onOpen}>{text}</CertifiedRequirementContentText>
         </CertifiedRequirement>
 
       ) : (
         <CertifiedRequirement>
           {$imagePreview}
           <CertifiedRequirementContentTriangle></CertifiedRequirementContentTriangle>
-          <CertifiedRequirementContentText onClick={onOpen}>동생아! 꼭 맛있는 밥 사줄게!</CertifiedRequirementContentText>
+          <CertifiedRequirementContentText onClick={onOpen}>{text}</CertifiedRequirementContentText>
         </CertifiedRequirement>
       ) }
 
@@ -451,35 +547,40 @@ const MyChallengeDetail = ({
 
           <ChallengeLeader>
             <ChallengeLeaderImage src={defaultImage} alt="default"/> 
-            <ChallengeLeaderTag>멋쟁이아빠</ChallengeLeaderTag>
-            <ChallengeLeaderName>정진리</ChallengeLeaderName>
+            <ChallengeLeaderTag>{`멋쟁이아빠`}</ChallengeLeaderTag>
+            <ChallengeLeaderName>{`정진리`}</ChallengeLeaderName>
             <Challenger>도전자</Challenger>
           </ChallengeLeader>
 
           <div style={{borderBottom : "1px solid lightgray", marginTop : "5%"}}></div>
 
-          <ChallengeMember>
-            
-          </ChallengeMember>
+          {members.map((data,index) => {
+            return <ChallengeMember key={index}>
 
-          <ChallengeMember>
-            
-          </ChallengeMember>
+              <ChallengeMemberImage src={defaultImage} alt="default" color={data.color}/> 
+              <ChallengeMemberTag color={data.color}>{data.relation}</ChallengeMemberTag>
+              <ChallengeMemberName>{data.name}</ChallengeMemberName>
+              <Resident>참가자</Resident>
 
-          <ChallengeMember>
-            
-          </ChallengeMember>
+            </ChallengeMember>
+          })}
 
-          <ChallengeMember>
-            
-          </ChallengeMember>
-
-          <ChallengeMember>
-            
-          </ChallengeMember>
         </ChallengeMemberLayout>
       
       
+        <ChallengeInfo>
+          <ChallengeInfoTitle>{`가족회의`}</ChallengeInfoTitle>
+
+          <ChallengeInfoGoodSentence style={{whiteSpace : "pre-wrap"}}>
+            {`함께 내일을 만들어 나가자. 과거에 연연하지 말고 \n- 스티브 잡스`}
+          </ChallengeInfoGoodSentence>
+          <ChallengeInfoContent style={{whiteSpace : "pre-wrap"}}>
+          {`🤔가족회의를 하면 어떤 점이  좋을까요? \n\n - 바쁜 일상 속에서 하지 못했던 의사소통과 교류를 할 수 있습니다.\n - 가족 간의 갈등을 미리 예방할 수 있습니다.\n - 우리 가족만의 공동문화를 창출할 수 있습니다.\n\n 후우… 일일이 쓰기에 너무 많은 가족회의의 장점!\n처음에는 일상적인 이야기부터 쉽게 시작해보는건 어떨까요?`}
+          </ChallengeInfoContent>
+
+        </ChallengeInfo>
+        
+
     </Fragment>
   );
 };

@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import styled, { css, createGlobalStyle } from "styled-components";
 import PropTypes from "prop-types";
-function PromiseCardModal({ members, visible, text, onChange, onCancle }) {
+function PromiseCardModal({ members, visible, text, onChange, onCancle, onSubmit }) {
   const to = members.map(elem => elem.name).join(",");
 
   return (
@@ -35,7 +35,7 @@ function PromiseCardModal({ members, visible, text, onChange, onCancle }) {
             <CancelButton onClick={onCancle}>
               <span>취소</span>
             </CancelButton>
-            <ConfirmButton>
+            <ConfirmButton onClick={onSubmit}>
               <span>확인</span>
             </ConfirmButton>
           </CardTemplate>
