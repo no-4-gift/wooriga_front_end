@@ -4,9 +4,9 @@ import CalenderContainer from "./containers/CalenderContainer";
 
 import LoginConatainer from "./containers/LoginContainer";
 
-import myChallengeContainer from "./containers/myChallengeContainer";
 import myChallengeDetailContainer from "./containers/myChallengeDetailContainer";
 
+import ChosensLayout from "./containers/ChosensContainer"
 import "antd/dist/antd.css";
 
 import Invite from "./components/Invite";
@@ -16,13 +16,12 @@ import ChallengeAddContainer from "./containers/ChallengeAddContainer";
 function App() {
   return (
     <BrowserRouter>
-      {/* <Route path="/counter" component={src}/> */}
 
       <Route path="/" component={CalenderContainer} exact />
       <Route path="/login" component={LoginConatainer} />
       <Route path="/challenge_regist" component={ChallengeAddContainer} />
 
-      <Route path="/mychallenge" component={myChallengeContainer} />
+      <Route path="/mychallenge" component={ChosensLayout} />
       <Route
         path="/mychallenge_detail"
         component={myChallengeDetailContainer}
