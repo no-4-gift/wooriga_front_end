@@ -2,8 +2,9 @@ import React from "react";
 import calendarImage from "../../images/CalendarMirrored.png";
 import contactImage from "../../images/Contact.png";
 import maskGroupImage from "../../images/MaskGroup.png";
-
+import MyChallengeContainer from "../../containers/myChallengeContainer"
 import styled, { css } from "styled-components";
+import Headers from "../statics/HeaderLayout"
 
 // Headers Components
 const ChosensLayout = styled.div`
@@ -58,9 +59,22 @@ const ChosenDivThree = styled.div`
 
 const ChosenImage = styled.img``;
 const Chosens = ({ calendar, maskGroup, contact, checked }) => {
+
+  let $Layout = null
+
   if (checked === 1) {
+    $Layout = ""
+  }
+  else if(checked === 2) {
+    $Layout = <MyChallengeContainer/>
+  }
+  else {
+    $Layout = ""
   }
   return (
+    <>
+    <Headers/>
+    
     <ChosensLayout>
       <ChosenDivOne checked={checked} onClick={calendar}>
         <ChosenImage src={calendarImage} alt="" />
@@ -74,6 +88,9 @@ const Chosens = ({ calendar, maskGroup, contact, checked }) => {
         <ChosenImage src={contactImage} alt="" />
       </ChosenDivThree>
     </ChosensLayout>
+
+    {$Layout}
+    </>
   );
 };
 

@@ -6,12 +6,12 @@ class myChallengeContainer extends Component {
 
     detailRouter = (detailProps) => {
         console.log("Detail Routers", detailProps);
-        this.props.history.push('mychallenge_detail');
+        window.location.assign('/mychallenge_detail');
     };
 
     bottomDetailRouter = (bottomProps) => {
         console.log("Bottom Detail Routers One", bottomProps);
-        this.props.history.push('mychallenge_detail');
+        window.location.assign('/mychallenge_detail');
     }
 
     render() {

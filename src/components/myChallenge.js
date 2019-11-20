@@ -3,8 +3,6 @@ import { Layout, Carousel, Card, Progress  } from 'antd';
 import styled from 'styled-components';
 import defaultImage from '../images/default.PNG';
 import calendarImage from '../images/CalendarMirrored.png';
-import Headers from './statics/HeaderLayout';
-import ChosensContainer from '../containers/ChosensContainer';
 import userImage from '../images/user.PNG';
 const { Content } = Layout;
 
@@ -253,10 +251,6 @@ const MyChallenge = ({ detailRouter, bottomDetailRouter }) => {
 
     return ( 
         <Fragment>
-
-            <Headers/>
-            <ChosensContainer/>
-
             <ContentsTitle>
                 도전중인 챌린지
             </ContentsTitle>
