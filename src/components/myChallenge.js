@@ -5,7 +5,7 @@ import defaultImage from '../images/default.PNG';
 import calendarImage from '../images/CalendarMirrored.png';
 import Headers from './statics/HeaderLayout';
 import ChosensContainer from '../containers/ChosensContainer';
-
+import userImage from '../images/user.PNG';
 const { Content } = Layout;
 
 
@@ -17,7 +17,7 @@ const ContentsTitle = styled.div`
     font-weight: bold;
     font-size: 1.2rem;
     font-style : normal;
-    
+    color: rgba(0, 0, 0, 0.75);
 `;
 const Contents = styled(Content)`
     margin : 0px 13%;
@@ -108,6 +108,17 @@ const OverCardPictureBottomTitle = styled.div`
     font-size : 1rem;
     margin-top: 2%;
     font-weight: bold;
+    line-height : 120%;
+    width : 75%;
+    color: rgba(0, 0, 0, 0.75);
+`;
+
+const OverCardPictureBottomTitleSub = styled.div`
+    position: absolute;
+    top: 55%;
+    font-weight: bold;
+    font-size: 1rem;
+    color: rgba(0, 0, 0, 0.75);
 `;
 const OverCardPictureBottomDetail = styled.div`
     height : 25vh;
@@ -125,17 +136,13 @@ const OverCardPictureBottomContentImage = styled.img`
     margin-right : 3%;
 `;
 
-
+const OverCardPictureBottomUserImage = styled.img`
+    padding-left: 3%;
+    float : left;
+`;
 const OverCardPictureBottomImage = styled.img`
     border-radius : 50%;
     width : 5vh;
-`;
-
-const OverCardPictureBottomImageAdd = styled.div`
-    position: relative;
-    top: -8%;
-    right: -3%;
-    float: right;
 `;
 
 // Challenge Component by 승준 
@@ -143,7 +150,7 @@ const OverCardPictureBottomImageAdd = styled.div`
 const ChallengeContainer = styled.div`
   width: 100vw;
   height: 38vh;
-  padding: 6% 6% 0 6%;
+  padding: 0% 6% 0 6%;
 `;
 const ChallengeList = styled.div`
   width: 100%;
@@ -263,7 +270,7 @@ const MyChallenge = ({ detailRouter, bottomDetailRouter }) => {
                                     <OverCardPictureTop>
 
                                         <OverCardPictureTopLayerOne>
-                                            1 / 2
+                                            <span style={{color:"red"}}>{`1`}</span>  / {`2`}
                                             <Progress percent={50} status="active" showInfo={false} size="small" strokeColor="#EB6363"/>
                                         </OverCardPictureTopLayerOne>
 
@@ -275,18 +282,19 @@ const MyChallenge = ({ detailRouter, bottomDetailRouter }) => {
 
                                     <OverCardPictureBottom>
                                         <OverCardPictureBottomFixed>
-                                            <OverCardPictureBottomTitle>저녁식사하기</OverCardPictureBottomTitle>
+                                            <OverCardPictureBottomTitle>{`정다은, 박준영`} 외 {`4`}명과</OverCardPictureBottomTitle>
+                                            <OverCardPictureBottomTitleSub>{`가족회의`}</OverCardPictureBottomTitleSub>
                                             <OverCardPictureBottomDetail>
                                                 <OverCardPictureBottomImage src ={defaultImage} alt ="default" height = "20%" width = "20%"/>                            
                                                 
-                                                <OverCardPictureBottomImageAdd>
-                                                    +5
-                                                </OverCardPictureBottomImageAdd>
+                                                
                                             </OverCardPictureBottomDetail>
                                         </OverCardPictureBottomFixed>
                                         <OverCardPictureBottomContent>
                                             <OverCardPictureBottomContentImage src={calendarImage} alt="" width = "6%"/>
-                                            9월 12일 ~ 13일 목금
+                                            <span style={{float : "left"}}>{`11.20 (수)`}</span>
+                                            <OverCardPictureBottomUserImage src={userImage} alt="" width = "10%"/>
+                                            <span style={{marginLeft: "2%"}}>{`3명`}</span>
                                         </OverCardPictureBottomContent>
 
                                     </OverCardPictureBottom>
@@ -311,26 +319,25 @@ const MyChallenge = ({ detailRouter, bottomDetailRouter }) => {
                         <ChallengeContent>
 
                         <ChallengeFixed>
-                        <ChallengeContentTitle>영화보기</ChallengeContentTitle>
+                        <ChallengeContentTitle>{`영화보기`}</ChallengeContentTitle>
 
                         <OverCardPictureBottomDetail style={{marginTop : 0}}>
                             <OverCardPictureBottomImage src ={defaultImage} alt ="default" height = "20%" width = "20%"/>                            
                             
-                            <OverCardPictureBottomImageAdd style={{right : "15%"}}>
-                                +5
-                            </OverCardPictureBottomImageAdd>
+                            
                         </OverCardPictureBottomDetail>
                         </ChallengeFixed>
 
                         <ChallengeContentDate>
                             <OverCardPictureBottomContentImage src={calendarImage} alt="" width = "7%"/>
-                            09.11 수 / 10.13 일
+                            {`11.20 (수)`}
+                            
                         </ChallengeContentDate>
 
                         <ChallengeContentProgress>
                             <Progress percent={50} showInfo={false} status="active" size="small" strokeColor="#EB6363"/> 
                             <ChallengeContentProgressText>        
-                                1 / 2
+                            <span style={{color:"red"}}>{`1`}</span> / {`2`}
                             </ChallengeContentProgressText>
                         </ChallengeContentProgress>
 

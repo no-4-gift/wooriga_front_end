@@ -10,7 +10,7 @@ export const onContact = () => ({ type: ONCONTACT });
 
 /* 초기 상태 선언 */
 const initialState = {
-  checked : 1
+  checked : 2
 };
 /* 리듀서 선언 */
 export default function counter(state = initialState, action) {

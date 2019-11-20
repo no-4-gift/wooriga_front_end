@@ -4,30 +4,6 @@ import { bindActionCreators } from "redux";
 import * as myChallengeDetailActions from "../store/modules/mychallengeDetail";
 import MyChallengeDetail from '../components/myChallengeDetail';
 
-const data = [
-    {
-      id: 1,
-      name: "브루스 웨인",
-      relation: "아빠",
-      color: "red",
-      thumbnail: ""
-    },
-    {
-      id: 2,
-      name: "할리 퀸",
-      relation: "엄마",
-      color: "blue",
-      thumbnail: ""
-    },
-    {
-      id: 3,
-      name: "조커",
-      relation: "형",
-      color: "green",
-      thumbnail: ""
-    }
-];
-
 class myChallengeDetailContainer extends Component {
     constructor(props){
         super(props);
@@ -37,8 +13,13 @@ class myChallengeDetailContainer extends Component {
         }
     }
     componentDidMount = () => {
-        const { MyChallengeDetailActions } = this.props;
-        MyChallengeDetailActions.setMembers(data);
+        const { MyChallengeDetailActions, successInfo } = this.props;
+        if(successInfo[0] === true){
+            MyChallengeDetailActions.pictureFlagTrue();
+        }
+        else {
+            MyChallengeDetailActions.pictureFlagFalse();
+        }
     }
     backRouter = () => {
         console.log("backRouter");
@@ -47,9 +28,9 @@ class myChallengeDetailContainer extends Component {
     
     pictureFlagRouter = (data) => {
         console.log(data);
-        const { MyChallengeDetailActions, pictureFlag } = this.props;
+        const { MyChallengeDetailActions } = this.props;
         
-        if(pictureFlag === true){
+        if(data !== true){
             MyChallengeDetailActions.pictureFlagFalse();
         }
         else {
@@ -58,6 +39,7 @@ class myChallengeDetailContainer extends Component {
 
     }
 
+    // imagePreview
     fileOnChange = (e) => {
         let reader = new FileReader();
         let file = e.target.files[0];
@@ -91,21 +73,26 @@ class myChallengeDetailContainer extends Component {
         MyChallengeDetailActions.toggleVisible(true);
     };
     handleOnClose = () => {
-    const { MyChallengeDetailActions } = this.props;
-    MyChallengeDetailActions.toggleVisible(false);
+        const { MyChallengeDetailActions } = this.props;
+        MyChallengeDetailActions.toggleVisible(false);
     };
     handleInputChange = e => {
-    const { MyChallengeDetailActions } = this.props;
-    MyChallengeDetailActions.setText(e.target.value);
+        const { MyChallengeDetailActions } = this.props;
+        MyChallengeDetailActions.setText(e.target.value);
     };
 
+    handleSubmit = e => {
+        const { text, MyChallengeDetailActions } = this.props;
+        console.log("text", text);
+        MyChallengeDetailActions.submitText(text)
+    };
+
+
     render() {
-        const {pictureFlag, members, visible, text} = this.props
+        const {pictureFlag, members, visible, text, successInfo} = this.props
         let {imagePreviewUrl} = this.state;
         let $imagePreview = null;
 
-        let successInfo = [true, false, false, false, true, true, false, false, false, true]
-        console.log('members : ', members)
         return (
             <MyChallengeDetail
             members={members}
@@ -115,11 +102,13 @@ class myChallengeDetailContainer extends Component {
             onOpen={this.handleOnOpen}
             onClose={this.handleOnClose}
             onChange={this.handleInputChange}
-
+            onSubmit={this.handleSubmit}
             backRouter={this.backRouter}
             pictureFlagRouter={this.pictureFlagRouter}
             pictureFlag={pictureFlag}
             fileOnChange={this.fileOnChange}
+
+            // imagePreview
             imagePreviewUrl={imagePreviewUrl}
             $imagePreview={$imagePreview}
 
@@ -137,6 +126,7 @@ const mapStateToProps = ({ mychallengeDetail }) => ({
     members: mychallengeDetail.members,
     visible: mychallengeDetail.visible,
     text: mychallengeDetail.text,
+    successInfo : mychallengeDetail.successInfo
 });
   
   
