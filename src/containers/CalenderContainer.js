@@ -183,10 +183,10 @@ class CalenderContainer extends Component {
         : [];
     console.log(challengeAcitveDates);
     if (true) {
-      if (calendarLoading === true || familyLoading === true) {
-        return <div>Loading....</div>;
-      } else if (calendarError || familyError) {
+      if (calendarError || familyError) {
         return <div>Error!!!</div>;
+      } else if (calendarLoading === true || familyLoading === true) {
+        return <div>Loading....</div>;
       } else {
         return (
           <Fragment>

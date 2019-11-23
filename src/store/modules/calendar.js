@@ -1,10 +1,8 @@
 import moment from "moment";
-import * as calendarAPI from "../../apis/calendarAPI";
-import { call, put, takeEvery } from "redux-saga/effects";
 
-const GET_CALENDAR_DATA = "calendar/GET_CALENDAR_DATA";
-const GET_CALENDAR_DATA_SUCCESS = "calendar/GET_CALENDAR_DATA_SUCCESS";
-const GET_CALENDAR_DATA_ERROR = "calendar/GET_CALENDAR_DATA_ERROR";
+export const GET_CALENDAR_DATA = "calendar/GET_CALENDAR_DATA";
+export const GET_CALENDAR_DATA_SUCCESS = "calendar/GET_CALENDAR_DATA_SUCCESS";
+export const GET_CALENDAR_DATA_ERROR = "calendar/GET_CALENDAR_DATA_ERROR";
 
 export const getCalendarData = (familyId, year, month) => ({
   type: GET_CALENDAR_DATA,
@@ -15,42 +13,12 @@ export const getCalendarData = (familyId, year, month) => ({
   }
 });
 
-export function* getCalendarDataSaga(action) {
-  const { familyId, year, month } = action.payload;
-  console.log(familyId);
-  try {
-    const { challengeBarInfo, emptyDayUserInfoArrayList } = yield call(
-      calendarAPI.getCalendarData,
-      familyId,
-      year,
-      month
-    );
-    yield put({
-      type: GET_CALENDAR_DATA_SUCCESS,
-      payload: {
-        challengeBarInfo: challengeBarInfo,
-        emptyDayUserInfoArrayList: emptyDayUserInfoArrayList
-      }
-    });
-  } catch (e) {
-    yield put({
-      type: GET_CALENDAR_DATA_ERROR,
-      payload: e
-    });
-  }
-}
-
-export function* CalendarSaga() {
-  yield takeEvery(GET_CALENDAR_DATA, getCalendarDataSaga);
-}
-
 //달력 Actions
 const PRE_MONTH = "calendar/PRE_MONTH"; //저번 달로 이동
 const NEXT_MONTH = "calendar/NEXT_MONTH"; //다음 달로 이동
 const GO_TO_CURRENT_DAY = "calendar/GO_TO_CURRENT_DAY"; //오늘 날짜 달력으로 이동
 const INSERT_SCHEDULE = "calendar/INSERT_SCHEDULE"; //일정 추가
 const DELETE_SCHEDULE = "calendar/DELETE_SCHEDULE"; //일정 삭제
-//const SET_MY_SCHEDULE = "calendar/SET_MY_SCHEDULE";                //자신의 일정 수정
 const OPEN_MODAL = "calendar/OPEN_MODAL"; //모달 창 열기
 const CLOSE_MODAL = "calendar/CLOSE_MODAL"; //모달 창 닫기
 const TOGGLE = "calendar/TOGGLE"; // 날짜 선택 버튼 활성화 및 비활성화
