@@ -3,6 +3,7 @@ import calendarImage from "../../images/CalendarMirrored.png";
 import contactImage from "../../images/Contact.png";
 import maskGroupImage from "../../images/MaskGroup.png";
 import MyChallengeContainer from "../../containers/myChallengeContainer"
+import CalendarContainer from "../../containers/CalenderContainer";
 import styled, { css } from "styled-components";
 import Headers from "../statics/HeaderLayout"
 
@@ -63,7 +64,8 @@ const Chosens = ({ calendar, maskGroup, contact, checked }) => {
   let $Layout = null
 
   if (checked === 1) {
-    $Layout = ""
+    $Layout = <CalendarContainer />
+   
   }
   else if(checked === 2) {
     $Layout = <MyChallengeContainer/>

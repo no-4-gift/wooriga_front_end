@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { colorSelector, profileColor } from "../styleUtils/colorStyle";
 import { MdClose } from "react-icons/md";
-import PropType from "prop-types";
+import PropTypes from "prop-types";
 
 const DarkBackGround = styled.div`
   position: fixed;
@@ -354,57 +354,56 @@ function CalendarModal({
           <DateText>{selectDate}</DateText>
         </ModalHead>
         <ModalBody>
-          {   thisDateChallenge.length > 0 &&
+          {thisDateChallenge.length > 0 && (
             <Section>
               <SectionTitle>
                 <span>해야할 챌린지</span>
               </SectionTitle>
               <SectionBody>
-             
-                  {thisDateChallenge.map((elem, index) => (
-                    <ChallengeItem key={index}>
-                      <ChallengeIcon>
-                        <svg
-                          width="12"
-                          height="13"
-                          viewBox="0 0 12 13"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M1 13V6.77778M1 6.77778V1H6.65217V2.77778H11V9H6.65217V6.77778H1Z"
-                            stroke="white"
-                          />
-                        </svg>
-                      </ChallengeIcon>
-                      <ChallengeContent>
-                        <ChallengeContentTitle>
-                          <span>{elem.challengeTitle}</span>
-                        </ChallengeContentTitle>
-                        <ChallengeContentDates>
-                          <span>
-                            {selectDate}{" "}
-                            {elem.date.length > 1
-                              ? `+(${elem.date.length - 1})`
-                              : ""}
-                          </span>
-                        </ChallengeContentDates>
-                      </ChallengeContent>
-                      <ChallengeMaker
-                        profile={
-                          members[
-                            members.findIndex(
-                              member => member.uid === elem.chiefId
-                            )
-                          ].profile
-                        }
-                        color={elem.chiefColor}
-                      />
-                    </ChallengeItem>
-                  ))}
+                {thisDateChallenge.map((elem, index) => (
+                  <ChallengeItem key={index}>
+                    <ChallengeIcon>
+                      <svg
+                        width="12"
+                        height="13"
+                        viewBox="0 0 12 13"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M1 13V6.77778M1 6.77778V1H6.65217V2.77778H11V9H6.65217V6.77778H1Z"
+                          stroke="white"
+                        />
+                      </svg>
+                    </ChallengeIcon>
+                    <ChallengeContent>
+                      <ChallengeContentTitle>
+                        <span>{elem.challengeTitle}</span>
+                      </ChallengeContentTitle>
+                      <ChallengeContentDates>
+                        <span>
+                          {selectDate}{" "}
+                          {elem.date.length > 1
+                            ? `+(${elem.date.length - 1})`
+                            : ""}
+                        </span>
+                      </ChallengeContentDates>
+                    </ChallengeContent>
+                    <ChallengeMaker
+                      profile={
+                        members[
+                          members.findIndex(
+                            member => member.uid === elem.chiefId
+                          )
+                        ].profile
+                      }
+                      color={elem.chiefColor}
+                    />
+                  </ChallengeItem>
+                ))}
               </SectionBody>
             </Section>
-          }
+          )}
           <Section>
             <SectionTitle>
               <span>함께 할 수 있는 가족</span>
@@ -455,13 +454,13 @@ function CalendarModal({
 export default CalendarModal;
 
 CalendarModal.propTypes = {
-  id: PropType.number,
-  members: PropType.array,
-  visible: PropType.bool,
-  dates: PropType.array,
-  challengeBarInfo: PropType.array,
-  onCancle: PropType.func,
-  onDelete: PropType.func,
-  onInsert: PropType.func,
-  selectDate: PropType.string
+  id: PropTypes.number,
+  members: PropTypes.array,
+  visible: PropTypes.bool,
+  dates: PropTypes.array,
+  challengeBarInfo: PropTypes.array,
+  onCancle: PropTypes.func,
+  onDelete: PropTypes.func,
+  onInsert: PropTypes.func,
+  selectDate: PropTypes.string
 };
