@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
-import { Card } from "antd";
-import styled from "styled-components";
+import { Card, Carousel } from "antd";
+import styled, {css} from "styled-components";
 import defaultImage from "../images/default.PNG";
 import { MdArrowBack } from "react-icons/md";
 import questionMark from "../images/questionMark.png";
@@ -128,6 +128,27 @@ const OverCardPictureBottomImage = styled.img`
 
 // Challenge Component by 승준 
 
+const OverCarousel = styled(Carousel)`
+    &&{
+        .slick-dots li.slick-active button{
+            background : black;
+        }
+        .slick-dots li button {
+            background : black;
+        }
+        margin-top : 0;
+        height : 45vh;
+        .slick-list {
+            height : 100%;
+        }
+        .slick-track {
+            
+            height : 100%;
+        }
+    }
+    margin-top : 5%
+`;
+
 const NumberHorizontalLayout = styled.div`
     padding : 0 5%;
     height : 14vh;
@@ -141,8 +162,20 @@ const NumberHorizontalContentBorder = styled.div`
     height: 60px;
     float : left;
     text-align : center;
-    background: #EB6363;
-    box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.15);
+
+    
+    ${props =>
+      props.certified &&
+      css`
+        background : #EB6363;
+      `
+    }
+    ${props =>
+      !props.certified &&
+      css`
+        background : white;
+      `
+    }
 `;
 
 const NumberHorizontalContent = styled.div`
@@ -151,11 +184,27 @@ const NumberHorizontalContent = styled.div`
     height : 56.13px;
     position: relative;
     border-radius : 50%;
-    border : 1px solid white;
+    box-shadow: 0px 0px 14px rgba(0, 0, 0, 0.15);
     top: 3%;
     left: 4.4%;
-    color: white;
+    
     font-weight : bold;
+    border : 1px solid white;
+    color: white;
+    ${props =>
+      props.certified &&
+      css`
+        
+      `
+    }
+    ${props =>
+      !props.certified &&
+      css`
+        border : 1px solid gray;
+        color: gray;
+      `
+    }
+
 `;
 
 const NumberHorizontalContentDate = styled.div`
@@ -196,6 +245,13 @@ const CertifiedRequirementContentText = styled.div`
     font-size: 0.8rem;
 `;
 
+let NumberHorizontalArray = [
+  true,
+  true,
+  true,
+  true,
+  false
+]
 const MyChallengeDetail = ({ backRouter }) => {
   return (
     <Fragment>
@@ -229,47 +285,56 @@ const MyChallengeDetail = ({ backRouter }) => {
       </OverCard>
 
       <NumberHorizontalLayout>
+        <OverCarousel>
+        <div>
+        {NumberHorizontalArray.map((elem, index) => {
+          if(elem === true){
+            return <NumberHorizontalContentBorder certified={elem} key={index}>
+              <NumberHorizontalContent certified={elem}>
+                {index+1}
+                <NumberHorizontalContentDate>12.20</NumberHorizontalContentDate>
 
-        <NumberHorizontalContentBorder>
-          <NumberHorizontalContent>
-            1 
-            <NumberHorizontalContentDate>12.20</NumberHorizontalContentDate>
+              </NumberHorizontalContent>
+            </NumberHorizontalContentBorder>
+          }
+          else {
+            return <NumberHorizontalContentBorder certified={elem} key={index}>
+            <NumberHorizontalContent certified={elem}>
+              {index+1}
+              <NumberHorizontalContentDate>12.20</NumberHorizontalContentDate>
 
-          </NumberHorizontalContent>
-        </NumberHorizontalContentBorder>
+            </NumberHorizontalContent>
+          </NumberHorizontalContentBorder>
+          }
+        }
+        )}
+        </div>
 
-        <NumberHorizontalContentBorder>
-          <NumberHorizontalContent>
-            2
-            <NumberHorizontalContentDate>12.21</NumberHorizontalContentDate>
+        <div>
 
-          </NumberHorizontalContent>
-        </NumberHorizontalContentBorder>
+        {NumberHorizontalArray.map((elem, index) => {
+          if(elem === true){
+            return <NumberHorizontalContentBorder certified={elem} key={index}>
+              <NumberHorizontalContent certified={elem}>
+                {index+6}
+                <NumberHorizontalContentDate>12.21</NumberHorizontalContentDate>
 
-        <NumberHorizontalContentBorder>
-          <NumberHorizontalContent>
-            3
-            <NumberHorizontalContentDate>12.22</NumberHorizontalContentDate>
+              </NumberHorizontalContent>
+            </NumberHorizontalContentBorder>
+          }
+          else {
+            return <NumberHorizontalContentBorder certified={elem} key={index}>
+            <NumberHorizontalContent certified={elem}>
+              {index+6}
+              <NumberHorizontalContentDate>12.20</NumberHorizontalContentDate>
 
-          </NumberHorizontalContent>
-        </NumberHorizontalContentBorder>
-
-        <NumberHorizontalContentBorder>
-          <NumberHorizontalContent>
-            4
-            <NumberHorizontalContentDate>12.23</NumberHorizontalContentDate>
-
-          </NumberHorizontalContent>
-        </NumberHorizontalContentBorder>
-
-        <NumberHorizontalContentBorder>
-          <NumberHorizontalContent>
-            5
-            <NumberHorizontalContentDate>12.24</NumberHorizontalContentDate>
-
-          </NumberHorizontalContent>
-        </NumberHorizontalContentBorder>
-
+            </NumberHorizontalContent>
+          </NumberHorizontalContentBorder>
+          }
+        }
+        )}
+        </div>
+        </OverCarousel>
       </NumberHorizontalLayout>
 
       <CertifiedRequirement>
