@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { MdArrowBack } from "react-icons/md";
-import { Layout, Typography, Card, List, Tag } from "antd";
+import { Typography, Card, List, Tag } from "antd";
 import { profileColor } from "../styleUtils/colorStyle";
 import questionMark from "../images/questionMark.png";
 import crown from "../images/crown.png";
