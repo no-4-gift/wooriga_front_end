@@ -11,6 +11,8 @@ export const getCalendarData = async (familyId, year, month) => {
       }
     }
   );
-  console.log(response.data);
+  console.log("test");
+  console.log(response);
+  //console.log(response.data);
   return response.data;
 };

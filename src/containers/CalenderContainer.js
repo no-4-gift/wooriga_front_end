@@ -9,6 +9,7 @@ import * as familyActions from "../store/modules/family";
 import { Alert } from "antd";
 import moment from "moment";
 import styled from "styled-components";
+import { Spin } from "antd";
 
 //자신의 id props 필요
 
@@ -51,6 +52,7 @@ class CalenderContainer extends Component {
       .add(1, "month")
       .format("MM");
     console.log(month);
+    CalendarActions.getCalendarData(familyId, year, month);
     CalendarActions.goNextMonth();
   };
   handlePreMonth = () => {
@@ -182,51 +184,53 @@ class CalenderContainer extends Component {
         ? challengeBarInfo.map(elem => elem.date)
         : [];
     console.log(challengeAcitveDates);
+
     if (true) {
-      if (calendarError || familyError) {
+      if (familyError || calendarError) {
         return <div>Error!!!</div>;
-      } else if (calendarLoading === true || familyLoading === true) {
-        return <div>Loading....</div>;
       } else {
         return (
           <Fragment>
-            <CalendarModal
-              id={userId}
-              challengeBarInfo={challengeBarInfo}
-              members={members}
-              selectDate={selectDate}
-              visible={visible}
-              dates={dates}
-              onCancle={this.handleCloseModal}
-              onDelete={this.handleDeleteSchedule}
-              onInsert={this.handleInsertSchedule}
-            />
-            <Calendar
-              dates={dates}
-              members={members}
-              userId={userId}
-              today={today}
-              toggle={toggle}
-              challengeDates={challengeDates}
-              onClickDate={this.handleSelectDate}
-              onToggle={this.handleToggle}
-              onPreMonth={this.handlePreMonth}
-              onNextMonth={this.handleNextMonth}
-              onTodayMonth={this.handleGoTodayMonth}
-              onSwipe={this.handleSwipe}
-              GoToChallenge={this.handleGoToChallenge}
-              disable={disable}
-            />
-            {alert && (
-              <MyAlert
-                message="Informational Notes"
-                description="챌린지 신청 일 수는 최대 10일 입니다."
-                type="info"
-                showIcon
-                closable
-                onClose={this.handleCloseAlert}
+            <Spin tip="Loading..." spinning={calendarLoading || familyLoading}>
+              <CalendarModal
+                id={userId}
+                challengeBarInfo={challengeBarInfo}
+                members={members}
+                selectDate={selectDate}
+                visible={visible}
+                dates={dates}
+                onCancle={this.handleCloseModal}
+                onDelete={this.handleDeleteSchedule}
+                onInsert={this.handleInsertSchedule}
               />
-            )}
+              <Calendar
+                dates={dates}
+                members={members}
+                userId={userId}
+                today={today}
+                toggle={toggle}
+                challengeDates={challengeDates}
+                onClickDate={this.handleSelectDate}
+                onToggle={this.handleToggle}
+                onPreMonth={this.handlePreMonth}
+                onNextMonth={this.handleNextMonth}
+                onTodayMonth={this.handleGoTodayMonth}
+                onSwipe={this.handleSwipe}
+                GoToChallenge={this.handleGoToChallenge}
+                disable={disable}
+                challengeAcitveDates={challengeAcitveDates}
+              />
+              {alert && (
+                <MyAlert
+                  message="Informational Notes"
+                  description="챌린지 신청 일 수는 최대 10일 입니다."
+                  type="info"
+                  showIcon
+                  closable
+                  onClose={this.handleCloseAlert}
+                />
+              )}
+            </Spin>
           </Fragment>
         );
       }

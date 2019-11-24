@@ -1,11 +1,11 @@
 import React, { Fragment } from "react";
 import styled, { css } from "styled-components";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
-import { colorSelector, profileColor } from "../styleUtils/colorStyle";
-import PropTypes from "prop-types";
+import { colorSelector } from "../styleUtils/colorStyle";
+import PropTypes, { string } from "prop-types";
 
 import HitArea from "react-hammerjs";
-
+import CalendarShowMemberBox from "./CalendarShowMemberBox";
 
 //dummy dataes
 
@@ -104,7 +104,6 @@ const CalendarBox = styled.div`
     color: #588dff;
     ${grayed}
   }
-
   ${props =>
     props.select &&
     css`
@@ -158,61 +157,6 @@ const Circle = styled.div`
   border-radius: 100%;
 
   ${colorSelector}
-`;
-
-const MemberProfileBox = styled.div`
-  position: relative;
-  width: 312px;
-  height: 100px;
-  margin: 0 auto;
-  top: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  flex-direction: column;
-  background: #ffffff;
-  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
-  border-radius: 14px;
-  font-family: Noto Sans KR;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 20px;
-
-  letter-spacing: -0.02em;
-
-  color: #434444;
-`;
-
-const MemberProfileContainer = styled.div`
-  display: flex;
-  width: 90vw;
-  justify-content: center;
-`;
-const MemberProfile = styled.div`
-  width: 40px;
-  height: 40px;
-  position: relative;
-  background: gray;
-  ${profileColor}
-  box-sizing: border-box;
-  border-radius: 20px;
-  & + & {
-    margin-left: 7px;
-  }
-  ${props =>
-    props.me &&
-    css`
-      &::before {
-        content: "";
-        position: absolute;
-        right: 0;
-        width: 10px;
-        height: 10px;
-        border-radius: 50px;
-        ${colorSelector}
-      }
-    `}
 `;
 
 //button Styles
@@ -276,25 +220,13 @@ const ChallengeButton = styled.button`
   text-align: center;
 `;
 
-//자신의 id 받아와야 함
-function ShowMemberBox({ members, userId }) {
-  return (
-    <MemberProfileBox>
-      <MemberProfileContainer>
-        {members.map(member => (
-          <MemberProfile
-            me={member.id === userId ? true : false}
-            key={member.id}
-            color={member.color}
-          />
-        ))}
-      </MemberProfileContainer>
-      <div>가족과 함께할 시간을 만들어봐요.</div>
-    </MemberProfileBox>
-  );
-}
-
-function CalendarGenerator({ today, selected, dates, onClickDate }) {
+function CalendarGenerator({
+  today,
+  selected,
+  dates,
+  challengeAcitveDates,
+  onClickDate
+}) {
   console.log(today.format("YYYY-MM-DD"));
   const startWeek = today
     .clone()
@@ -335,17 +267,25 @@ function CalendarGenerator({ today, selected, dates, onClickDate }) {
                   ? 1
                   : 2
                 : 3;
-            let selCheck = selected.filter(
+            let selCheck = selected.findIndex(
               elem => elem === current.format("YYYY-MM-DD")
             );
-            let selKey = selCheck.length > 0 ? true : false;
+            let selKey = selCheck !== -1 ? true : false;
+
+            console.log(current.format("YYYY-MM-DD"));
+            const isChallenge =
+              challengeAcitveDates.findIndex(
+                elem => elem === current.format("YYYY-MM-DD")
+              ) !== -1
+                ? true
+                : false;
 
             let isGrayed =
               current.format("MM") === curToday.format("MM") ? false : true;
             return (
               <CalendarBox key={i} grayed={isGrayed} select={selKey}>
                 <Text
-                  isChallenge={current.format("YYYY-MM-DD") ? true : false}
+                  isChallenge={isChallenge}
                   onClick={() => onClickDate(current.format("YYYY-MM-DD"))}
                 >
                   {current.format("D")}
@@ -353,7 +293,7 @@ function CalendarGenerator({ today, selected, dates, onClickDate }) {
 
                 <MemberContainer rows={rows} cols={cols}>
                   {thisDayMembers.map(elem => (
-                    <Circle key={elem.id} color={elem.color}></Circle>
+                    <Circle key={elem.uid} color={elem.color}></Circle>
                   ))}
                 </MemberContainer>
               </CalendarBox>
@@ -373,6 +313,7 @@ function Calendar({
   toggle,
   disable,
   challengeDates,
+  challengeAcitveDates,
   onClickDate,
   onToggle,
   GoToChallenge,
@@ -424,12 +365,13 @@ function Calendar({
               dates={dates}
               toggle={toggle}
               onClickDate={onClickDate}
+              challengeAcitveDates={challengeAcitveDates}
             />
           </CalendarBody>
         </HitArea>
       </CalendarContainer>
 
-      <ShowMemberBox members={members} userId={userId} />
+      <CalendarShowMemberBox members={members} userId={userId} />
       {!toggle && <Button onClick={onToggle}>챌린지 날짜 선택</Button>}
       {toggle && (
         <ChallengeButton
@@ -452,6 +394,7 @@ Calendar.propTypes = {
   userId: PropTypes.number.isRequired,
   today: PropTypes.object.isRequired,
   toggle: PropTypes.bool.isRequired,
+  challengeAcitveDates: PropTypes.array.isRequired,
   challengeDates: PropTypes.array.isRequired,
   onClickDate: PropTypes.func.isRequired,
   onToggle: PropTypes.func.isRequired,

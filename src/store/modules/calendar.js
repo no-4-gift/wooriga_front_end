@@ -1,8 +1,22 @@
 import moment from "moment";
 
+//캘린더 빈 일정 챌린지 일정 API
 export const GET_CALENDAR_DATA = "calendar/GET_CALENDAR_DATA";
 export const GET_CALENDAR_DATA_SUCCESS = "calendar/GET_CALENDAR_DATA_SUCCESS";
 export const GET_CALENDAR_DATA_ERROR = "calendar/GET_CALENDAR_DATA_ERROR";
+
+//빈 일정 추가 및 삭제
+export const POST_EMPTY_DATE = "calendar/POST_EMPTY_DATE";
+export const POST_EMPTY_DATE_SUCCESS = "calendar/POST_EMPTY_DATE_SUCCESS";
+export const POST_EMPTY_DATE_ERROR = "calendar/POST_EMPTY_DATE_ERROR";
+
+export const DELETE_EMPTY_DATE = "calendar/DELETE_EMPTY_DATE";
+export const DELETE_EMPTY_DATE_SUCCESS = "calendar/DELETE_EMPTY_DATE_SUCCESS";
+export const DELETE_EMPTY_DATE_ERROR = "calendar/DELETE_EMPTY_DATE_ERROR";
+
+
+
+
 
 export const getCalendarData = (familyId, year, month) => ({
   type: GET_CALENDAR_DATA,
@@ -12,6 +26,24 @@ export const getCalendarData = (familyId, year, month) => ({
     month: month
   }
 });
+
+
+export const postEmptyDate = (uid, date) => ({
+  type: POST_EMPTY_DATE,
+  payload: {
+    uid: uid,
+    date: date
+  }
+});
+
+export const deleteEmptyDate = (uid, date) => ({
+  type: DELETE_EMPTY_DATE,
+  payload: {
+    uid: uid,
+    date: date
+  }
+});
+
 
 //달력 Actions
 const PRE_MONTH = "calendar/PRE_MONTH"; //저번 달로 이동
