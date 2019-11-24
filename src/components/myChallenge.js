@@ -86,6 +86,7 @@ const OverCardPictureTopLayerTwo = styled.div`
     position : relative;
     z-index : 1;
     height: 100%;
+
 `;
 
 const OverCardPictureBottom = styled.div`
@@ -100,6 +101,7 @@ const OverCardPictureBottomFixed = styled.div`
     display : flex;
     justify-content : space-between
 `;
+
 
 const OverCardPictureBottomTitle = styled.div`
     float: left;
@@ -241,6 +243,7 @@ const CarouselArray = [
   ];
 
 const MyChallenge = ({ detailRouter, bottomDetailRouter }) => {
+
     return ( 
         <Fragment>
 
@@ -290,7 +293,6 @@ const MyChallenge = ({ detailRouter, bottomDetailRouter }) => {
                                 </OverCardPicture>
                             </OverCard>
                         )}
-
                     </OverCarousel>
                 </ContentsOne>
             </Contents>
@@ -304,6 +306,7 @@ const MyChallenge = ({ detailRouter, bottomDetailRouter }) => {
                 <ChallengeList>
                     {CarouselArray.map((elem, index) => 
                         <ChallengeCard key={index} onClick={() => bottomDetailRouter(elem)}>
+
                         <ChallengeImg />
                         <ChallengeContent>
 
@@ -333,6 +336,7 @@ const MyChallenge = ({ detailRouter, bottomDetailRouter }) => {
 
                         </ChallengeContent>
                     </ChallengeCard>
+
                     )}
                     
                 </ChallengeList>
