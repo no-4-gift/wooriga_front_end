@@ -7,7 +7,7 @@ import mypage from "./mypage";
 import family from "./family";
 
 import mychallengeDetail from "./mychallengeDetail";
-
+import mychallenge from "./mychallenge"
 export default combineReducers({
   calendar,
   login,
@@ -15,5 +15,6 @@ export default combineReducers({
   challengeAdd,
   family,
   mychallengeDetail,
-  mypage
+  mypage,
+  mychallenge
 });

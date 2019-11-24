@@ -247,8 +247,8 @@ const CarouselArray = [
     "3"
   ];
 
-const MyChallenge = ({ detailRouter, bottomDetailRouter }) => {
-
+const MyChallenge = ({ detailRouter, bottomDetailRouter, challenger_challenges, participation_challenges }) => {
+       
     return ( 
         <Fragment>
             <ContentsTitle>
