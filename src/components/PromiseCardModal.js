@@ -1,18 +1,71 @@
-import React from "react";
-import styled, { css } from "styled-components";
+import React, { Fragment } from "react";
+import styled, { css, createGlobalStyle } from "styled-components";
+import PropTypes from "prop-types";
+function PromiseCardModal({ members, visible, text, onChange, onCancle, onSubmit }) {
+  const to = members.map(elem => elem.name).join(",");
+
+  return (
+    <Fragment>
+      <GlobalStyle visible={visible} />
+      <DarkBackGround visible={visible}>
+        <ModalBlock>
+          <CardTemplate>
+            <CardHead>
+              <span>각오의 한마디</span>
+            </CardHead>
+            <CardBody>
+              <ToContainer>
+                <span>To.&nbsp;{to}&nbsp;에게</span>
+              </ToContainer>
+              <InputContainer>
+                <textarea
+                  onChange={onChange}
+                  value={text}
+                  cols={"15"}
+                  rows="10"
+                  maxLength={"150"}
+                  placeholder="각오를 적어주세요!(최대 150자)"
+                  required
+                />
+              </InputContainer>
+              <PromiseText>
+                <span>PROMISE</span>
+              </PromiseText>
+            </CardBody>
+            <CancelButton onClick={onCancle}>
+              <span>취소</span>
+            </CancelButton>
+            <ConfirmButton onClick={onSubmit}>
+              <span>확인</span>
+            </ConfirmButton>
+          </CardTemplate>
+        </ModalBlock>
+      </DarkBackGround>
+    </Fragment>
+  );
+}
+export default PromiseCardModal;
+
+PromiseCardModal.propTypes = {
+  members: PropTypes.array.isRequired,
+  visible: PropTypes.bool.isRequired,
+  text: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onCancle: PropTypes.func.isRequired
+};
 
 const DarkBackGround = styled.div`
   position: fixed;
   left: 0;
   top: 0;
-  width: 100vw;
-  height: 100vh;
-
+  width: 100%;
+  height: 100%;
   background: rgba(123, 123, 123, 0.8);
-  opacity: 1;
-  transition: 0.25s linear;
+  opacity: 0;
+  transition: 1s linear;
   z-index: 10;
-  display: block;
+  display: none;
+  overflow: hidden;
   ${props =>
     props.visible &&
     css`
@@ -58,7 +111,6 @@ const CardHead = styled.div`
     font-weight: 500;
     font-size: 18px;
     line-height: 26px;
-
     color: #434444;
   }
 `;
@@ -77,7 +129,6 @@ const ToContainer = styled.div`
     font-weight: normal;
     font-size: 14px;
     line-height: 20px;
-
     color: #000000;
   }
 `;
@@ -86,15 +137,17 @@ const InputContainer = styled.div`
   width: 100%;
   height: 224px;
   margin-top: 17px;
-
   textarea {
+    width: 100%;
+    height: 100%;
+    resize: none;
+    border: none;
     font-family: Noto Sans KR;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
     line-height: 23px;
     text-decoration-line: underline;
-
     color: #434444;
   }
 `;
@@ -104,14 +157,12 @@ const PromiseText = styled.div`
   height: 30px;
   margin-top: 5px;
   text-align: right;
-
   span {
     font-family: Megrim, cursive;
     font-style: normal;
     font-weight: 500;
     font-size: 50px;
     line-height: 58px;
-
     color: #b5b5b5;
   }
 `;
@@ -128,9 +179,7 @@ const CancelButton = styled.div`
     font-weight: normal;
     font-size: 18px;
     line-height: 26px;
-
     letter-spacing: -0.02em;
-
     color: #969696;
   }
 `;
@@ -140,51 +189,25 @@ const ConfirmButton = styled.div`
   left: 208px;
   width: 35px;
   height: 18px;
-
   span {
     font-family: Noto Sans KR;
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
     line-height: 26px;
-
     letter-spacing: -0.02em;
-
     color: #eb6363;
   }
 `;
 
-function PromiseCardModal() {
-  const member = ["영준", "승준", "진리", "규석", "인선"];
-  const text = member.join(",");
-  return (
-    <DarkBackGround>
-      <ModalBlock>
-        <CardTemplate>
-          <CardHead>
-            <span>각오의 한마디</span>
-          </CardHead>
-          <CardBody>
-            <ToContainer>
-              <span>To.&nbsp;{text}&nbsp;에게</span>
-            </ToContainer>
-            <InputContainer>
-              <textarea cols={"15"} rows={"10"} maxLength={"150"} required />
-            </InputContainer>
-            <PromiseText>
-              <span>PROMISE</span>
-            </PromiseText>
-          </CardBody>
-          <CancelButton>
-            <span>취소</span>
-          </CancelButton>
-          <ConfirmButton>
-            <span>확인</span>
-          </ConfirmButton>
-        </CardTemplate>
-      </ModalBlock>
-    </DarkBackGround>
-  );
-}
-
-export default PromiseCardModal;
+const GlobalStyle = createGlobalStyle`
+  ${props =>
+    props.visible &&
+    css`
+      body {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+      }
+    `}
+`;

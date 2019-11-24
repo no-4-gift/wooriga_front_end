@@ -1,7 +1,17 @@
 import moment from "moment";
 
-//Dates get update delete Api
-/* 추후 action 및 state 설정 */
+export const GET_CALENDAR_DATA = "calendar/GET_CALENDAR_DATA";
+export const GET_CALENDAR_DATA_SUCCESS = "calendar/GET_CALENDAR_DATA_SUCCESS";
+export const GET_CALENDAR_DATA_ERROR = "calendar/GET_CALENDAR_DATA_ERROR";
+
+export const getCalendarData = (familyId, year, month) => ({
+  type: GET_CALENDAR_DATA,
+  payload: {
+    familyId: familyId,
+    year: year,
+    month: month
+  }
+});
 
 //달력 Actions
 const PRE_MONTH = "calendar/PRE_MONTH"; //저번 달로 이동
@@ -9,7 +19,6 @@ const NEXT_MONTH = "calendar/NEXT_MONTH"; //다음 달로 이동
 const GO_TO_CURRENT_DAY = "calendar/GO_TO_CURRENT_DAY"; //오늘 날짜 달력으로 이동
 const INSERT_SCHEDULE = "calendar/INSERT_SCHEDULE"; //일정 추가
 const DELETE_SCHEDULE = "calendar/DELETE_SCHEDULE"; //일정 삭제
-//const SET_MY_SCHEDULE = "calendar/SET_MY_SCHEDULE";                //자신의 일정 수정
 const OPEN_MODAL = "calendar/OPEN_MODAL"; //모달 창 열기
 const CLOSE_MODAL = "calendar/CLOSE_MODAL"; //모달 창 닫기
 const TOGGLE = "calendar/TOGGLE"; // 날짜 선택 버튼 활성화 및 비활성화
@@ -54,85 +63,10 @@ const MaxChallengeDateLength = 10;
 
 //초기 상태 정의
 const initialState = {
-  dates: [
-    {
-      id: 1,
-      name: "브루스 웨인",
-      relation: "아빠",
-      date: "2019-10-11",
-      color: "red"
-    },
-    {
-      id: 2,
-      name: "할리 퀸",
-      relation: "엄마",
-      date: "2019-10-11",
-      color: "blue"
-    },
-    {
-      id: 3,
-      name: "조커",
-      relation: "형",
-      date: "2019-10-11",
-      color: "green"
-    },
-    {
-      id: 4,
-      name: "데드 샷",
-      relation: "나",
-      date: "2019-10-11",
-      color: "yellow"
-    },
-    {
-      id: 5,
-      name: "둠스데이",
-      relation: "동생",
-      date: "2019-10-11",
-      color: "violet"
-    },
-    {
-      id: 1,
-      name: "브루스 웨인",
-      relation: "아빠",
-      date: "2019-10-12",
-      color: "red"
-    },
-    {
-      id: 2,
-      name: "할리 퀸",
-      relation: "엄마",
-      date: "2019-10-12",
-      color: "blue"
-    },
-    {
-      id: 4,
-      name: "데드 샷",
-      relation: "나",
-      date: "2019-10-13",
-      color: "yellow"
-    },
-    {
-      id: 3,
-      name: "조커",
-      relation: "형",
-      date: "2019-10-14",
-      color: "green"
-    },
-    {
-      id: 4,
-      name: "데드 샷",
-      relation: "나",
-      date: "2019-10-14",
-      color: "yellow"
-    },
-    {
-      id: 5,
-      name: "둠스데이",
-      relation: "동생",
-      date: "2019-10-14",
-      color: "violet"
-    }
-  ],
+  loading: false,
+  error: null,
+  challengeBarInfo: [],
+  dates: [],
   challengeDates: [],
   today: momentToday,
   visible: false,
@@ -212,6 +146,24 @@ export default function calendar(state = initialState, action) {
       return {
         ...state,
         alert: action.payload
+      };
+    case GET_CALENDAR_DATA:
+      return {
+        ...state,
+        loading: true
+      };
+    case GET_CALENDAR_DATA_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        challengeBarInfo: action.payload.challengeBarInfo,
+        dates: action.payload.emptyDayUserInfoArrayList
+      };
+    case GET_CALENDAR_DATA_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
       };
     default:
       return state;
