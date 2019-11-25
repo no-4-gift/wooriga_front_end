@@ -1,7 +1,7 @@
 import React from "react";
 import calendarImage from "../../images/CalendarMirrored.png";
 import contactImage from "../../images/Contact.png";
-import maskGroupImage from "../../images/MaskGroup.png";
+import maskGroupImage from "../../images/MaskGroup.PNG";
 import MyChallengeContainer from "../../containers/myChallengeContainer";
 import CalendarContainer from "../../containers/CalenderContainer";
 import MyPageContainer from "../../containers/MyPageContainer";
@@ -15,7 +15,7 @@ const ChosensLayout = styled.div`
   background: white;
   text-align: center;
   padding: 0 15px !important;
-  margin-top: 8vh;
+  margin-top: 9vh;
   margin-right: 0;
   && {
   }
@@ -81,7 +81,7 @@ const Chosens = ({ calendar, maskGroup, contact, checked }) => {
         </ChosenDivOne>
 
         <ChosenDivTwo checked={checked} onClick={maskGroup}>
-          <ChosenImage src={maskGroupImage} alt="" />
+          <ChosenImage style={{paddingTop : "3%"}} src={maskGroupImage} alt="" />
         </ChosenDivTwo>
 
         <ChosenDivThree checked={checked} onClick={contact}>

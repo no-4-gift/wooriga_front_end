@@ -10,10 +10,14 @@ const uid = 1615409;
 class myChallengeContainer extends Component {
 
     componentDidMount = () => {
-        const { MyChallengeActions } = this.props;
+        const { MyChallengeActions, challenger_challenges, participation_challenges } = this.props;
         MyChallengeActions.onGetChallenger(familyId, uid);
         MyChallengeActions.onGetParticipation(familyId, uid);
-      }
+        
+        console.log('challenger_challenges :',challenger_challenges)
+        console.log('participation_challenges : ',participation_challenges)
+
+    }
       
     detailRouter = (detailProps) => {
         console.log("Detail Routers", detailProps);
