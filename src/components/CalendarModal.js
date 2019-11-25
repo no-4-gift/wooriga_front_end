@@ -321,12 +321,12 @@ function CalendarModal({
 }) {
   const isMysdate =
     dates
-      .filter(elem => elem.id === id)
-      .findIndex(elem => elem.date === selectDate) === -1
+      .filter(elem => elem.userInfo.uid === id)
+      .findIndex(elem => elem.emptyDate === selectDate) === -1
       ? false
       : true;
   let thisDateMembers = dates.filter(elem => elem.emptyDate === selectDate);
-  const myIdx = thisDateMembers.findIndex(elem => elem.id === id);
+  const myIdx = thisDateMembers.findIndex(elem => elem.userInfo.uid === id);
   if (myIdx !== -1) {
     let temp = thisDateMembers[0];
     thisDateMembers[0] = thisDateMembers[myIdx];
@@ -384,7 +384,7 @@ function CalendarModal({
                       profile={
                         members[
                           members.findIndex(
-                            member => member.uid === elem.chiefId
+                            member => member.uid === elem.registeredId
                           )
                         ].profile
                       }
@@ -401,21 +401,21 @@ function CalendarModal({
             </SectionTitle>
             <SectionBody>
               {thisDateMembers.map(elem => (
-                <ModalItemBlock key={elem.uid}>
+                <ModalItemBlock key={elem.userInfo.uid}>
                   <MemberProfilePhoto
-                    profile={elem.profile}
-                    color={elem.color}
+                    profile={elem.userInfo.profile}
+                    color={elem.userInfo.color}
                   />
                   <MemberProfile>
                     <MemberNameContainer>
-                      <MemerProfileName>{elem.name}</MemerProfileName>
-                      <MemberColorCircle color={elem.color} />
+                      <MemerProfileName>{elem.userInfo.name}</MemerProfileName>
+                      <MemberColorCircle color={elem.userInfo.color} />
                     </MemberNameContainer>
                     <MemberRelationText>
-                      관계 : {elem.relationship}
+                      관계 : {elem.userInfo.relationship}
                     </MemberRelationText>
                   </MemberProfile>
-                  {elem.id === id && (
+                  {elem.userInfo.uid === id && (
                     <DeleteButton onClick={() => onDelete(selectDate)}>
                       <MdClose />
                     </DeleteButton>

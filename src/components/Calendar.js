@@ -260,6 +260,7 @@ function CalendarGenerator({
             let thisDayMembers = dates.filter(
               elem => elem.emptyDate === current.format("YYYY-MM-DD")
             );
+
             const rows = Math.ceil(thisDayMembers.length / 3);
             const cols =
               thisDayMembers.length < 3
@@ -272,11 +273,9 @@ function CalendarGenerator({
             );
             let selKey = selCheck !== -1 ? true : false;
 
-            console.log(current.format("YYYY-MM-DD"));
             const isChallenge =
-              challengeAcitveDates.findIndex(
-                elem => elem === current.format("YYYY-MM-DD")
-              ) !== -1
+              challengeAcitveDates.findIndex(elem => elem === "2019-12-15") !==
+              -1
                 ? true
                 : false;
 
@@ -293,7 +292,10 @@ function CalendarGenerator({
 
                 <MemberContainer rows={rows} cols={cols}>
                   {thisDayMembers.map(elem => (
-                    <Circle key={elem.uid} color={elem.color}></Circle>
+                    <Circle
+                      key={elem.userInfo.uid}
+                      color={elem.userInfo.color}
+                    ></Circle>
                   ))}
                 </MemberContainer>
               </CalendarBox>

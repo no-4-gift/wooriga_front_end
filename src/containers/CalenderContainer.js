@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import Calendar from "../components/Calendar";
 import CalendarModal from "../components/CalendarModal";
 import * as calendarActions from "../store/modules/calendar";
@@ -92,9 +92,10 @@ class CalenderContainer extends Component {
     const { CalendarActions, members } = this.props;
     const userInfo = members.filter(elem => elem.uid === userId)[0];
     const newObj = {
-      ...userInfo,
-      date: date
+      emptyDate: date,
+      userInfo: userInfo
     };
+    CalendarActions.postEmptyDate(userId, date, familyId);
     this.handleCloseModal();
     CalendarActions.insertSchedule(newObj);
   };
@@ -102,12 +103,10 @@ class CalenderContainer extends Component {
   handleDeleteSchedule = date => {
     const { CalendarActions, members } = this.props;
     const userInfo = members.filter(elem => elem.uid === userId)[0];
-    const newObj = {
-      ...userInfo,
-      date: date
-    };
+
     this.handleCloseModal();
-    CalendarActions.deleteSchedule(newObj);
+
+    CalendarActions.deleteSchedule(date, userId);
   };
 
   handleToggle = () => {
@@ -117,7 +116,7 @@ class CalenderContainer extends Component {
 
   handleSelectChallengeDates = date => {
     const { CalendarActions, dates, challengeDates } = this.props;
-    if (dates.findIndex(elem => elem.date === date) !== -1) {
+    if (dates.findIndex(elem => elem.emptyDate === date) !== -1) {
       CalendarActions.selectChallengeDates(date);
       if (challengeDates.findIndex(elem => elem === date) !== -1)
         return CalendarActions.alert(false);
@@ -262,4 +261,7 @@ const mapDispatchProps = dispatch => ({
   FamilyActions: bindActionCreators(familyActions, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchProps)(CalenderContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchProps
+)(withRouter(CalenderContainer));

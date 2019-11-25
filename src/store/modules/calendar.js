@@ -14,10 +14,6 @@ export const DELETE_EMPTY_DATE = "calendar/DELETE_EMPTY_DATE";
 export const DELETE_EMPTY_DATE_SUCCESS = "calendar/DELETE_EMPTY_DATE_SUCCESS";
 export const DELETE_EMPTY_DATE_ERROR = "calendar/DELETE_EMPTY_DATE_ERROR";
 
-
-
-
-
 export const getCalendarData = (familyId, year, month) => ({
   type: GET_CALENDAR_DATA,
   payload: {
@@ -27,12 +23,12 @@ export const getCalendarData = (familyId, year, month) => ({
   }
 });
 
-
-export const postEmptyDate = (uid, date) => ({
+export const postEmptyDate = (uid, date, familyId) => ({
   type: POST_EMPTY_DATE,
   payload: {
     uid: uid,
-    date: date
+    date: date,
+    familyId: familyId
   }
 });
 
@@ -43,7 +39,6 @@ export const deleteEmptyDate = (uid, date) => ({
     date: date
   }
 });
-
 
 //달력 Actions
 const PRE_MONTH = "calendar/PRE_MONTH"; //저번 달로 이동
@@ -71,9 +66,12 @@ export const insertSchedule = dateinfo => ({
   type: INSERT_SCHEDULE,
   payload: dateinfo
 });
-export const deleteSchedule = dateinfo => ({
+export const deleteSchedule = (date, id) => ({
   type: DELETE_SCHEDULE,
-  payload: dateinfo
+  payload: {
+    date: date,
+    id: id
+  }
 });
 export const openModal = date => ({ type: OPEN_MODAL, payload: date });
 export const closeModal = () => ({ type: CLOSE_MODAL });
@@ -131,10 +129,12 @@ export default function calendar(state = initialState, action) {
         dates: state.dates.concat(action.payload)
       };
     case DELETE_SCHEDULE: {
-      const temp1 = state.dates.filter(elem => elem.id !== action.payload.id);
+      const temp1 = state.dates.filter(
+        elem => elem.userInfo.uid !== action.payload.id
+      );
       const temp2 = state.dates
-        .filter(elem => elem.id === action.payload.id)
-        .filter(elem => elem.date !== action.payload.date);
+        .filter(elem => elem.userInfo.uid === action.payload.id)
+        .filter(elem => elem.emptyDate !== action.payload.date);
 
       return {
         ...state,
