@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { Layout, Carousel, Card, Progress  } from 'antd'; 
 import styled from 'styled-components';
 import defaultImage from '../images/default.PNG';
+import familyMetting from '../images/250X250/1. 가족회의.png'
 import calendarImage from '../images/CalendarMirrored.png';
 import userImage from '../images/user.PNG';
 const { Content } = Layout;
@@ -18,7 +19,7 @@ const ContentsTitle = styled.div`
     color: rgba(0, 0, 0, 0.75);
 `;
 const Contents = styled(Content)`
-    margin : 0px 13%;
+    margin : 0px 15%;
 `;
 
 const ContentsOne = styled.div``;
@@ -33,9 +34,10 @@ const OverCarousel = styled(Carousel)`
             background : black;
         }
         margin-top : 0;
-        height : 45vh;
+        height : 60vh;
         .slick-list {
             height : 100%;
+            border-radius: 10px 10px 0 0;
         }
         .slick-track {
             
@@ -55,12 +57,12 @@ const OverCard = styled(Card)`
 
 // OverCardPicture Entire
 const OverCardPicture = styled.div`
-    height: 45vh;
+    height: 68vh;
     background-color : whitegray;
 `;
 
 const OverCardPictureTop = styled.div`
-    height: 60%;
+    height: 250px;
     border-radius: 10px 10px 0 0;
     background: #EDEDED;
 `;
@@ -88,7 +90,7 @@ const OverCardPictureTopLayerTwo = styled.div`
 `;
 
 const OverCardPictureBottom = styled.div`
-    height : 28%;
+    height : 22%;
     padding : 0px 5%;
     border : 1px solid #EDEDED;
     box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.15);
@@ -104,7 +106,7 @@ const OverCardPictureBottomFixed = styled.div`
 const OverCardPictureBottomTitle = styled.div`
     float: left;
     font-size : 1rem;
-    margin-top: 2%;
+    margin-top: 3%;
     font-weight: bold;
     line-height : 120%;
     width : 75%;
@@ -113,7 +115,7 @@ const OverCardPictureBottomTitle = styled.div`
 
 const OverCardPictureBottomTitleSub = styled.div`
     position: absolute;
-    top: 55%;
+    top: 64%;
     font-weight: bold;
     font-size: 1rem;
     color: rgba(0, 0, 0, 0.75);
@@ -127,11 +129,11 @@ const OverCardPictureBottomContent = styled.div`
     clear : both;
     font-size : 0.7rem;
     position : relative;
-    top : -145%;
+    top : -110%;
 `;
 const OverCardPictureBottomContentImage = styled.img`
     float :left;
-    margin-right : 3%;
+    margin-right : 1%;
 `;
 
 const OverCardPictureBottomUserImage = styled.img`
@@ -168,7 +170,7 @@ const ChallengeCard = styled.div`
   }
 `;
 
-const ChallengeImg = styled.div`
+const ChallengeImg = styled.img`
   height: 100%;
   flex: 0.25;
   border-radius: 14px 0 0 14px;
@@ -200,6 +202,19 @@ const ChallengeContentTitle = styled.div`
   align-items: center;
   color: #434444;
 `;
+
+const ChallengeContentContent = styled.div`
+  width: 100%;
+  position: relative;
+  padding-top : 7%;
+  right : 42%;
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 23px;
+  color: #434444;
+`;
 const ChallengeContentDate = styled.div`
   width: 100%;
   height: 50%;
@@ -212,10 +227,11 @@ const ChallengeContentDate = styled.div`
   line-height: 17px;
   letter-spacing: -0.02em;
   color: #434444;
+  padding-top: 30%;
 `;
 
 const ChallengeContentProgress = styled.div`
-    margin-top : 10%;
+    margin-top : 5%;
     width : 95%;
     text-align : center;
     font-size : 0.7rem;
@@ -264,31 +280,31 @@ const MyChallenge = ({ detailRouter, bottomDetailRouter, challenger_challenges, 
                                     <OverCardPictureTop>
 
                                         <OverCardPictureTopLayerOne>
-                                            <span style={{color:"red"}}>{`1`}</span>  / {`2`}
-                                            <Progress percent={50} status="active" showInfo={false} size="small" strokeColor="#EB6363"/>
+                                            <span style={{color:"white"}}>{`5 0 %`}</span>
+                                            <Progress percent={50} status="active" showInfo={false} size="default" strokeColor="#EB6363"/>
                                         </OverCardPictureTopLayerOne>
 
                                         <OverCardPictureTopLayerTwo>
-                                            {/* <img src ={defaultImage} alt ="default" height = "100%" width = "100%"/> */}
+                                            <img src ={familyMetting} alt ="default" height = "100%" width = "100%"/>
                                         </OverCardPictureTopLayerTwo>
 
                                     </OverCardPictureTop>
 
                                     <OverCardPictureBottom>
                                         <OverCardPictureBottomFixed>
-                                            <OverCardPictureBottomTitle>{`정다은, 박준영`} 외 {`4`}명과</OverCardPictureBottomTitle>
+                                            <OverCardPictureBottomTitle>{`정다은, 박준영`} 등 {`5`}명과</OverCardPictureBottomTitle>
                                             <OverCardPictureBottomTitleSub>{`가족회의`}</OverCardPictureBottomTitleSub>
                                             <OverCardPictureBottomDetail>
-                                                <OverCardPictureBottomImage src ={defaultImage} alt ="default" height = "20%" width = "20%"/>                            
+                                                <OverCardPictureBottomImage src ={familyMetting} alt ="default" height = "20%" width = "20%"/>                            
                                                 
                                                 
                                             </OverCardPictureBottomDetail>
                                         </OverCardPictureBottomFixed>
                                         <OverCardPictureBottomContent>
                                             <OverCardPictureBottomContentImage src={calendarImage} alt="" width = "6%"/>
-                                            <span style={{float : "left"}}>{`11.20 (수)`}</span>
+                                            <span style={{float : "left"}}>{`11.20(수)`}</span>
                                             <OverCardPictureBottomUserImage src={userImage} alt="" width = "10%"/>
-                                            <span style={{marginLeft: "2%"}}>{`3명`}</span>
+                                            <span>{`6`}명</span>
                                         </OverCardPictureBottomContent>
 
                                     </OverCardPictureBottom>
@@ -309,12 +325,12 @@ const MyChallenge = ({ detailRouter, bottomDetailRouter, challenger_challenges, 
                     {CarouselArray.map((elem, index) => 
                         <ChallengeCard key={index} onClick={() => bottomDetailRouter(elem)}>
 
-                        <ChallengeImg />
+                        <ChallengeImg src={defaultImage} alt="" width ="80px" />
                         <ChallengeContent>
 
                         <ChallengeFixed>
-                        <ChallengeContentTitle>{`영화보기`}</ChallengeContentTitle>
-
+                        <ChallengeContentTitle>{`유인선과(와)`}</ChallengeContentTitle>
+                        <ChallengeContentContent>{`할로윈파티`}</ChallengeContentContent>
                         <OverCardPictureBottomDetail style={{marginTop : 0}}>
                             <OverCardPictureBottomImage src ={defaultImage} alt ="default" height = "20%" width = "20%"/>                            
                             
@@ -325,7 +341,8 @@ const MyChallenge = ({ detailRouter, bottomDetailRouter, challenger_challenges, 
                         <ChallengeContentDate>
                             <OverCardPictureBottomContentImage src={calendarImage} alt="" width = "7%"/>
                             {`11.20 (수)`}
-                            
+                            <OverCardPictureBottomUserImage src={userImage} alt="" width = "10%"/>
+                            <span>{`6`}명</span>
                         </ChallengeContentDate>
 
                         <ChallengeContentProgress>
