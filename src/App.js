@@ -24,7 +24,7 @@ function App() {
       <Route path="/login" component={LoginConatainer} />
       <Route path="/challenge_regist" component={ChallengeAddContainer} />
       <Route
-        path="/mychallenge_detail"
+        path="/mychallenge_detail/:id"
         component={myChallengeDetailContainer}
       />
 

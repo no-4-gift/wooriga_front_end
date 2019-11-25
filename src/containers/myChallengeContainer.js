@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import MyChallenge from '../components/myChallenge';
+import {withRouter} from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import * as myChallengeAction from "../store/modules/mychallenge";
 
@@ -20,13 +21,23 @@ class myChallengeContainer extends Component {
     }
       
     detailRouter = (detailProps) => {
-        console.log("Detail Routers", detailProps);
-        window.location.assign('/mychallenge_detail');
+        const { challenger_challenges } = this.props;
+        this.props.history.push(`/mychallenge_detail/${detailProps}`, 
+            { 
+                flag : 'main',
+                challenger_challenges : challenger_challenges, 
+            }
+        )
     };
 
     bottomDetailRouter = (bottomProps) => {
-        console.log("Bottom Detail Routers One", bottomProps);
-        window.location.assign('/mychallenge_detail');
+        const { participation_challenges } = this.props;
+        this.props.history.push(`/mychallenge_detail/${bottomProps}`, 
+        { 
+            flag : 'sub',
+            participation_challenges : participation_challenges
+        }
+    )
     }
 
     render() {
@@ -57,7 +68,7 @@ const mapDispatchToProps = dispatch => {
    return { MyChallengeActions : bindActionCreators(myChallengeAction, dispatch) }
 };
   
-  export default connect(
+  export default withRouter(connect(
     mapStateToProps,
     mapDispatchToProps
-  )(myChallengeContainer);
+  )(myChallengeContainer));

@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import PromiseCardModal from "./PromiseCardModal"
-import { Card } from "antd";
+import { Card, Carousel } from "antd";
 import styled from "styled-components";
 import defaultImage from "../images/default.PNG";
 import { MdArrowBack } from "react-icons/md";
@@ -458,7 +458,7 @@ const MyChallengeDetail = ({
               onCancle={onClose}
               onSubmit={onSubmit}
       />
-
+  
       <BackTapContainer>
         <BackButton onClick={backRouter}>
           <MdArrowBack />
@@ -471,8 +471,9 @@ const MyChallengeDetail = ({
         <QuestionMarkBlock>
           <img src={questionMark} alt="QnA" />
         </QuestionMarkBlock>
+        
       </BackTapContainer>
-
+      
       <OverCard bordered={false}>
         <OverCardPicture>
             <OverCardPictureBottom>

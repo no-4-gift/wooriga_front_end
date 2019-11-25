@@ -12,3 +12,8 @@ export const getParticipation = async (familyId, userId) => {
     return response.data;
 };
   
+export const getDetail = async (registeredId , userId) => {
+  const response = await axios.get(`http://52.78.149.82:8081/api/uid/registeredId?registeredId=${registeredId}&uid=${userId}`);
+
+  return response.data;
+};
