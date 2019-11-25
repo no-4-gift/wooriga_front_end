@@ -1,3 +1,4 @@
+import * as challengerAPI from "../../apis/challengeAPI"
 import {
     all,
     call,
@@ -7,20 +8,16 @@ import {
   } from "redux-saga/effects";
 //   import axios from "axios";
   import {
-    SET_MEMBERS,
-    SET_MEMBERSSUCCESS,
-    SET_MEMBERSFAILED,
+    GET_DETAIL,
+    GET_DETAIL_SUCCESS,
+    GET_DETAIL_FAILED,
     SUBMIT_TEXT,
     SUBMIT_TEXTSUCCESS,
     SUBMIT_TEXTFAILED
   } from "../modules/mychallengeDetail";
   
   // eslint-disable-next-line require-yield
-  const getMemberAPI = async (action) => {
-      const response = {data : 1};
-    return response.data;
-  }
-  
+
   const submitTextAPI = async (res) => {
     console.log("res : ",res);
     const response = {data : res};
@@ -30,20 +27,28 @@ import {
 
   //--------------------------------------------------------
   
-  function* memberArray() {
+  function* certificationArray(action) {
 
-    const memberArray = yield call(getMemberAPI);
+    const {registeredId, uid} = action.payload;
+
+    const certificationArray = yield call(
+      challengerAPI.getDetail,
+      registeredId,
+      uid
+    );
     try {
 
         yield put({
-            type : SET_MEMBERSSUCCESS,
-            memberArray
+            type : GET_DETAIL_SUCCESS,
+            payload : {
+              certification : certificationArray
+            }
         })
 
     } catch (e) {
       console.error(e);
       yield put({
-        type : SET_MEMBERSFAILED,
+        type : GET_DETAIL_FAILED,
         error: e
       });
     }
@@ -71,8 +76,8 @@ import {
 
   //---------------------------------------------
   
-  function* watchMemberArray() {
-    yield takeEvery(SET_MEMBERS, memberArray);
+  function* watchCertificationArray() {
+    yield takeEvery(GET_DETAIL, certificationArray);
   }
 
   function* watchSubmitText() {
@@ -84,7 +89,7 @@ import {
   
   export default function* userSaga() {
     yield all([
-      fork(watchMemberArray),
+      fork(watchCertificationArray),
       fork(watchSubmitText),
     ]);
   }

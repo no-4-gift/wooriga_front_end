@@ -1,9 +1,9 @@
 export const PICTUREFLAGTRUE = "mychallengeDetail/PICTUREFLAGTRUE";
 export const PICTUREFLAGFALSE = "mychallengeDetail/PICTUREFLAGFALSE";
 
-export const SET_MEMBERS = "mychallengeDetail/SET_MEMBERS";
-export const SET_MEMBERSSUCCESS = "mychallengeDetail/SET_MEMBERSSUCCESS";
-export const SET_MEMBERSFAILED = "mychallengeDetail/SET_MEMBERSFAILED";
+export const GET_DETAIL = "mychallengeDetail/GET_DETAIL";
+export const GET_DETAIL_SUCCESS = "mychallengeDetail/GET_DETAIL_SUCCESS";
+export const GET_DETAIL_FAILED = "mychallengeDetail/GET_DETAIL_FAILED";
 
 export const TOGGLE_VISIBLE = "mychallengeDetail/TOGGLE_VISIBLE";
 export const SET_TEXT = "mychallengeDetail/SET_TEXT"; 
@@ -16,7 +16,13 @@ export const SUBMIT_TEXTFAILED = "mychallengeDetail/SET_MEMBERSFAILED";
 export const pictureFlagTrue = () => ({ type: PICTUREFLAGTRUE });
 export const pictureFlagFalse = () => ({ type: PICTUREFLAGFALSE });
 
-export const setMembers = data => ({ type: SET_MEMBERS, payload: data });
+export const getDetail = (registeredId, uid) => ({ 
+  type: GET_DETAIL, 
+  payload: {
+    registeredId : registeredId,
+    uid : uid
+  }
+ });
 export const toggleVisible = visible => ({
   type: TOGGLE_VISIBLE,
   payload: visible
@@ -49,6 +55,7 @@ const initialState = {
     thumbnail: ""
   },
 ],
+  certification : {},
   visible: false,
   text: "",
   successInfo : [true, false, false, false, true, true, false, false, false, true]
@@ -67,20 +74,20 @@ export default (state = initialState, action) => {
         pictureFlag: false
         };
 
-    case SET_MEMBERS:
+    case GET_DETAIL:
         return {
           ...state,
-          members: action.payload
         };
-    case SET_MEMBERSSUCCESS:
+    case GET_DETAIL_SUCCESS:
+        
         return {
           ...state,
-          members: []
+          certification : action.payload.certification
         };
-    case SET_MEMBERSFAILED:
+    case GET_DETAIL_FAILED:
     return {
       ...state,
-      members: []
+      certification : {}
     };
     case TOGGLE_VISIBLE:
       return { ...state, visible: action.payload };

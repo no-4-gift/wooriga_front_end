@@ -4,26 +4,55 @@ import { bindActionCreators } from "redux";
 import * as myChallengeDetailActions from "../store/modules/mychallengeDetail";
 import MyChallengeDetail from '../components/myChallengeDetail';
 
+const uid = 1615409;
+
 class myChallengeDetailContainer extends Component {
     constructor(props){
         super(props);
         this.state = { 
             selectedFile: '',
             imagePreviewUrl : '',
+            challenger_challenges : [],
+            participation_challenges : []
         }
     }
     componentDidMount = () => {
         const { MyChallengeDetailActions, successInfo } = this.props;
+        console.log('challenger_challenges', this.props.location.state.flag);
+
+        let registeredId = this.props.match.params.id;
+        
+        if(this.props.location.state.flag === 'main'){
+            
+            MyChallengeDetailActions.getDetail(registeredId, uid);
+
+            this.setState({
+                challenger_challenges : this.props.location.state.challenger_challenges
+            })
+        }
+        else if(this.props.location.state.flag === 'sub') {
+            
+            MyChallengeDetailActions.getDetail(registeredId, uid);
+
+            this.setState({
+                participation_challenges : this.props.location.state.participation_challenges
+            })
+        }
+        else {
+            window.location.assign("/");
+        }
+        
         if(successInfo[0] === true){
             MyChallengeDetailActions.pictureFlagTrue();
         }
         else {
             MyChallengeDetailActions.pictureFlagFalse();
         }
+
     }
     backRouter = () => {
         console.log("backRouter");
-        this.props.history.push('mychallenge');
+        this.props.history.push('/');
     }
     
     pictureFlagRouter = (data) => {
@@ -89,10 +118,17 @@ class myChallengeDetailContainer extends Component {
 
 
     render() {
-        const {pictureFlag, members, visible, text, successInfo} = this.props
-        let {imagePreviewUrl} = this.state;
+        const {pictureFlag, members, visible, text, successInfo, certification} = this.props
+        let {imagePreviewUrl, challenger_challenges, participation_challenges} = this.state;
         let $imagePreview = null;
-
+        if(challenger_challenges.length > 0){
+            console.log("challenger_challenges : ", challenger_challenges);
+        }
+        else {
+            console.log("participation_challenges : ", participation_challenges);
+        }
+        
+        console.log('certification', certification)
         return (
             <MyChallengeDetail
             members={members}
@@ -114,6 +150,7 @@ class myChallengeDetailContainer extends Component {
 
             successInfo={successInfo}
 
+            certification={certification}
             />
         );
     }
@@ -126,7 +163,8 @@ const mapStateToProps = ({ mychallengeDetail }) => ({
     members: mychallengeDetail.members,
     visible: mychallengeDetail.visible,
     text: mychallengeDetail.text,
-    successInfo : mychallengeDetail.successInfo
+    successInfo : mychallengeDetail.successInfo,
+    certification : mychallengeDetail.certification
 });
   
   
