@@ -1,5 +1,3 @@
-import { takeEvery, put, call } from "redux-saga/effects";
-
 const SET_DATES = "challengeAdd/SET_DATES";
 const SET_MEMBERS = "challengeAdd/SET_MEMBERS";
 const SELECT_MEMBERS = "challengeAdd/SELECT_MEMBERS";
@@ -7,12 +5,13 @@ const SELECT_CHALLENGE = "challengeAdd/SELECT_CHALLENGE";
 const TOGGLE_VISIBLE = "challengeAdd/TOGGLE_VISIBLE";
 const SET_TEXT = "challengeAdd/SET_TEXT";
 const ACTIVE_TOP_BUTTON = "challengeAdd/ACTIVE_TOP_BUTTON";
+const CLOSE_ERROR_MSG = "challengeAdd/CLOSE_ERROR_MSG";
 
 //ASYNC ACTION
 
-const GET_DATA = "challengeAdd/GET_DATA";
-const GET_DATA_SUCCESS = "challengeAdd/GET_DATA_SUCCESS";
-const GET_DATA_ERROR = "challengeAdd/GET_DATA_ERROR";
+export const POST_DATA = "challengeAdd/POST_DATA";
+export const POST_DATA_SUCCESS = "challengeAdd/POST_DATA_SUCCESS";
+export const POST_DATA_ERROR = "challengeAdd/POST_DATA_ERROR";
 
 export const setDates = dates => ({ type: SET_DATES, payload: dates });
 export const setMembers = data => ({ type: SET_MEMBERS, payload: data });
@@ -27,40 +26,38 @@ export const setActiveTopButton = value => ({
   type: ACTIVE_TOP_BUTTON,
   payload: value
 });
+export const closeErrorMsg = () => ({ type: CLOSE_ERROR_MSG });
 
-function* getDataSaga() {
-  try {
-    const response = yield call(); // () 안에 Promise Create 함수 넣어야함.
-
-    yield put({
-      type: GET_DATA_SUCCESS,
-      payload: response
-    });
-  } catch (e) {
-    yield put({
-      type: GET_DATA_ERROR,
-      payload: e,
-      error: true
-    });
+//캘린더 => 챌린지 신청 페이지 넘어갈 때 호출 되는 액션
+export const postDateListAndPath = (familyId, dateList, history) => ({
+  type: POST_DATA,
+  payload: {
+    familyId: familyId,
+    dateList: dateList,
+    history: history
   }
-}
+});
 
-export function* ChallengeAddSaga() {
-  yield takeEvery(GET_DATA, getDataSaga);
-}
+//챌린지 신청 페이지 호출 액션
+export const postDateList = (familyId, dateList) => ({
+  type: POST_DATA,
+  payload: {
+    familyId: familyId,
+    dateList: dateList,
+    history: null
+  }
+});
 
 const initState = {
   members: [],
+  challengeList: [],
   dates: [],
   challengeId: -1,
   visible: false,
   text: "",
   activeTopButton: false,
-  api: {
-    loading: false,
-    data: null,
-    error: null
-  }
+  loading: false,
+  error: null
 };
 
 function challengeAdd(state = initState, action) {
@@ -87,6 +84,27 @@ function challengeAdd(state = initState, action) {
       return { ...state, text: action.payload };
     case ACTIVE_TOP_BUTTON:
       return { ...state, activeTopButton: action.payload };
+    case CLOSE_ERROR_MSG:
+      return { ...state, error: null };
+    case POST_DATA:
+      return {
+        ...state,
+        loading: true,
+        error: null
+      };
+    case POST_DATA_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        members: action.payload.members,
+        challengeList: action.payload.challenges
+      };
+    case POST_DATA_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
     default:
       return state;
   }

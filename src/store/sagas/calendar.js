@@ -6,7 +6,10 @@ import {
   GET_CALENDAR_DATA_ERROR,
   POST_EMPTY_DATE,
   POST_EMPTY_DATE_SUCCESS,
-  POST_EMPTY_DATE_ERROR
+  POST_EMPTY_DATE_ERROR,
+  DELETE_EMPTY_DATE,
+  DELETE_EMPTY_DATE_SUCCESS,
+  DELETE_EMPTY_DATE_ERROR
 } from "../modules/calendar";
 
 function* getCalendarDataSaga(action) {
@@ -39,13 +42,14 @@ function* GetCalendarSaga() {
 }
 
 function* postEmptyDateSaga(action) {
-  const { uid, date, familyId } = action.payload;
-
+  const { uid, date, familyId, dateInfo } = action.payload;
+  console.log(dateInfo);
   try {
-    const res = yield call(calendarAPI.getCalendarData, familyId, uid, date);
+    const res = yield call(calendarAPI.postEmptySchedule, uid, date, familyId);
     console.log(res);
     yield put({
-      type: POST_EMPTY_DATE_SUCCESS
+      type: POST_EMPTY_DATE_SUCCESS,
+      payload: dateInfo
     });
   } catch (e) {
     yield put({
@@ -59,6 +63,34 @@ function* PostEmptyDateSaga() {
   yield takeEvery(POST_EMPTY_DATE, postEmptyDateSaga);
 }
 
+function* deleteEmptyDate(action) {
+  const { uid, date, familyId, dateInfo } = action.payload;
+
+  try {
+    const res = yield call(
+      calendarAPI.deleteEmptySchedule,
+      uid,
+      date,
+      familyId
+    );
+    console.log(res);
+    yield put({
+      type: DELETE_EMPTY_DATE_SUCCESS,
+      payload: dateInfo
+    });
+  } catch (e) {
+    console.log(e.request);
+    yield put({
+      type: DELETE_EMPTY_DATE_ERROR,
+      payload: e
+    });
+  }
+}
+
+function* DeleteEmptyDateSaga() {
+  yield takeEvery(DELETE_EMPTY_DATE, deleteEmptyDate);
+}
+
 export default function* calendarRootSaga() {
-  yield all([GetCalendarSaga(), PostEmptyDateSaga()]);
+  yield all([GetCalendarSaga(), PostEmptyDateSaga(), DeleteEmptyDateSaga()]);
 }

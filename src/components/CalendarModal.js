@@ -395,35 +395,39 @@ function CalendarModal({
               </SectionBody>
             </Section>
           )}
-          <Section>
-            <SectionTitle>
-              <span>함께 할 수 있는 가족</span>
-            </SectionTitle>
-            <SectionBody>
-              {thisDateMembers.map(elem => (
-                <ModalItemBlock key={elem.userInfo.uid}>
-                  <MemberProfilePhoto
-                    profile={elem.userInfo.profile}
-                    color={elem.userInfo.color}
-                  />
-                  <MemberProfile>
-                    <MemberNameContainer>
-                      <MemerProfileName>{elem.userInfo.name}</MemerProfileName>
-                      <MemberColorCircle color={elem.userInfo.color} />
-                    </MemberNameContainer>
-                    <MemberRelationText>
-                      관계 : {elem.userInfo.relationship}
-                    </MemberRelationText>
-                  </MemberProfile>
-                  {elem.userInfo.uid === id && (
-                    <DeleteButton onClick={() => onDelete(selectDate)}>
-                      <MdClose />
-                    </DeleteButton>
-                  )}
-                </ModalItemBlock>
-              ))}
-            </SectionBody>
-          </Section>
+          {thisDateMembers.length > 0 && (
+            <Section>
+              <SectionTitle>
+                <span>함께 할 수 있는 가족</span>
+              </SectionTitle>
+              <SectionBody>
+                {thisDateMembers.map(elem => (
+                  <ModalItemBlock key={elem.userInfo.uid}>
+                    <MemberProfilePhoto
+                      profile={elem.userInfo.profile}
+                      color={elem.userInfo.color}
+                    />
+                    <MemberProfile>
+                      <MemberNameContainer>
+                        <MemerProfileName>
+                          {elem.userInfo.name}
+                        </MemerProfileName>
+                        <MemberColorCircle color={elem.userInfo.color} />
+                      </MemberNameContainer>
+                      <MemberRelationText>
+                        관계 : {elem.userInfo.relationship}
+                      </MemberRelationText>
+                    </MemberProfile>
+                    {elem.userInfo.uid === id && (
+                      <DeleteButton onClick={() => onDelete(selectDate)}>
+                        <MdClose />
+                      </DeleteButton>
+                    )}
+                  </ModalItemBlock>
+                ))}
+              </SectionBody>
+            </Section>
+          )}
 
           {!isMysdate && (
             <InsertScheduleContainer onClick={() => onInsert(selectDate)}>

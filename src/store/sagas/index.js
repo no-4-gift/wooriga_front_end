@@ -4,9 +4,15 @@ import mychallengeDetail from "./mychallengeDetail";
 
 import calendarRootSaga from "./calendar";
 import { FamilySaga } from "./family";
+import challengeAddRootSaga from "./challengeAdd";
 
 // axios.defaults.baseURL = "";
 
 export default function* rootSaga() {
-  yield all([fork(mychallengeDetail), calendarRootSaga(), FamilySaga()]);
+  yield all([
+    fork(mychallengeDetail),
+    calendarRootSaga(),
+    FamilySaga(),
+    challengeAddRootSaga()
+  ]);
 }

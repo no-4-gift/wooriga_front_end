@@ -2,45 +2,10 @@ import React, { Fragment } from "react";
 import styled, { css } from "styled-components";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { colorSelector } from "../styleUtils/colorStyle";
-import PropTypes, { string } from "prop-types";
+import PropTypes from "prop-types";
 
 import HitArea from "react-hammerjs";
 import CalendarShowMemberBox from "./CalendarShowMemberBox";
-
-//dummy dataes
-
-/*const members = [
-  {
-    id: 1,
-    name: "브루스 웨인",
-    relation: "아빠",
-    color: "red"
-  },
-  {
-    id: 2,
-    name: "할리 퀸",
-    relation: "엄마",
-    color: "blue"
-  },
-  {
-    id: 3,
-    name: "조커",
-    relation: "형",
-    color: "green"
-  },
-  {
-    id: 4,
-    name: "데드 샷",
-    relation: "나",
-    color: "yellow"
-  },
-  {
-    id: 5,
-    name: "둠스데이",
-    relation: "동생",
-    color: "pink"
-  }
-];*/
 
 //Calendar Style
 const CalendarContainer = styled.div`

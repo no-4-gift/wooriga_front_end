@@ -4,6 +4,7 @@ import { bindActionCreators } from "redux";
 import * as challengeAddActions from "../store/modules/challengeAdd";
 import ChallengeAdd from "../components/ChallengeAdd";
 import queryString from "querystring";
+import { Spin } from "antd";
 
 //API 호출로 받아와야하는 정보
 const data = [
@@ -70,6 +71,10 @@ const challengeList = [
   }
 ];
 
+//현재 컴포넌트에서 필수적으로 가져야할 Props
+const familyId = "wooriga";
+const userId = 1615409;
+
 class ChallengeAddContainer extends Component {
   componentDidMount() {
     window.addEventListener("scroll", this.handleScroll);
@@ -79,7 +84,10 @@ class ChallengeAddContainer extends Component {
     ChallengeAddActions.setDates(
       Object.values(values).filter(elem => elem !== "")
     );
-    ChallengeAddActions.setMembers(data);
+    /*ChallengeAddActions.postDateList(
+      familyId,
+      Object.values(values).filter(elem => elem !== "")
+    );*/
   }
 
   componentWillUnmount() {

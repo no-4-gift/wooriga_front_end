@@ -170,4 +170,4 @@ function CalendarShowMemberBox({ members, userId }) {
   );
 }
 
-export default CalendarShowMemberBox;
+export default React.memo(CalendarShowMemberBox);
