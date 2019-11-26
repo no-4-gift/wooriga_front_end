@@ -7,6 +7,9 @@ import PropTypes from "prop-types";
 import HitArea from "react-hammerjs";
 import CalendarShowMemberBox from "./CalendarShowMemberBox";
 
+//
+const Wrapper = styled.div``;
+
 //Calendar Style
 const CalendarContainer = styled.div`
   width: 100vw;
@@ -125,6 +128,8 @@ const Circle = styled.div`
 `;
 
 //button Styles
+const ButtonContainer = styled.div``;
+
 const Button = styled.button`
   position: relative;
   width: 90vw;
@@ -239,8 +244,9 @@ function CalendarGenerator({
             let selKey = selCheck !== -1 ? true : false;
 
             const isChallenge =
-              challengeAcitveDates.findIndex(elem => elem === "2019-12-15") !==
-              -1
+              challengeAcitveDates.findIndex(
+                elem => elem === current.format("YYYY-MM-DD")
+              ) !== -1
                 ? true
                 : false;
 
@@ -290,7 +296,7 @@ function Calendar({
   onSwipe
 }) {
   return (
-    <Fragment>
+    <Wrapper>
       <CalendarContainer>
         <CalendarHead>
           <AllowButton onClick={onPreMonth}>
@@ -339,17 +345,19 @@ function Calendar({
       </CalendarContainer>
 
       <CalendarShowMemberBox members={members} userId={userId} />
-      {!toggle && <Button onClick={onToggle}>챌린지 날짜 선택</Button>}
-      {toggle && (
-        <ChallengeButton
-          disabled={disable}
-          disable={disable}
-          onClick={GoToChallenge}
-        >
-          <span>챌린지 GO</span>
-        </ChallengeButton>
-      )}
-    </Fragment>
+      <ButtonContainer>
+        {!toggle && <Button onClick={onToggle}>챌린지 날짜 선택</Button>}
+        {toggle && (
+          <ChallengeButton
+            disabled={disable}
+            disable={disable}
+            onClick={GoToChallenge}
+          >
+            <span>챌린지 GO</span>
+          </ChallengeButton>
+        )}
+      </ButtonContainer>
+    </Wrapper>
   );
 }
 

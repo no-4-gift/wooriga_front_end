@@ -30,7 +30,6 @@ class CalenderContainer extends Component {
     const year = today.format("YYYY");
     const month = today.format("MM");
     const cur = moment();
-    console.log(month);
     CalendarActions.getCalendarData(familyId, year, month);
     CalendarActions.addViewedDays(today.format("YYYY-MM"));
     FamilyActions.getFamilyData(familyId);
@@ -193,15 +192,15 @@ class CalenderContainer extends Component {
       challengeAddError,
       challengeLoading
     } = this.props;
-    //const id = parseInt(window.sessionStorage.getItem("id")); //로그인 한 유저 정보는 store 나 localStorage에 저장 되어있어야함
+
     const disable = challengeDates.length > 0 ? false : true;
-    console.log(disable);
-    //console.log(`id is ${id}`);
-    const challengeAcitveDates =
-      challengeBarInfo.length > 0
-        ? challengeBarInfo.map(elem => elem.date)
-        : [];
-    console.log(challengeAcitveDates);
+
+    let challengeAcitveDates = [];
+    if (challengeBarInfo.length > 0) {
+      const challengeDates = challengeBarInfo.map(elem => elem.date);
+      for (let i = 0; i < challengeDates.length; i++)
+        challengeAcitveDates = challengeAcitveDates.concat(challengeDates[i]);
+    }
 
     if (true) {
       if (familyError || calendarError) {
@@ -209,21 +208,20 @@ class CalenderContainer extends Component {
       } else {
         return (
           <Fragment>
+            <CalendarModal
+              id={userId}
+              challengeBarInfo={challengeBarInfo}
+              selectDate={selectDate}
+              visible={visible}
+              dates={dates}
+              onCancle={this.handleCloseModal}
+              onDelete={this.handleDeleteSchedule}
+              onInsert={this.handleInsertSchedule}
+            />
             <Spin
               tip="Loading..."
               spinning={calendarLoading || familyLoading || challengeLoading}
             >
-              <CalendarModal
-                id={userId}
-                challengeBarInfo={challengeBarInfo}
-                members={members}
-                selectDate={selectDate}
-                visible={visible}
-                dates={dates}
-                onCancle={this.handleCloseModal}
-                onDelete={this.handleDeleteSchedule}
-                onInsert={this.handleInsertSchedule}
-              />
               <Calendar
                 dates={dates}
                 members={members}

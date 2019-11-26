@@ -23,7 +23,8 @@ function ChallengeAdd({
   onChange,
   onSelectChallenge,
   onSelectMembers,
-  onTop
+  onTop,
+  onSubmit
 }) {
   return (
     <Fragment>
@@ -33,6 +34,7 @@ function ChallengeAdd({
         text={text}
         visible={visible}
         onCancle={onClose}
+        onSubmit={onSubmit}
       />
 
       <BackTap title={"챌린지 등록"} targetRouter={"/"} questionRouter={"/"} />
@@ -84,9 +86,11 @@ ChallengeAdd.propTypes = {
   dates: PropTypes.array.isRequired,
   members: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      thumbnail: PropTypes.string.isRequired,
-      color: PropTypes.string.isRequired
+      uid: PropTypes.number.isRequired,
+      profile: PropTypes.string.isRequired,
+      color: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      relationship: PropTypes.string.isRequired
     })
   ),
   selectedMembers: PropTypes.array.isRequired,
@@ -101,16 +105,16 @@ ChallengeAdd.propTypes = {
   onChange: PropTypes.func.isRequired,
   onSelectChallenge: PropTypes.func.isRequired,
   onSelectMembers: PropTypes.func.isRequired,
-  onTop: PropTypes.func.isRequired
+  onTop: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired
 };
 
 // Contents Body Style
 
 const ContentsBlock = styled.div`
   width: 100vw;
-  position: absolute;
-  left: 0;
-  top: 8vh;
+  min-height: 100vh;
+  margin-top: 8vh;
   margin-bottom: 12vh;
 `;
 

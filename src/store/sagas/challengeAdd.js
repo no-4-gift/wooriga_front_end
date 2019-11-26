@@ -2,9 +2,12 @@ import { takeEvery, put, call, all } from "redux-saga/effects";
 import {
   POST_DATA,
   POST_DATA_SUCCESS,
-  POST_DATA_ERROR
+  POST_DATA_ERROR,
+  POST_CHALLENGE_REGIST,
+  POST_CHALLENGE_REGIST_ERROR,
+  POST_CHALLENGE_REGIST_SUCCESS
 } from "../modules/challengeAdd";
-import { INTI_CALENDAR } from "../modules/calendar";
+import { ONMASKGROUP } from "../modules/statics";
 import * as challengeAddAPI from "../../apis/challengeAddAPI";
 import { makeQueryDates } from "../../utils/makeQueryDates";
 
@@ -26,7 +29,6 @@ function* postDateList(action) {
     });
 
     if (history !== null) {
-      yield put({ type: INTI_CALENDAR });
       const query = makeQueryDates(dateList);
       yield history.push(`/challenge_regist?${query}`);
     }
@@ -43,6 +45,45 @@ function* PostDateListSaga() {
   yield takeEvery(POST_DATA, postDateList);
 }
 
+function* postChallengeRegist(action) {
+  const {
+    participatntFK,
+    challengeIdFK,
+    chiefIdFK,
+    familyId,
+    resolution,
+    registeredDate,
+    history
+  } = action.payload;
+  try {
+    yield call(
+      challengeAddAPI.postChallengeRegist,
+      participatntFK,
+      challengeIdFK,
+      chiefIdFK,
+      familyId,
+      resolution,
+      registeredDate
+    );
+    yield put({
+      type: POST_CHALLENGE_REGIST_SUCCESS
+    });
+    yield put({
+      type: ONMASKGROUP
+    });
+    yield history.push("/");
+  } catch (e) {
+    yield put({
+      type: POST_CHALLENGE_REGIST_ERROR,
+      payload: e.message
+    });
+  }
+}
+
+function* PostChallengeRegistSaga() {
+  yield takeEvery(POST_CHALLENGE_REGIST, postChallengeRegist);
+}
+
 export default function* challengeAddRootSaga() {
-  yield all([PostDateListSaga()]);
+  yield all([PostDateListSaga(), PostChallengeRegistSaga()]);
 }

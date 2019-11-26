@@ -145,16 +145,6 @@ const ChallengeContentTitle = styled.span`
   color: #434444;
 `;
 
-const ChallengeContentDates = styled.span`
-  font-family: Noto Sans KR;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 17px;
-  letter-spacing: -0.02em;
-
-  color: #434444;
-`;
 const ChallengeMaker = styled.div`
   position: absolute;
   top: 14px;
@@ -310,7 +300,6 @@ const InsertText = styled.span`
 
 function CalendarModal({
   id,
-  members,
   visible,
   dates,
   challengeBarInfo,
@@ -371,24 +360,10 @@ function CalendarModal({
                       <ChallengeContentTitle>
                         <span>{elem.challengeTitle}</span>
                       </ChallengeContentTitle>
-                      <ChallengeContentDates>
-                        <span>
-                          {selectDate}{" "}
-                          {elem.date.length > 1
-                            ? `+(${elem.date.length - 1})`
-                            : ""}
-                        </span>
-                      </ChallengeContentDates>
                     </ChallengeContent>
                     <ChallengeMaker
-                      profile={
-                        members[
-                          members.findIndex(
-                            member => member.uid === elem.registeredId
-                          )
-                        ].profile
-                      }
-                      color={elem.chiefColor}
+                      profile={elem.userInfo[0].profile}
+                      color={elem.userInfo[0].color}
                     />
                   </ChallengeItem>
                 ))}
@@ -450,7 +425,6 @@ export default CalendarModal;
 
 CalendarModal.propTypes = {
   id: PropTypes.number,
-  members: PropTypes.array,
   visible: PropTypes.bool,
   dates: PropTypes.array,
   challengeBarInfo: PropTypes.array,
