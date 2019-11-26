@@ -6,26 +6,15 @@ import {
     fork,
     takeEvery
   } from "redux-saga/effects";
-//   import axios from "axios";
+
   import {
+    PICTUREFLAGTRUE,
+    PICTUREFLAGFALSE,
     GET_DETAIL,
     GET_DETAIL_SUCCESS,
     GET_DETAIL_FAILED,
-    SUBMIT_TEXT,
-    SUBMIT_TEXTSUCCESS,
-    SUBMIT_TEXTFAILED
+
   } from "../modules/mychallengeDetail";
-  
-  // eslint-disable-next-line require-yield
-
-  const submitTextAPI = async (res) => {
-    console.log("res : ",res);
-    const response = {data : res};
-  return response.data;
-}
-
-
-  //--------------------------------------------------------
   
   function* certificationArray(action) {
 
@@ -36,7 +25,28 @@ import {
       registeredId,
       uid
     );
+
     try {
+      if(certificationArray.certificationInfoArrayList[0].certificationTrue === 1){
+        console.log("인증 완료", certificationArray.certificationInfoArrayList[0]);
+        yield put({
+          type : PICTUREFLAGTRUE,
+          payload : {
+            image : certificationArray.certificationInfoArrayList[0].certificationImage,
+            date : certificationArray.certificationInfoArrayList[0].cardDate,
+          }
+
+      })
+      }
+      else {
+        console.log("인증 안됌");
+        yield put({
+          type : PICTUREFLAGFALSE,
+          payload : {
+            date : certificationArray.certificationInfoArrayList[0].cardDate,
+          }
+      })
+      }
 
         yield put({
             type : GET_DETAIL_SUCCESS,
@@ -54,25 +64,6 @@ import {
     }
   }
 
-  function* submitText(action) {
-
-    const submitText = yield call(submitTextAPI, action.payload);
-    console.log("submitText :", submitText);
-    try {
-
-        yield put({
-            type : SUBMIT_TEXTSUCCESS,
-            submitText
-        })
-
-    } catch (e) {
-      console.error(e);
-      yield put({
-        type : SUBMIT_TEXTFAILED,
-        error: e
-      });
-    }
-  }
 
   //---------------------------------------------
   
@@ -80,16 +71,12 @@ import {
     yield takeEvery(GET_DETAIL, certificationArray);
   }
 
-  function* watchSubmitText() {
-    yield takeEvery(SUBMIT_TEXT, submitText);
-  }
 
 
   //---------------------------------------
   
   export default function* userSaga() {
     yield all([
-      fork(watchCertificationArray),
-      fork(watchSubmitText),
+      fork(watchCertificationArray)
     ]);
   }

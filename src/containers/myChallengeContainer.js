@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import * as myChallengeAction from "../store/modules/mychallenge";
 
 const familyId = "wooriga";
-const uid = 1615409;
+const uid = 19980106;
 
 class myChallengeContainer extends Component {
 

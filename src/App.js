@@ -17,27 +17,57 @@ import myPageDetailContainer from "./containers/MyPageDetailContainer";
 
 import ChallengeAddContainer from "./containers/ChallengeAddContainer";
 
+import styled from 'styled-components';
+import exceptionInage from './images/exceptionResolution.PNG'
 function App() {
+  console.log(window.innerWidth);
+  console.log(window.innerHeight);
+  if((window.innerWidth > 481) || (window.innerWidth === 320 && window.innerHeight === 480)){
+    console.log("호환하지 않음");
+  }
+  else {
+    console.log("호환^_^")
+  }
+  // 768 : 1024 아이패드
   return (
     <BrowserRouter>
-      <Route path="/" component={ChosensLayout} exact />
-      <Route path="/login" component={LoginConatainer} />
-      <Route path="/challenge_regist" component={ChallengeAddContainer} />
-      <Route
-        path="/mychallenge_detail/:id"
-        component={myChallengeDetailContainer}
-      />
+      {(window.innerWidth > 481) || (window.innerWidth === 320 && window.innerHeight === 480) ? (
+        <ExceptionLayout>
+          <ExceptionImage src={exceptionInage} alt="excetionImage" height="60%" />
+        </ExceptionLayout>
+      ) : (
+        <>
+          <Route path="/" component={ChosensLayout} exact />
+          <Route path="/login" component={LoginConatainer} />
+          <Route path="/challenge_regist" component={ChallengeAddContainer} />
+          <Route
+            path="/mychallenge_detail/:id"
+            component={myChallengeDetailContainer}
+          />
 
-      <Route path="/mypage" component={myPageContainer} />
-      <Route path="/mypage_detail" component={myPageDetailContainer} />
-      {/* <Route path="/makegroup" component={MakeGroup} /> 
-      <Route path="/invite" component={Invite} />
-      <Route path="/checksignup" component={checkSignUp} />*/}
-      {/*<Route path="/" component={Calendar} /> */}
+          <Route path="/mypage" component={myPageContainer} />
+          <Route path="/mypage_detail" component={myPageDetailContainer} />
+          {/* <Route path="/makegroup" component={MakeGroup} /> 
+          <Route path="/invite" component={Invite} />
+          <Route path="/checksignup" component={checkSignUp} />*/}
+          {/*<Route path="/" component={Calendar} /> */}
 
-      {/*<Route path="/" component={Calendar} /> */}
+          {/*<Route path="/" component={Calendar} /> */}
+        </>
+      )}
+      
     </BrowserRouter>
   );
 }
 
 export default App;
+
+const ExceptionLayout = styled.div`
+  width : 100vw;
+  height : 100vh;
+  text-align : center;
+`;
+
+const ExceptionImage = styled.img`
+  padding-top : 25vh;
+`;
