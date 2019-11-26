@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
 import * as myChallengeDetailActions from "../store/modules/mychallengeDetail";
 import MyChallengeDetail from '../components/myChallengeDetail';
-
+import moment from 'moment';
 const uid = 19980106;
+
+let reader = new FileReader();
 
 class myChallengeDetailContainer extends Component {
     constructor(props){
@@ -14,7 +16,9 @@ class myChallengeDetailContainer extends Component {
             imagePreviewUrl : '',
             challenger_challenges : [],
             
-            participation_challenges : []
+            participation_challenges : [],
+
+            userType : ""
         }
     }
     componentDidMount = () => {
@@ -32,7 +36,8 @@ class myChallengeDetailContainer extends Component {
             
 
             this.setState({
-                challenger_challenges : filterArray
+                challenger_challenges : filterArray,
+                userType : "main"
             })
         }
         else if(this.props.location.state.flag === 'sub') {
@@ -44,7 +49,8 @@ class myChallengeDetailContainer extends Component {
             
 
             this.setState({
-                participation_challenges : filterArray
+                participation_challenges : filterArray,
+                userType : "sub"
             })
         }
         else {
@@ -70,38 +76,60 @@ class myChallengeDetailContainer extends Component {
     }
 
     // imagePreview
-    fileOnChange = (e) => {
-        let reader = new FileReader();
-        let file = e.target.files[0];
+    fileOnChange = (e, registeredFk, date) => {
+
+        const { MyChallengeDetailActions } = this.props;
+
         
-        console.log(e.target.files[0])
-        console.log('e.target.files[0]', e.target.files[0])
+        let file = e.target.files[0];
+    
+        console.log('e.target.files[0]', e.target.files[0]);
+        console.log('registeredFk', registeredFk);
+        console.log('date', date);
         reader.onloadend = () => {
             this.setState({
                 selectedFile : file,
                 imagePreviewUrl: reader.result
             }, () => {
                 console.log(this.state.selectedFile)
-                
-                var formData = new FormData();
-                formData.append('file', this.state.selectedFile);
-                console.log('formData : ', formData.get('file'));
-                
-                let imgHeight = document.getElementById("circlePlus").clientHeight;
-                let imgWidth = document.getElementById("circlePlus").clientWidth;
-
-                console.log(imgWidth, imgHeight)
+                MyChallengeDetailActions.postCertification(registeredFk, date, this.state.selectedFile)
+                let dateColor = moment(new Date(date)).format("YYYY.MM.DD");
+                MyChallengeDetailActions.postCertificationColor(dateColor)
             })
         }
 
         console.log('timing');
         reader.readAsDataURL(e.target.files[0])
+        
     }
 
+    fileOnDelete = (e, registeredId, date) => {
+        const { MyChallengeDetailActions } = this.props;
+
+        console.log("fileOnDelete : ", registeredId, date);
+
+        this.setState({
+            selectedFile : '',
+            imagePreviewUrl: ''
+        })
+
+        MyChallengeDetailActions.deleteCertification(registeredId, date)
+    }
+
+    fileOnDeleteAfter = (e, registeredId, date) => {
+        const { MyChallengeDetailActions } = this.props;
+
+        MyChallengeDetailActions.deleteCertification(registeredId, date);
+        setTimeout(() => {
+            window.location.reload();
+        }, 3000)
+    }
     render() {
-        const {pictureFlag, certification, certificationArray, pictureUrl, cardDate} = this.props
-        let {imagePreviewUrl, challenger_challenges, participation_challenges} = this.state;
+        const {pictureFlag, certification, certificationArray, pictureUrl, cardDate, deleteLoading} = this.props
+        let {imagePreviewUrl, challenger_challenges, participation_challenges, userType} = this.state;
         let $imagePreview = null;
+        console.log('deleteLoading render : ', deleteLoading)
+        console.log('certificationArray render : ',certificationArray);
         return (
             <>
             {challenger_challenges.length > 0 ? (
@@ -121,6 +149,11 @@ class myChallengeDetailContainer extends Component {
                 certification={certification}
                 certificationArray={certificationArray}
                 memberData={challenger_challenges}
+                userType={userType}
+
+                fileOnDelete={this.fileOnDelete}
+                fileOnDeleteAfter={this.fileOnDeleteAfter}
+                deleteLoading={deleteLoading}
                 />
             ) : (
                 <>
@@ -142,6 +175,7 @@ class myChallengeDetailContainer extends Component {
                         certification={certification}
                         certificationArray={certificationArray}
                         memberData={participation_challenges}
+                        userType={userType}
                         />
                     ) : (
                         <div>정상적인 접근이 아닙니다.</div>
@@ -161,7 +195,8 @@ const mapStateToProps = ({ mychallengeDetail }) => ({
     pictureUrl : mychallengeDetail.pictureUrl,
     cardDate : mychallengeDetail.cardDate,
     certification : mychallengeDetail.certification,
-    certificationArray : mychallengeDetail.certificationArray
+    certificationArray : mychallengeDetail.certificationArray,
+    deleteLoading : mychallengeDetail.deleteLoading
 });
   
   

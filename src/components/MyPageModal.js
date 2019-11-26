@@ -5,7 +5,7 @@ import { Input, Button, Typography } from "antd";
 import { colorSelector, profileColor } from "../styleUtils/colorStyle";
 import PropType from "prop-types";
 import "./ColorPicker.css";
-import circlePlus from "../images/circlePlus.PNG";
+import circlePlus from "../images/circlePlus.png";
 const { Text } = Typography;
 
 const PaletteItem = ({ color, active, onClick }) => {

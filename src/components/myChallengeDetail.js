@@ -1,12 +1,13 @@
 import React, { Fragment } from "react";
-import { Card } from "antd";
+import { Card, Spin } from "antd";
 import styled from "styled-components";
 import defaultImage from "../images/default.PNG";
 import { MdArrowBack } from "react-icons/md";
-import questionMark from "../images/questionMark.png";
-import circlePlus from '../images/circlePlus.PNG';
+import deleteCertification from "../images/deleteCertification.png";
+import circlePlus from '../images/circlePlus.png';
 import userImage from '../images/user.PNG';
 import moment from 'moment';
+
 const BackTapContainer = styled.div`
   width: 100vw;
   height: 8vh;
@@ -41,7 +42,7 @@ const BackButton = styled.div`
 `;
 const TitleBlock = styled.div`
   width: 55%;
-  height: 24px;
+  height: 28px;
 
   position: relative;
   top: 0;
@@ -59,22 +60,6 @@ const TitleBlock = styled.div`
     color: #434444;
   }
 `;
-
-const QuestionMarkBlock = styled.div`
-  position: relative;
-  top: 0;
-  left: 26%;
-  width: 20px;
-  height: 20px;
-  transform: translate(50%, 0);
-  img {
-    width: 100%;
-    height: 100%;
-    box-sizing: content-box;
-  }
-
-`;
-
 // 상단 태그 
 
 
@@ -97,6 +82,7 @@ const OverCardPictureBottom = styled.div`
     padding : 0px 4%;
     box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
     border-radius: 10px 10px 10px 10px;
+    width: 100%;
 `;
 
 const OverCardPictureBottomFixed = styled.div`
@@ -105,6 +91,7 @@ const OverCardPictureBottomFixed = styled.div`
 `;
 
 const OverCardPictureBottomTitle = styled.div`
+    width: 80%;
     float: left;
     font-size : 1rem;
     margin-top: 5%;
@@ -222,7 +209,6 @@ const CertifiedRequirement = styled.div`
 
 const CertifiedRequirementContent = styled.div`
 
-  background-color: rgb(238, 238, 238);
   height: 250px;
   box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
   border-radius: 14px;
@@ -232,7 +218,8 @@ const CertifiedRequirementContentLayer = styled.div`
     position: relative;
     color: white;
     top: -60%;
-    font-size: 1.1rem;
+    font-size: 16px;
+    font-weight : bold;
 `;
 
 const CertifiedRequirementContentFalse = styled.div`
@@ -240,6 +227,7 @@ const CertifiedRequirementContentFalse = styled.div`
   box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.15);
   border-radius: 14px;
   padding-top : 25%;
+  border: 2px dashed #EB6363;
 `;
 
 const CertifiedRequirementContentTriangle = styled.div`
@@ -254,8 +242,8 @@ const CertifiedRequirementContentTriangle = styled.div`
 const CertifiedRequirementContentText = styled.div`
     background: #E0E0E0;
     border-radius: 10px;
-    height : 7vh;
-    padding-top : 3%;
+    height : 100%;
+    padding : 3%;
     font-size: 0.8rem;
 `;
 
@@ -270,8 +258,7 @@ const CertifiedRequirementContentTextFalse = styled.div`
 
 
 const ChallengeMemberLayout = styled.div`
-    margin : 0 10%;
-    margin-top : 5%;
+    margin : 5% 10%;
     
 `;
 
@@ -380,8 +367,7 @@ const Resident = styled.div`
 `;
 
 const ChallengeInfo = styled.div`
-    margin : 0 10%;
-    margin-top : 5%;
+    margin : 5% 10%;
 `;
 
 const ChallengeInfoTitle = styled.div`
@@ -402,7 +388,13 @@ const ChallengeInfoContent = styled.div`
     line-height : 25px;
 `;
 
-
+const OverSpin = styled(Spin)`
+    &&{
+      .ant-spin-dot-item {
+        background-color : white;
+      }
+    }
+`;
 
 const MyChallengeDetail = ({ 
   backRouter,
@@ -416,43 +408,75 @@ const MyChallengeDetail = ({
   onOpen,
   certification,
   certificationArray,
-  memberData
+  memberData,
+  userType,
+  fileOnDelete,
+  fileOnDeleteAfter,
+  deleteLoading
  }) => {
    // imagePreview
   if (imagePreviewUrl) {
     // 프리뷰!!
     $imagePreview = (
       <CertifiedRequirementContentFalse style={{paddingTop : 0}}>
-        <img id={"circlePlus"} src={imagePreviewUrl} alt="imagePreviewUrl" width ="100%" height ="100%" />
+        <img id={"circlePlus"} src={imagePreviewUrl} alt="imagePreviewUrl" width ="100%" height ="100%" style={{borderRadius : 15}} />
+        <img src={deleteCertification} alt="deleteCertification" width="25px" height="25px" 
+            style={{
+              float : "right",
+              position : "relative",
+              top : "-28vh",
+              right : "2.5vw",
+              background: "rgba(44, 44, 44, 0.2)",
+              boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.15)",
+              borderRadius: "14px",
+              border: "1px solid #FFFFFF"
+            }} 
+            onClick={(e) => fileOnDelete(e, memberData[0].registeredId, cardDate)}
+            />
+        
+        <CertifiedRequirementContentLayer style={{clear : "both"}}>{cardDate}</CertifiedRequirementContentLayer>
+        <CertifiedRequirementContentLayer>인증 성공</CertifiedRequirementContentLayer>
       </CertifiedRequirementContentFalse>
     );
   } else {
     // 기본!
-    $imagePreview = (
-      <>
-      <CertifiedRequirementContentFalse>
-      <label htmlFor="file-input">
-        <img src={circlePlus} alt={"circlePlus"} height ="30%"/>
-      </label>
-      
-      <input style={{display: "none"}} id="file-input" type="file" name="file" onChange={e => fileOnChange(e)}/>
-      <CertifiedRequirementContentTextFalse>오늘의 챌린지를</CertifiedRequirementContentTextFalse>
-      <CertifiedRequirementContentTextFalse
-        style={{padding : 0}}
-      >인증해주세요</CertifiedRequirementContentTextFalse>
-      </CertifiedRequirementContentFalse>
-    </>
-    );
+    if(userType === "sub"){
+      $imagePreview = (
+        <>
+        참가자는 인증할 수 없습니다.
+        </>
+      )
+    }
+    else {
+      $imagePreview = (
+        <>
+        <CertifiedRequirementContentFalse>
+        <label htmlFor="file-input">
+          <img src={circlePlus} alt={"circlePlus"} height ="30%"/>
+        </label>
+        
+        <input style={{display: "none"}} id="file-input" type="file" name="file" onChange={e => fileOnChange(e, memberData[0].registeredId, cardDate)}/>
+        <CertifiedRequirementContentTextFalse>오늘의 챌린지를</CertifiedRequirementContentTextFalse>
+        <CertifiedRequirementContentTextFalse
+          style={{padding : 0}}
+        >인증해주세요</CertifiedRequirementContentTextFalse>
+        </CertifiedRequirementContentFalse>
+      </>
+      );
+    }
+
   }
 
   let TodayTime = moment().format("YYYY-MM-DD");
   
   // console.log(moment(TodayTime).isAfter('2018.01.01'));
   // console.log('certification : ', certification);
-  // console.log('certificationArray : ', certificationArray);
+  console.log('certificationArray : ', certificationArray);
   
   cardDate = moment(new Date(cardDate)).format("YYYY-MM-DD");
+  console.log("memberData : ", memberData);
   console.log("cardDate : ", cardDate);
+  console.log("userType : ", userType);
   return (
     <Fragment>
   
@@ -465,10 +489,7 @@ const MyChallengeDetail = ({
         <TitleBlock>
           <span>챌린지 세부 정보</span>
         </TitleBlock>
-        <QuestionMarkBlock>
-          <img src={questionMark} alt="QnA" />
-        </QuestionMarkBlock>
-        
+
       </BackTapContainer>
       
       <OverCard bordered={false}>
@@ -479,7 +500,7 @@ const MyChallengeDetail = ({
 
                     <OverCardPictureBottomDetail>
                         <div style={{marginRight : "7%"}}>
-                          <OverCardPictureBottomImage src ={memberData[0].challengeImage} alt ="default" height = "20%" width = "20%"/>
+                          <OverCardPictureBottomImage src ={memberData[0].userInfo[0].profile} alt ="default" height = "20%" width = "20%"/>
                         </div>
                         
                         <div style={{marginTop : "5%", width: "90%"}}>
@@ -520,42 +541,106 @@ const MyChallengeDetail = ({
       </NumberHorizontalLayout>
 
       {pictureFlag? (
-        <CertifiedRequirement>
-          <CertifiedRequirementContent>
-           <img src={pictureUrl} alt="" width="100%" height="100%" style={{opacity : "0.8", borderRadius : 10}} /> 
-           <CertifiedRequirementContentLayer>{cardDate}</CertifiedRequirementContentLayer>
-           <CertifiedRequirementContentLayer>인증 성공</CertifiedRequirementContentLayer>
-          </CertifiedRequirementContent>
-          <CertifiedRequirementContentTriangle></CertifiedRequirementContentTriangle>
-          <CertifiedRequirementContentText onClick={onOpen}>{certification.resolution}</CertifiedRequirementContentText>
-        </CertifiedRequirement>
-
-      ) : (
-        <CertifiedRequirement>
-          {moment(TodayTime).isAfter(cardDate) 
-          ? 
+        <>
+        {/* (이미지가 존재하는) 오늘 */}
+        {moment(TodayTime).isSame(cardDate) ? (
+          <CertifiedRequirement>
+            <CertifiedRequirementContent>
+            <img src={pictureUrl} alt="pictureUrl" width="100%" height="100%" style={{opacity : "0.8", borderRadius : 10}} /> 
+            <img src={deleteCertification} alt="deleteCertification" width="25px" height="25px" 
+            style={{
+              float : "right",
+              position : "relative",
+              top : "-28vh",
+              right : "2.5vw",
+              background: "rgba(44, 44, 44, 0.2)",
+              boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.15)",
+              borderRadius: "14px",
+              border: "1px solid #FFFFFF"
+            }} 
+            onClick={(e) => fileOnDeleteAfter(e, memberData[0].registeredId, cardDate)}
+            />
+            {deleteLoading? 
             (
-
-            <div>hi</div>
-
+              <OverSpin size={"large"} type="loading" style={{ position : "relative", top : "-22vh", left : "1.5vh" }} />
             ) : 
             (
               <>
-              {moment(TodayTime).isBefore(cardDate)
-              ?
-                (
-
-                <div>bye</div>
-                
-                ) : (
-                
-                <>
-                  {$imagePreview}
-                </>)
-              }
-              
               </>
             )}
+            
+            <CertifiedRequirementContentLayer style={{clear : "both", top : "-70%"}}>{cardDate}</CertifiedRequirementContentLayer>
+            <CertifiedRequirementContentLayer style={{top : "-70%"}}>인증 성공</CertifiedRequirementContentLayer>
+            </CertifiedRequirementContent>
+            <CertifiedRequirementContentTriangle></CertifiedRequirementContentTriangle>
+            <CertifiedRequirementContentText onClick={onOpen}>{certification.resolution}</CertifiedRequirementContentText>
+          </CertifiedRequirement>
+        ) : (
+          // 이미지가 존재하지만, 오늘이 아님
+          <CertifiedRequirement>
+            <CertifiedRequirementContent>
+            <img src={pictureUrl} alt="pictureUrl" width="100%" height="100%" style={{opacity : "0.8", borderRadius : 10}} /> 
+            <CertifiedRequirementContentLayer>{cardDate}</CertifiedRequirementContentLayer>
+            <CertifiedRequirementContentLayer>인증 성공</CertifiedRequirementContentLayer>
+            </CertifiedRequirementContent>
+            <CertifiedRequirementContentTriangle></CertifiedRequirementContentTriangle>
+            <CertifiedRequirementContentText onClick={onOpen}>{certification.resolution}</CertifiedRequirementContentText>
+          </CertifiedRequirement>
+        )}
+
+        
+        </>
+      ) : (
+        <CertifiedRequirement>
+          {userType === "sub" ? (
+            <>
+                    <CertifiedRequirementContent style={{border: "2px dashed #EB6363"}}>
+                      <CertifiedRequirementContentLayer 
+                      style={{position : "initial", color : "#EB6363", top : 0, fontSize : 16, whiteSpace : "pre-wrap", paddingTop : "32%"}}>
+                        참가자는 {`\n`}인증할 수{`\n`} 없습니다.
+                      </CertifiedRequirementContentLayer>
+                    </CertifiedRequirementContent>
+            </>
+          ) : (
+            <>
+              {moment(TodayTime).isAfter(cardDate) 
+              ? 
+              // 이미지가 존재하지 않고, 이전의 날
+                (
+
+                    <CertifiedRequirementContent style={{border: "2px dashed #EB6363"}}>
+                      <CertifiedRequirementContentLayer 
+                      style={{position : "initial", color : "#EB6363", top : 0, fontSize : 16, whiteSpace : "pre-wrap", paddingTop : "35%"}}>
+                        {cardDate}{`\n`}인증 실패
+                      </CertifiedRequirementContentLayer>
+                    </CertifiedRequirementContent>
+
+                ) : 
+                (
+                  <>
+                  {moment(TodayTime).isBefore(cardDate)
+                  ?
+                  // 이미지가 존재하지 않고, 이후의 날
+                    (
+                        <CertifiedRequirementContent style={{border: "2px dashed #EB6363"}}>
+                          <CertifiedRequirementContentLayer 
+                          style={{position : "initial", color : "#EB6363", top : 0, fontSize : 16, whiteSpace : "pre-wrap", paddingTop : "32%"}}>
+                            오늘은 {`\n`}인증하는 날이{`\n`} 아닙니다.
+                          </CertifiedRequirementContentLayer>
+                        </CertifiedRequirementContent>
+
+                    ) : (
+                    // 이미지가 존재하지 않고, 이전의 날 이후에 날이 아닌 오늘!
+                    <>
+                      {$imagePreview}
+                    </>)
+                  }
+                  
+                  </>
+                )}
+            </>
+          )}
+          
           
           <CertifiedRequirementContentTriangle></CertifiedRequirementContentTriangle>
           <CertifiedRequirementContentText onClick={onOpen}>{certification.resolution}</CertifiedRequirementContentText>

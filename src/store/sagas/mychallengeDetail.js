@@ -4,7 +4,8 @@ import {
     call,
     put,
     fork,
-    takeEvery
+    takeEvery,
+    delay,
   } from "redux-saga/effects";
 
   import {
@@ -13,9 +14,18 @@ import {
     GET_DETAIL,
     GET_DETAIL_SUCCESS,
     GET_DETAIL_FAILED,
-
+    POST_PICTURE_UPLOAD,
+    POST_PICTURE_UPLOAD_SUCCESS,
+    POST_PICTURE_UPLOAD_FAILED,
+    PUT_PICTURE_DELETE,
+    PUT_PICTURE_DELETE_SUCCESS,
+    PUT_PICTURE_DELETE_FAILED
   } from "../modules/mychallengeDetail";
-  
+
+  import moment from 'moment';
+
+  let TodayTime = moment().format("YYYY.MM.DD");
+
   function* certificationArray(action) {
 
     const {registeredId, uid} = action.payload;
@@ -26,14 +36,31 @@ import {
       uid
     );
 
+    let certificationImage, certificationDate, certificationFlag;
+    
     try {
-      if(certificationArray.certificationInfoArrayList[0].certificationTrue === 1){
-        console.log("인증 완료", certificationArray.certificationInfoArrayList[0]);
+  
+      certificationImage = certificationArray.certificationInfoArrayList[0].certificationImage;
+      certificationDate = certificationArray.certificationInfoArrayList[0].cardDate;
+      certificationFlag = certificationArray.certificationInfoArrayList[0].certificationTrue
+
+      for(let i = 0 ; i < certificationArray.certificationInfoArrayList.length ; i++){
+        if (certificationArray.certificationInfoArrayList[i].cardDate === TodayTime){
+          console.log("오늘 존재!!!");
+          certificationImage = certificationArray.certificationInfoArrayList[i].certificationImage;
+          certificationDate = certificationArray.certificationInfoArrayList[i].cardDate;
+          certificationFlag = certificationArray.certificationInfoArrayList[i].certificationTrue
+        }
+      }
+      
+      console.log("Here Saga Data : ", certificationImage, certificationDate, certificationFlag)
+      if(certificationFlag === 1){
+        console.log("인증 완료", certificationArray.certificationInfoArrayList);
         yield put({
           type : PICTUREFLAGTRUE,
           payload : {
-            image : certificationArray.certificationInfoArrayList[0].certificationImage,
-            date : certificationArray.certificationInfoArrayList[0].cardDate,
+            image : certificationImage,
+            date : certificationDate,
           }
 
       })
@@ -43,7 +70,7 @@ import {
         yield put({
           type : PICTUREFLAGFALSE,
           payload : {
-            date : certificationArray.certificationInfoArrayList[0].cardDate,
+            date : certificationDate,
           }
       })
       }
@@ -64,19 +91,92 @@ import {
     }
   }
 
+function* postCertification(action) {
 
+  const {registeredFk, date, file} = action.payload;
+  console.log(registeredFk, date, file)
+  const certification = yield call(
+    challengerAPI.postCertification,
+    registeredFk,
+    date,
+    file
+  );
+
+  try {
+
+      yield put({
+          type : POST_PICTURE_UPLOAD_SUCCESS,
+          payload : {
+            postLoading : false,
+            certification : certification
+          }
+      })
+
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type : POST_PICTURE_UPLOAD_FAILED,
+      error: e,
+      payload : {
+        postLoading : false
+      }
+    });
+  }
+}
+
+
+function* deleteCertification(action) {
+
+  const {registeredId, date} = action.payload;
+  console.log(registeredId, date)
+  const certification = yield call(
+    challengerAPI.deleteCertification,
+    registeredId,
+    date
+  );
+  yield delay(3000)
+  try {
+
+      yield put({
+          type : PUT_PICTURE_DELETE_SUCCESS,
+          payload : {
+            deleteLoading : false,
+            certification : certification
+          }
+      })
+
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type : PUT_PICTURE_DELETE_FAILED,
+      error: e,
+      payload : {
+        deleteLoading : false
+      }
+    });
+  }
+}
   //---------------------------------------------
   
-  function* watchCertificationArray() {
-    yield takeEvery(GET_DETAIL, certificationArray);
-  }
+function* watchCertificationArray() {
+  yield takeEvery(GET_DETAIL, certificationArray);
+}
 
+function* watchPostCertification() {
+  yield takeEvery(POST_PICTURE_UPLOAD, postCertification);
+}
+
+function* watchDeleteCertification() {
+  yield takeEvery(PUT_PICTURE_DELETE, deleteCertification);
+}
 
 
   //---------------------------------------
   
   export default function* userSaga() {
     yield all([
-      fork(watchCertificationArray)
+      fork(watchCertificationArray),
+      fork(watchPostCertification),
+      fork(watchDeleteCertification)
     ]);
   }
