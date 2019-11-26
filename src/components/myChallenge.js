@@ -100,7 +100,7 @@ const OverCardPictureBottomTitle = styled.div`
     font-size : 1rem;
     font-weight: 500;
     line-height : 140%;
-    width : 68%;
+    width : 80%;
     color: #000000;
     margin-top : 3%;
 `;
@@ -202,7 +202,7 @@ const ChallengeContentDate = styled.div`
   line-height: 17px;
   letter-spacing: -0.02em;
   color: #434444;
-  padding-top: 26%;
+  padding-top: 20%;
 `;
 
 const ChallengeContentProgress = styled.div`
@@ -233,7 +233,8 @@ const ChallengeContentProgressText = styled.div`
 // 함께하고 있는 챌린지 Styled
 
 const MyChallenge = ({ detailRouter, bottomDetailRouter, challenger_challenges, participation_challenges }) => {
-       
+       console.log("challenger_challenges", challenger_challenges)
+       console.log("participation_challenges", participation_challenges)
     return ( 
         <Fragment>
             <ContentsTitle>
@@ -298,42 +299,45 @@ const MyChallenge = ({ detailRouter, bottomDetailRouter, challenger_challenges, 
                 <ContentsTitle style={{paddingLeft : 0}}>
                         함께하는 챌린지
                 </ContentsTitle>
-                <ChallengeList>
-                    {participation_challenges.map((elem, index) => 
-                        <ChallengeCard key={index} onClick={() => bottomDetailRouter(elem.registeredId)}>
+                {participation_challenges.length === 0 ? (
+                            <div style={{margin : "0 10%"}}>데이터 없음.</div>
+                         ) : (
+                    <ChallengeList>
+                        {participation_challenges.map((elem, index) => 
+                            <ChallengeCard key={index} onClick={() => bottomDetailRouter(elem.registeredId)}>
 
-                        <ChallengeImg src={elem.challengeImage} alt="" width ="80px" />
-                        <ChallengeContent>
+                            <ChallengeImg src={elem.challengeImage} alt="" width ="80px" />
+                            <ChallengeContent>
 
-                        <ChallengeFixed>
-                        <ChallengeContentTitle>{elem.challengeTitle}</ChallengeContentTitle>
-                        <OverCardPictureBottomDetail style={{marginTop : 0}}>
-                            <OverCardPictureBottomImage src ={elem.userInfo[0].profile} alt ="default" height = "36px" width = "36px"/>                            
-                            
-                            
-                        </OverCardPictureBottomDetail>
-                        </ChallengeFixed>
+                            <ChallengeFixed>
+                            <ChallengeContentTitle>{elem.challengeTitle}</ChallengeContentTitle>
+                            <OverCardPictureBottomDetail style={{marginTop : 0}}>
+                                <OverCardPictureBottomImage src ={elem.userInfo[0].profile} alt ="default" height = "36px" width = "36px"/>                            
+                                
+                                
+                            </OverCardPictureBottomDetail>
+                            </ChallengeFixed>
 
-                        <ChallengeContentDate>
-                            <OverCardPictureBottomContentImage src={calendarImage} alt="" width = "7%"/>
-                            {elem.viewDate}
-                            <OverCardPictureBottomUserImage src={userImage} alt="" width = "10%"/>
-                            <span>{elem.userInfo.length}명</span>
-                        </ChallengeContentDate>
+                            <ChallengeContentDate>
+                                <OverCardPictureBottomContentImage src={calendarImage} alt="" width = "7%"/>
+                                {elem.viewDate}
+                                <OverCardPictureBottomUserImage src={userImage} alt="" width = "10%"/>
+                                <span>{elem.userInfo.length}명</span>
+                            </ChallengeContentDate>
 
-                        <ChallengeContentProgress>
-                            <Progress percent={50} showInfo={false} status="active" size="small" strokeColor="#EB6363"/> 
-                            <ChallengeContentProgressText>        
-                            <span style={{color:"red"}}>{`1`}</span> / {`2`}
-                            </ChallengeContentProgressText>
-                        </ChallengeContentProgress>
+                            <ChallengeContentProgress>
+                                <Progress percent={50} showInfo={false} status="active" size="small" strokeColor="#EB6363"/> 
+                                <ChallengeContentProgressText>        
+                                <span style={{color:"red"}}>{`1`}</span> / {`2`}
+                                </ChallengeContentProgressText>
+                            </ChallengeContentProgress>
 
-                        </ChallengeContent>
-                    </ChallengeCard>
-
+                            </ChallengeContent>
+                        </ChallengeCard>
                     )}
-                    
                 </ChallengeList>
+                )}
+
             </ChallengeContainer>
 
 

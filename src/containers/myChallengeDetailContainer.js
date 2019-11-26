@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import * as myChallengeDetailActions from "../store/modules/mychallengeDetail";
 import MyChallengeDetail from '../components/myChallengeDetail';
 
-const uid = 1615409;
+const uid = 19980106;
 
 class myChallengeDetailContainer extends Component {
     constructor(props){
@@ -13,57 +13,58 @@ class myChallengeDetailContainer extends Component {
             selectedFile: '',
             imagePreviewUrl : '',
             challenger_challenges : [],
+            
             participation_challenges : []
         }
     }
     componentDidMount = () => {
-        const { MyChallengeDetailActions, successInfo } = this.props;
-        console.log('challenger_challenges', this.props.location.state.flag);
+        const { MyChallengeDetailActions } = this.props;
+        console.log(this.props.location.state.flag);
 
         let registeredId = this.props.match.params.id;
         
         if(this.props.location.state.flag === 'main'){
             
             MyChallengeDetailActions.getDetail(registeredId, uid);
+            const propsArray = this.props.location.state.challenger_challenges;
+
+            let filterArray = propsArray.filter(elem => elem.registeredId === Number(registeredId))
+            
 
             this.setState({
-                challenger_challenges : this.props.location.state.challenger_challenges
+                challenger_challenges : filterArray
             })
         }
         else if(this.props.location.state.flag === 'sub') {
             
             MyChallengeDetailActions.getDetail(registeredId, uid);
+            const propsArray = this.props.location.state.participation_challenges;
+
+            let filterArray = propsArray.filter(elem => elem.registeredId === Number(registeredId))
+            
 
             this.setState({
-                participation_challenges : this.props.location.state.participation_challenges
+                participation_challenges : filterArray
             })
         }
         else {
             window.location.assign("/");
         }
         
-        if(successInfo[0] === true){
-            MyChallengeDetailActions.pictureFlagTrue();
-        }
-        else {
-            MyChallengeDetailActions.pictureFlagFalse();
-        }
-
     }
     backRouter = () => {
-        console.log("backRouter");
         this.props.history.push('/');
     }
     
-    pictureFlagRouter = (data) => {
-        console.log(data);
+    pictureFlagRouter = (data, image, date) => {
+        console.log(data, image, date);
         const { MyChallengeDetailActions } = this.props;
         
-        if(data !== true){
-            MyChallengeDetailActions.pictureFlagFalse();
+        if(data !== 1){
+            MyChallengeDetailActions.pictureFlagFalse(date);
         }
         else {
-            MyChallengeDetailActions.pictureFlagTrue();
+            MyChallengeDetailActions.pictureFlagTrue(image, date);
         }
 
     }
@@ -97,61 +98,58 @@ class myChallengeDetailContainer extends Component {
         reader.readAsDataURL(e.target.files[0])
     }
 
-    handleOnOpen = () => {
-        const { MyChallengeDetailActions } = this.props;
-        MyChallengeDetailActions.toggleVisible(true);
-    };
-    handleOnClose = () => {
-        const { MyChallengeDetailActions } = this.props;
-        MyChallengeDetailActions.toggleVisible(false);
-    };
-    handleInputChange = e => {
-        const { MyChallengeDetailActions } = this.props;
-        MyChallengeDetailActions.setText(e.target.value);
-    };
-
-    handleSubmit = e => {
-        const { text, MyChallengeDetailActions } = this.props;
-        console.log("text", text);
-        MyChallengeDetailActions.submitText(text)
-    };
-
-
     render() {
-        const {pictureFlag, members, visible, text, successInfo, certification} = this.props
+        const {pictureFlag, certification, certificationArray, pictureUrl, cardDate} = this.props
         let {imagePreviewUrl, challenger_challenges, participation_challenges} = this.state;
         let $imagePreview = null;
-        if(challenger_challenges.length > 0){
-            console.log("challenger_challenges : ", challenger_challenges);
-        }
-        else {
-            console.log("participation_challenges : ", participation_challenges);
-        }
-        
-        console.log('certification', certification)
         return (
-            <MyChallengeDetail
-            members={members}
-            visible={visible}
-            text={text}
-            selectedMembers={members}
-            onOpen={this.handleOnOpen}
-            onClose={this.handleOnClose}
-            onChange={this.handleInputChange}
-            onSubmit={this.handleSubmit}
-            backRouter={this.backRouter}
-            pictureFlagRouter={this.pictureFlagRouter}
-            pictureFlag={pictureFlag}
-            fileOnChange={this.fileOnChange}
+            <>
+            {challenger_challenges.length > 0 ? (
+                <MyChallengeDetail
 
-            // imagePreview
-            imagePreviewUrl={imagePreviewUrl}
-            $imagePreview={$imagePreview}
+                onOpen={this.handleOnOpen}
+                backRouter={this.backRouter}
+                pictureFlagRouter={this.pictureFlagRouter}
+                pictureFlag={pictureFlag}
+                pictureUrl={pictureUrl}
+                cardDate={cardDate}
+                fileOnChange={this.fileOnChange}
+                // imagePreview
+                imagePreviewUrl={imagePreviewUrl}
+                $imagePreview={$imagePreview}
 
-            successInfo={successInfo}
+                certification={certification}
+                certificationArray={certificationArray}
+                memberData={challenger_challenges}
+                />
+            ) : (
+                <>
+                    {participation_challenges.length > 0 ? (
+                        <MyChallengeDetail
 
-            certification={certification}
-            />
+                        onOpen={this.handleOnOpen}
+                        backRouter={this.backRouter}
+                        pictureFlagRouter={this.pictureFlagRouter}
+                        pictureFlag={pictureFlag}
+                        pictureUrl={pictureUrl}
+                        cardDate={cardDate}
+                        fileOnChange={this.fileOnChange}
+
+                        // imagePreview
+                        imagePreviewUrl={imagePreviewUrl}
+                        $imagePreview={$imagePreview}
+
+                        certification={certification}
+                        certificationArray={certificationArray}
+                        memberData={participation_challenges}
+                        />
+                    ) : (
+                        <div>정상적인 접근이 아닙니다.</div>
+                    )}
+                </>
+            )}
+                
+            </>
         );
     }
 }
@@ -160,11 +158,10 @@ class myChallengeDetailContainer extends Component {
 // store에 있는 counter의 initalState를 가져온다.
 const mapStateToProps = ({ mychallengeDetail }) => ({
     pictureFlag: mychallengeDetail.pictureFlag,
-    members: mychallengeDetail.members,
-    visible: mychallengeDetail.visible,
-    text: mychallengeDetail.text,
-    successInfo : mychallengeDetail.successInfo,
-    certification : mychallengeDetail.certification
+    pictureUrl : mychallengeDetail.pictureUrl,
+    cardDate : mychallengeDetail.cardDate,
+    certification : mychallengeDetail.certification,
+    certificationArray : mychallengeDetail.certificationArray
 });
   
   

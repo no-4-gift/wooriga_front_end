@@ -5,16 +5,18 @@ export const GET_DETAIL = "mychallengeDetail/GET_DETAIL";
 export const GET_DETAIL_SUCCESS = "mychallengeDetail/GET_DETAIL_SUCCESS";
 export const GET_DETAIL_FAILED = "mychallengeDetail/GET_DETAIL_FAILED";
 
-export const TOGGLE_VISIBLE = "mychallengeDetail/TOGGLE_VISIBLE";
-export const SET_TEXT = "mychallengeDetail/SET_TEXT"; 
-
-export const SUBMIT_TEXT = "mychallengeDetail/SUBMIT_TEXT"; 
-export const SUBMIT_TEXTSUCCESS = "mychallengeDetail/SUBMIT_TEXTSUCCESS";
-export const SUBMIT_TEXTFAILED = "mychallengeDetail/SET_MEMBERSFAILED";
-
-
-export const pictureFlagTrue = () => ({ type: PICTUREFLAGTRUE });
-export const pictureFlagFalse = () => ({ type: PICTUREFLAGFALSE });
+export const pictureFlagTrue = (image, date) => ({ 
+  type: PICTUREFLAGTRUE, 
+  payload : {
+    image : image, 
+    date : date
+  } 
+});
+export const pictureFlagFalse = (date) => ({ type: PICTUREFLAGFALSE,
+  payload : {
+    date : date
+  }
+});
 
 export const getDetail = (registeredId, uid) => ({ 
   type: GET_DETAIL, 
@@ -23,91 +25,52 @@ export const getDetail = (registeredId, uid) => ({
     uid : uid
   }
  });
-export const toggleVisible = visible => ({
-  type: TOGGLE_VISIBLE,
-  payload: visible
-});
-export const setText = text => ({ type: SET_TEXT, payload: text });
-export const submitText = text => ({ type : SUBMIT_TEXT, payload : text});
 
 /* 초기 상태 선언 */
 const initialState = {
   pictureFlag : true,
-  members: [{
-    id: 1,
-    name: "브루스 웨인",
-    relation: "아빠",
-    color: "#BC61F4",
-    thumbnail: ""
-  },
-  {
-    id: 2,
-    name: "할리 퀸",
-    relation: "엄마",
-    color: "aqua",
-    thumbnail: ""
-  },
-  {
-    id: 3,
-    name: "조커",
-    relation: "형",
-    color: "orangered",
-    thumbnail: ""
-  },
-],
-  certification : {},
-  visible: false,
-  text: "",
-  successInfo : [true, false, false, false, true, true, false, false, false, true]
+  pictureUrl : "",
+  cardDate : "",
+  certification : [],
+  certificationArray : [],
 };
 /* 리듀서 선언 */
 export default (state = initialState, action) => {
   switch (action.type) {
     case PICTUREFLAGTRUE:
+    console.log(action.payload)
         return {
             ...state,
-            pictureFlag: true
+            pictureFlag: 1,
+            pictureUrl : action.payload.image,
+            cardDate : action.payload.date
         };
     case PICTUREFLAGFALSE:
         return {
         ...state,
-        pictureFlag: false
+        pictureFlag: 0,
+        pictureUrl : "",
+        cardDate : action.payload.date,
         };
 
     case GET_DETAIL:
         return {
           ...state,
+          certification : [],
+          certificationArray : [],
         };
     case GET_DETAIL_SUCCESS:
-        
         return {
           ...state,
-          certification : action.payload.certification
+          certification : action.payload.certification,
+          certificationArray : action.payload.certification.certificationInfoArrayList,
         };
     case GET_DETAIL_FAILED:
     return {
       ...state,
-      certification : {}
+      certification : [],
+      certificationArray : [],
     };
-    case TOGGLE_VISIBLE:
-      return { ...state, visible: action.payload };
-    case SET_TEXT:
-      return { ...state, text: action.payload };
-    case SUBMIT_TEXT:
-      return {
-        ...state, text: action.payload
-    };
-
-    case SUBMIT_TEXTSUCCESS:
-      console.log(action);
-    return {
-      ...state, text: action.submitText, visible : false
-    }
-    case SUBMIT_TEXTFAILED:
-
-    return {
-      ...state, text: "error", visible : false
-    }
     default:
       return state;
   }
