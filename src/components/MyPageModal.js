@@ -1,48 +1,64 @@
 import React, { Component, Fragment } from "react";
 import styled, { css } from "styled-components";
 import { Input, Button, Typography } from "antd";
-import { colorSelector, profileColor } from "../styleUtils/colorStyle";
 import PropType from "prop-types";
-import "./ColorPicker.css";
+//import "../styleUtils/ColorPicker.css";
 import circlePlus from "../images/circlePlus.PNG";
+import check from "../images/check.png";
 const { Text } = Typography;
 
-const PaletteItem = ({ color, active, onClick }) => {
-  return (
-    <div
-      className={`PaletteItem ${active ? "active" : ""}`}
-      style={{ backgroundColor: color }}
-      onClick={onClick}
-    />
-  );
-};
-const Palette = ({ selected }) => {
-  return (
-    <div className="Palette">
-      <div className="colors">
-        {colors.map(color => (
-          <PaletteItem color={color} key={color} active={selected === color} />
-        ))}
-      </div>
-    </div>
-  );
-};
+const PaletteDiv = styled.div`
+  color: black;
+  margin: 0.8rem 0;
+  display: inline-flex;
+  flex-wrap: wrap-reverse;
+  text-align: center;
+  font-size: large;
+  font-weight: bold;
 
-const colors = [
-  "#f44336",
-  "#e91e63",
-  "#9c27b0",
-  "#673ab7",
-  "#2196f3",
-  "#03a9f4",
-  "#00bcd4",
-  "#009688",
-  "#8bc34a",
-  "#cddc39",
-  "#ffeb3b",
-  "#ffc107"
-];
+  &:colors {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  &: h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+`;
 
+const PaletteItemDiv = styled.div`
+  border-radius: 1rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+  border: 2px solid white;
+  opacity: 0.7;
+  margin: 0.25rem;
+  padding: 0.25rem 0;
+  background: ${props => props.membercolor};
+
+  &:hover {
+    opacity: 0.9;
+    border: 2px solid red;
+  }
+
+  ${props =>
+    props.IsAlreadySet &&
+    css`
+    borderColor: black;
+    border: solid;
+    pointer-events: none;
+    }
+  `};
+
+  ${props =>
+    props.active &&
+    css`
+      opacity: 1;
+    }
+  `};
+`;
 // 화면을 불투명하게 해줍니다.
 const ModalBackground = styled.div`
   position: fixed;
@@ -86,13 +102,36 @@ const MyIcon = styled.div`
   position: relative;
   width: 80px;
   height: 80px;
-  border: 1.5px #f15f5f solid;
+  border: 2px solid ${props => props.color};
   border-radius: 5rem;
   text-align: center;
   float: center;
   margin: 1rem 36%;
 `;
 
+const MyIconimg = styled.img`
+  box-sizing: border-box;
+  border-radius: 50px;
+  width: 80px;
+  height: 80px;
+  margin-top: "2%";
+  margin-left: 3%;
+  float: left;
+`;
+const colors = {
+  black: "#000000",
+  orangered: "#f44336",
+  red: "#e91e63",
+  violet: "#9c27b0",
+  Darkviolet: "#673ab7",
+  blue: "#2196f3",
+  amerald: "#00bcd4",
+  Darkgreen: "#009688",
+  green: "#8bc34a",
+  lightgreen: "#cddc39",
+  yellow: "#ffeb3b",
+  orange: "#ffc107"
+};
 function MyPageModal({
   members,
   visible,
@@ -108,7 +147,9 @@ function MyPageModal({
 }) {
   let name = members.find(member => member.id === myid).name;
   let relation = members.find(member => member.id === myid).relation;
+  let mycolor = members.find(member => member.id === myid).color;
   console.log("mypagemodal-----------");
+  console.log(mycolor);
   console.log(members);
   console.log(name);
   console.log(relation);
@@ -119,21 +160,85 @@ function MyPageModal({
   console.log($initImg);
   console.log("mypagemodal-----------");
 
+  //프로필 색깔
+  const PaletteItem = ({ color, active, onClick, customcolor }) => {
+    //const mycolor = members.find(member => member.id === myid).color;
+    let memberColors = members
+      .map(member => member.color)
+      .filter(membercolor => membercolor !== mycolor);
+    console.log(mycolor);
+    console.log("*********membercolor******:" + memberColors);
+
+    if (memberColors.find(x => x === color)) {
+      return (
+        <PaletteItemDiv
+          active={`PaletteItem ${active ? "active" : ""}`}
+          IsAlreadySet={true}
+          membercolor={customcolor}
+          checkColor={"black"}
+          onClick={onClick}
+        >
+          v
+        </PaletteItemDiv>
+      );
+    } else if (mycolor === color) {
+      return (
+        <PaletteItemDiv
+          active={`PaletteItem ${active ? "active" : ""}`}
+          IsAlreadySet={true}
+          membercolor={customcolor}
+          onClick={onClick}
+        >
+          ME
+        </PaletteItemDiv>
+      );
+    } else {
+      return (
+        <PaletteItemDiv
+          active={`PaletteItem ${active ? "active" : ""}`}
+          membercolor={customcolor}
+          onClick={onClick}
+        />
+      );
+    }
+  };
+
+  const Palette = ({ selected }) => {
+    return (
+      <PaletteDiv>
+        {Object.keys(colors).map(color => (
+          <PaletteItem
+            color={color}
+            customcolor={colors[color]}
+            key={color}
+            active={selected === color}
+          />
+        ))}
+      </PaletteDiv>
+    );
+  };
+
+  //프로필 사진
   if (imageUrl) {
     $initImg = (
       <>
-        {/* <label htmlFor="file-input"> */}
-        <img
-          id={circlePlus}
-          src={imageUrl}
-          alt="imageUrl"
-          width="100%"
-          height="100%"
-        />
-        {/* </label> */}
+        <label htmlFor="file-input2">
+          {/* <img
+            id={circlePlus}
+            src={imageUrl}
+            alt="imageUrl"
+            width="100%"
+            height="100%"
+          /> */}
+          <img
+            src={circlePlus}
+            alt={"circlePlus"}
+            style={{ width: "40%", height: "40%", margin: "3rem 0 0 3rem" }}
+          />
+        </label>
         <input
           style={{ display: "none" }}
-          id="file-input"
+          id="file-input2"
           type="file"
           name="file"
           onChange={e => ImgOnChange(e)}
@@ -144,10 +249,37 @@ function MyPageModal({
     $initImg = (
       <>
         <label htmlFor="file-input">
-          <img
+          <img src={circlePlus} alt={"circlePlus"} height="30%" />
+        </label>
+
+        <input
+          style={{ display: "none" }}
+          id="file-input"
+          type="file"
+          name="file"
+          accept="image/*"
+          capture="camera"
+          onChange={e =>
+            fileOnChange(
+              e,
+              memberData[0].challengeBarInfo.registeredId,
+              cardDate
+            )
+          }
+        />
+
+        <label htmlFor="file-input">
+          {/* <img
             src={circlePlus}
             alt={"circlePlus"}
             style={{ width: "40%", height: "40%", margin: "3rem 0 0 3rem" }}
+          /> */}
+          <img
+            id={circlePlus}
+            src={imageUrl}
+            alt="imageUrl"
+            width="100%"
+            height="100%"
           />
         </label>
         <input
@@ -170,17 +302,18 @@ function MyPageModal({
         <br />
         {/* <MyIcon /> */}
         {imageUrl ? (
-          <MyIcon>
-            <img
+          <MyIcon color={mycolor}>
+            <MyIconimg
               id={"circlePlus"}
               src={imageUrl}
               alt="imageUrl"
               width="100%"
               height="100%"
             />
+            {$initImg}
           </MyIcon>
         ) : (
-          <MyIcon>{$initImg}</MyIcon>
+          <MyIcon color={mycolor}>{$initImg}</MyIcon>
         )}
         {/* <MyIcon onClick {e => ImgOnChange(e)}/> */}
         {/* <div onClick={e => ImgOnChange(e)}>선택 후 이미지 업로드</div> */}

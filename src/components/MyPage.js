@@ -16,7 +16,6 @@ import {
   message
 } from "antd";
 import Headers from "./statics/HeaderLayout";
-import ChosensContainer from "../containers/ChosensContainer";
 
 //////////////////////
 import defaultImage from "../images/default.PNG";
@@ -200,7 +199,6 @@ function MyPage({
   return (
     <WhiteBackgroundLayout>
       <Headers content="내정보" />
-      <ChosensContainer />
       <MypageLayout>
         <br />
 

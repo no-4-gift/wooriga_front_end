@@ -6,12 +6,13 @@ import MyPageModal from "../components/MyPageModal";
 import MyPage from "../components/MyPage";
 import { bindActionCreators } from "redux";
 
+let reader = new FileReader();
 class MyPageContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectImage: "",
-      imageUrl: ""
+      selectedFile: "",
+      imagePreviewUrl: ""
     };
   }
 
@@ -83,13 +84,44 @@ class MyPageContainer extends Component {
   MovedetailPage = () => {
     window.location.assign("/mypage_detail");
   };
+
+  // imagePreview
+  handlefileOnChange = (e, registeredFk, date) => {
+    const { MyPageActions } = this.props;
+
+    let file = e.target.files[0];
+
+    console.log("e.target.files[0]", e.target.files[0]);
+    console.log("registeredFk", registeredFk);
+    reader.onloadend = () => {
+      this.setState(
+        {
+          selectedFile: file,
+          imagePreviewUrl: reader.result
+        },
+        () => {
+          console.log(this.state.selectedFile);
+          MyPageActions.postCertification(
+            registeredFk,
+            date,
+            this.state.selectedFile
+          );
+        }
+      );
+    };
+
+    console.log("timing");
+    reader.readAsDataURL(e.target.files[0]);
+  };
   //////////////////////////////////
   render() {
     const myid = parseInt(window.sessionStorage.getItem("id")); //로그인 한 유저 정보는 store 나 localStorage에 저장 되어있어야함
-    const { members, visible, logged, rowsToDisplay, profileImg } = this.props;
+    //const { members, visible, logged, rowsToDisplay, profileImg } = this.props;
+    const { members, visible, logged, rowsToDisplay } = this.props;
+    let { imagePreviewUrl } = this.state;
+    let $imagePreview = null;
+    //let { imageUrl } = this.state;
     let memberlength = members.length;
-    let { imageUrl } = this.state;
-    let $initImg = null;
     console.log("mypagecontainer-----------");
     console.log(`id is ${myid}`);
     console.log(visible);
@@ -97,7 +129,6 @@ class MyPageContainer extends Component {
     console.log(memberlength);
     console.log(rowsToDisplay);
     console.log(logged);
-    console.log(profileImg);
     console.log("mypagecontainer-----------");
 
     return (
@@ -120,9 +151,11 @@ class MyPageContainer extends Component {
           onLogout={this.handleLogout}
           onSave={this.handleSaveModal}
           logged={logged}
-          ImgOnChange={this.handleImgOnChange}
-          imageUrl={imageUrl}
-          $initImg={$initImg}
+          ImgOnChange={this.handlefileOnChange}
+          // imageUrl={imageUrl}
+          // $initImg={$initImg}
+          imagePreviewUrl={imagePreviewUrl}
+          $imagePreview={$imagePreview}
           onChange={this.handleInputChange}
         />
         {/* <MyPageDetail backRouter={this.handlebackRouter} /> */}
@@ -134,12 +167,12 @@ class MyPageContainer extends Component {
 // 리덕스 스토어 안의 상태를 컴포넌트의 props로 넘겨주기 위해 사용하는 함수
 //state 를 파라미터로 받아온다 . 현재 store 가 가지고 있는 상태
 const mapStateToProps = ({ mypage, login }) => ({
-  imageUrl: mypage.profileImage,
+  //imageUrl: mypage.profileImage,
   visible: mypage.visible,
   members: mypage.members,
   logged: login.logged,
-  rowsToDisplay: mypage.rowsToDisplay,
-  profileImg: mypage.profileImg
+  rowsToDisplay: mypage.rowsToDisplay
+  //profileImg: mypage.profileImg
 });
 
 //액션 생성 함수를 컴포넌트의 props로 넘겨주기 위해 사용하는 함수
