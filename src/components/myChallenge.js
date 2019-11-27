@@ -32,7 +32,7 @@ const OverCarousel = styled(Carousel)`
             background : black;
         }
         margin-top : 0;
-        height : 60vh;
+        height : 410px;
         .slick-list {
             height : 100%;
             border-radius: 10px 10px 0 0;
@@ -55,7 +55,7 @@ const OverCard = styled(Card)`
 
 // OverCardPicture Entire
 const OverCardPicture = styled.div`
-    height: 68vh;
+    height: 410px;
     background-color : whitegray;
 `;
 
@@ -88,7 +88,7 @@ const OverCardPictureTopLayerTwo = styled.div`
 `;
 
 const OverCardPictureBottom = styled.div`
-    height : 22%;
+    height : 28%;
     padding : 0px 5%;
     border : 1px solid #EDEDED;
     box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.15);
@@ -139,9 +139,10 @@ const ChallengeContainer = styled.div`
 `;
 const ChallengeList = styled.div`
   width: 100%;
-  height: 80%;
+  height: 400px;
   overflow: auto;
   margin-top: 27px;
+  margin-bottom : 35px;
 `;
 const ChallengeCard = styled.div`
   display: flex;
@@ -250,7 +251,7 @@ const MyChallenge = ({ detailRouter, bottomDetailRouter, challenger_challenges, 
                             <>
                             <OverCarousel dotPosition={"bottom"}>
                             {challenger_challenges.map((elem, index) => 
-                                <OverCard bordered={false} key={index} onClick={() => detailRouter(elem.registeredId)}>
+                                <OverCard bordered={false} key={index} onClick={() => detailRouter(elem.challengeBarInfo.registeredId)}>
                                     <OverCardPicture>
                                         <OverCardPictureTop>
 
@@ -267,18 +268,16 @@ const MyChallenge = ({ detailRouter, bottomDetailRouter, challenger_challenges, 
 
                                         <OverCardPictureBottom>
 
-                                                <OverCardPictureBottomTitle>{elem.challengeTitle}</OverCardPictureBottomTitle>
+                                                <OverCardPictureBottomTitle>{elem.challengeBarInfo.challengeTitle}</OverCardPictureBottomTitle>
                                                 <OverCardPictureBottomDetail>
-                                                    <OverCardPictureBottomImage src ={elem.userInfo[0].profile} alt ="default" height = "36px" width = "36px" style={{float :"right"}}/>                            
-                                                    
-                                                    
+                                                    <OverCardPictureBottomImage src ={elem.challengeBarInfo.userInfo[0].profile} alt ="default" height = "36px" width = "36px" style={{float :"right"}}/>
                                                 </OverCardPictureBottomDetail>
 
                                             <OverCardPictureBottomContent>
                                                 <OverCardPictureBottomContentImage src={calendarImage} alt="" width = "6%"/>
-                                                <span style={{float : "left", color : "#434444"}}>{elem.viewDate}</span>
+                                                <span style={{float : "left", color : "#434444"}}>{elem.challengeBarInfo.viewDate}</span>
                                                 <OverCardPictureBottomUserImage src={userImage} alt="" width = "10%"/>
-                                                <span style={{color :"#434444"}}>{elem.userInfo.length}명</span>
+                                                <span style={{color :"#434444"}}>{elem.challengeBarInfo.userInfo.length}명</span>
                                             </OverCardPictureBottomContent>
 
                                         </OverCardPictureBottom>
@@ -304,15 +303,15 @@ const MyChallenge = ({ detailRouter, bottomDetailRouter, challenger_challenges, 
                          ) : (
                     <ChallengeList>
                         {participation_challenges.map((elem, index) => 
-                            <ChallengeCard key={index} onClick={() => bottomDetailRouter(elem.registeredId)}>
+                            <ChallengeCard key={index} onClick={() => bottomDetailRouter(elem.challengeBarInfo.registeredId)}>
 
                             <ChallengeImg src={elem.challengeImage} alt="" width ="80px" />
                             <ChallengeContent>
 
                             <ChallengeFixed>
-                            <ChallengeContentTitle>{elem.challengeTitle}</ChallengeContentTitle>
+                            <ChallengeContentTitle>{elem.challengeBarInfo.challengeTitle}</ChallengeContentTitle>
                             <OverCardPictureBottomDetail style={{marginTop : 0}}>
-                                <OverCardPictureBottomImage src ={elem.userInfo[0].profile} alt ="default" height = "36px" width = "36px"/>                            
+                                <OverCardPictureBottomImage src ={elem.challengeBarInfo.userInfo[0].profile} alt ="default" height = "36px" width = "36px"/>                            
                                 
                                 
                             </OverCardPictureBottomDetail>
@@ -320,9 +319,9 @@ const MyChallenge = ({ detailRouter, bottomDetailRouter, challenger_challenges, 
 
                             <ChallengeContentDate>
                                 <OverCardPictureBottomContentImage src={calendarImage} alt="" width = "7%"/>
-                                {elem.viewDate}
+                                {elem.challengeBarInfo.viewDate}
                                 <OverCardPictureBottomUserImage src={userImage} alt="" width = "10%"/>
-                                <span>{elem.userInfo.length}명</span>
+                                <span>{elem.challengeBarInfo.userInfo.length}명</span>
                             </ChallengeContentDate>
 
                             <ChallengeContentProgress>

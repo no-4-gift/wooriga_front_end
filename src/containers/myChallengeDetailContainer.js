@@ -32,7 +32,7 @@ class myChallengeDetailContainer extends Component {
             MyChallengeDetailActions.getDetail(registeredId, uid);
             const propsArray = this.props.location.state.challenger_challenges;
 
-            let filterArray = propsArray.filter(elem => elem.registeredId === Number(registeredId))
+            let filterArray = propsArray.filter(elem => elem.challengeBarInfo.registeredId === Number(registeredId))
             
 
             this.setState({
@@ -45,7 +45,7 @@ class myChallengeDetailContainer extends Component {
             MyChallengeDetailActions.getDetail(registeredId, uid);
             const propsArray = this.props.location.state.participation_challenges;
 
-            let filterArray = propsArray.filter(elem => elem.registeredId === Number(registeredId))
+            let filterArray = propsArray.filter(elem => elem.challengeBarInfo.registeredId === Number(registeredId))
             
 
             this.setState({
@@ -113,7 +113,9 @@ class myChallengeDetailContainer extends Component {
             imagePreviewUrl: ''
         })
 
-        MyChallengeDetailActions.deleteCertification(registeredId, date)
+        MyChallengeDetailActions.deleteCertification(registeredId, date);
+        let dateColor = moment(new Date(date)).format("YYYY.MM.DD");
+        MyChallengeDetailActions.deleteCertificationColor(dateColor)
     }
 
     fileOnDeleteAfter = (e, registeredId, date) => {
