@@ -15,11 +15,12 @@ function ChallengeList({
     <ChallengeListWrapper>
       {challengeList.map(elem => (
         <ChallengeCard
-          key={elem.id}
-          id={elem.id}
+          key={elem.challengeId}
+          id={elem.challengeId}
           title={elem.title}
-          select={elem.id === challengeId ? true : false}
-          content={elem.content}
+          select={elem.challengeId === challengeId ? true : false}
+          summary={elem.summary === null ? "제공 준비중" : elem.summary}
+          image={elem.challengeImages.image}
           datesLength={dateLength}
           onSelectChallenge={onSelectChallenge}
         />
@@ -31,9 +32,11 @@ function ChallengeList({
 ChallengeList.propTypes = {
   challengeList: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      challengeId: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
-      content: PropTypes.string.isRequired
+      content: PropTypes.string,
+      summary: PropTypes.string,
+      image: PropTypes.string
     })
   ),
   challengeId: PropTypes.number.isRequired,

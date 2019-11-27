@@ -18,7 +18,8 @@ export default function family(state = initState, action) {
     case GET_FAMILY:
       return {
         ...state,
-        loading: true
+        loading: true,
+        error: null
       };
     case GET_FAMILY_SUCCESS:
       return { ...state, loading: false, members: action.payload };

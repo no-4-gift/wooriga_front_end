@@ -7,14 +7,15 @@ function ChallengeCard({
   id,
   select,
   title,
-  content,
+  summary,
+  image,
   datesLength,
   onSelectChallenge
 }) {
   console.log("ChallengeCard Render");
   return (
     <ChallengeCardWrapper select={select} onClick={() => onSelectChallenge(id)}>
-      <ChallengeImg src={""} />
+      <ChallengeImg src={image} />
       <ChallengeBody>
         <ChallengeTitle>
           <span>{title}</span>
@@ -26,7 +27,7 @@ function ChallengeCard({
           <span>&nbsp;{datesLength}일</span>
         </ChallengeDate>
         <ChallengeContent>
-          <p>{content}</p>
+          <p>{summary}</p>
         </ChallengeContent>
       </ChallengeBody>
     </ChallengeCardWrapper>
@@ -38,8 +39,9 @@ ChallengeCard.propTypes = {
   select: PropTypes.bool.isRequired,
   onSelectChallenge: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
-  datesLength: PropTypes.number.isRequired
+  summary: PropTypes.string.isRequired,
+  datesLength: PropTypes.number.isRequired,
+  image: PropTypes.string.isRequired
 };
 
 export default React.memo(ChallengeCard);

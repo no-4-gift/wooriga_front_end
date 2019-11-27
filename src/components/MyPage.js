@@ -185,8 +185,8 @@ const RecordContainer = styled.div`
 
 function MyPage({
   members,
-  onShow,
   myid,
+  onShow,
   visible,
   onShowMoreBtn,
   rowsToDisplay,
@@ -194,17 +194,14 @@ function MyPage({
 }) {
   console.log("mypage-----------");
   console.log(visible);
-  console.log(myid);
+
   console.log(rowsToDisplay);
   console.log("mypage-----------");
 
   return (
     <WhiteBackgroundLayout>
-      <Headers content="내정보" />
-      <ChosensContainer />
       <MypageLayout>
         <br />
-
         <div>
           <TitleText>내 정보</TitleText>
           <SettingText onClick={onShow}>설정</SettingText>

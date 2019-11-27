@@ -1,7 +1,14 @@
 import React, { Fragment } from "react";
 import styled, { css, createGlobalStyle } from "styled-components";
 import PropTypes from "prop-types";
-function PromiseCardModal({ members, visible, text, onChange, onCancle, onSubmit }) {
+function PromiseCardModal({
+  members,
+  visible,
+  text,
+  onChange,
+  onCancle,
+  onSubmit
+}) {
   const to = members.map(elem => elem.name).join(",");
 
   return (
@@ -51,7 +58,8 @@ PromiseCardModal.propTypes = {
   visible: PropTypes.bool.isRequired,
   text: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  onCancle: PropTypes.func.isRequired
+  onCancle: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired
 };
 
 const DarkBackGround = styled.div`

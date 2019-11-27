@@ -4,7 +4,7 @@ import styled from "styled-components";
 import defaultImage from "../images/default.PNG";
 import { MdArrowBack } from "react-icons/md";
 import deleteCertification from "../images/deleteCertification.png";
-import circlePlus from '../images/circlePlus.png';
+import circlePlus from "../images/circlePlus.PNG";
 import userImage from '../images/user.PNG';
 import moment from 'moment';
 

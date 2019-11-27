@@ -1,7 +1,7 @@
 /* 액션 타입 만들기 */
-const ONCALENDAR = "login/ONCALENDAR";
-const ONMASKGROUP = "login/ONMASKGROUP";
-const ONCONTACT = "login/ONCONTACT";
+export const ONCALENDAR = "login/ONCALENDAR";
+export const ONMASKGROUP = "login/ONMASKGROUP";
+export const ONCONTACT = "login/ONCONTACT";
 
 /* 액션 생성함수 만들기 */
 export const onCalendar = () => ({ type: ONCALENDAR });
@@ -10,7 +10,7 @@ export const onContact = () => ({ type: ONCONTACT });
 
 /* 초기 상태 선언 */
 const initialState = {
-  checked : 2
+  checked: 2
 };
 /* 리듀서 선언 */
 export default function counter(state = initialState, action) {
