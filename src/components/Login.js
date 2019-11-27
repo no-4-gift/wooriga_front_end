@@ -3,6 +3,7 @@ import KakaoLogin from "react-kakao-login";
 import { withRouter } from "react-router-dom";
 import { Layout, Typography } from "antd";
 import logoImage from "../images/logo2.png";
+import kakaobuttonpng from "../images/kakaobutton.png";
 import styled from "styled-components";
 const { Content } = Layout;
 const { Text } = Typography;
@@ -41,7 +42,7 @@ function Login({ responseKakao, responseFail }) {
             <img
               width="100%"
               height="100%"
-              src="https://postfiles.pstatic.net/MjAxOTA5MjlfMjkw/MDAxNTY5NzI3MDIxMzU0.ai-tv2mHjtuM0h8vDGd8wEqEKiAD7Z561PITEpoMxVcg.jxGeQQ2_BgZcwSQvVg0R1bAdSh1vAyL4pDNs3uqhyjUg.PNG.bigangel123/kakao_account_login_btn_medium_wide.png?type=w773"
+              src={kakaobuttonpng}
               alt="kakaobutton"
             />
           </KakaoButton>
