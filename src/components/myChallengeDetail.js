@@ -4,7 +4,7 @@ import styled from "styled-components";
 import defaultImage from "../images/default.PNG";
 import { MdArrowBack } from "react-icons/md";
 import deleteCertification from "../images/deleteCertification.png";
-import circlePlus from "../images/circlePlus.PNG";
+import circlePlus from "../images/circlePlus.png";
 import userImage from '../images/user.PNG';
 import moment from 'moment';
 
@@ -419,20 +419,27 @@ const MyChallengeDetail = ({
     // 프리뷰!!
     $imagePreview = (
       <CertifiedRequirementContentFalse style={{paddingTop : 0}}>
-        <img id={"circlePlus"} src={imagePreviewUrl} alt="imagePreviewUrl" width ="100%" height ="100%" style={{borderRadius : 15}} />
+        <div style={{
+          height : 0,
+          float : "right",
+          position : "relative",
+          top : "1vh",
+          right : "1.5vw"
+
+        }}>
         <img src={deleteCertification} alt="deleteCertification" width="25px" height="25px" 
             style={{
-              float : "right",
-              position : "relative",
-              top : "-28vh",
-              right : "2.5vw",
+              
               background: "rgba(44, 44, 44, 0.2)",
               boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.15)",
               borderRadius: "14px",
               border: "1px solid #FFFFFF"
             }} 
-            onClick={(e) => fileOnDelete(e, memberData[0].registeredId, cardDate)}
+            onClick={(e) => fileOnDelete(e, memberData[0].challengeBarInfo.registeredId, cardDate)}
             />
+        </div>
+
+        <img id={"circlePlus"} src={imagePreviewUrl} alt="imagePreviewUrl" width ="100%" height ="100%" style={{borderRadius : 15}} />
         
         <CertifiedRequirementContentLayer style={{clear : "both"}}>{cardDate}</CertifiedRequirementContentLayer>
         <CertifiedRequirementContentLayer>인증 성공</CertifiedRequirementContentLayer>
@@ -455,7 +462,7 @@ const MyChallengeDetail = ({
           <img src={circlePlus} alt={"circlePlus"} height ="30%"/>
         </label>
         
-        <input style={{display: "none"}} id="file-input" type="file" name="file" onChange={e => fileOnChange(e, memberData[0].registeredId, cardDate)}/>
+        <input style={{display: "none"}} id="file-input" type="file" name="file" onChange={e => fileOnChange(e, memberData[0].challengeBarInfo.registeredId, cardDate)}/>
         <CertifiedRequirementContentTextFalse>오늘의 챌린지를</CertifiedRequirementContentTextFalse>
         <CertifiedRequirementContentTextFalse
           style={{padding : 0}}
@@ -496,16 +503,16 @@ const MyChallengeDetail = ({
         <OverCardPicture>
             <OverCardPictureBottom>
                 <OverCardPictureBottomFixed>
-                    <OverCardPictureBottomTitle style={{whiteSpace : "pre-wrap"}}>{memberData[0].challengeTitle}</OverCardPictureBottomTitle>
+                    <OverCardPictureBottomTitle style={{whiteSpace : "pre-wrap"}}>{memberData[0].challengeBarInfo.challengeTitle}</OverCardPictureBottomTitle>
 
                     <OverCardPictureBottomDetail>
                         <div style={{marginRight : "7%"}}>
-                          <OverCardPictureBottomImage src ={memberData[0].userInfo[0].profile} alt ="default" height = "20%" width = "20%"/>
+                          <OverCardPictureBottomImage src ={memberData[0].challengeBarInfo.userInfo[0].profile} alt ="default" height = "20%" width = "20%"/>
                         </div>
                         
                         <div style={{marginTop : "5%", width: "90%"}}>
                           <OverCardPictureBottomUserImage src={userImage} alt="" width ="10%" />
-                          <OverCardPictureBottomUser>{memberData[0].userInfo.length}명</OverCardPictureBottomUser>
+                          <OverCardPictureBottomUser>{memberData[0].challengeBarInfo.userInfo.length}명</OverCardPictureBottomUser>
                         </div>
                         
                     </OverCardPictureBottomDetail>
@@ -546,31 +553,32 @@ const MyChallengeDetail = ({
         {moment(TodayTime).isSame(cardDate) ? (
           <CertifiedRequirement>
             <CertifiedRequirementContent>
-            <img src={pictureUrl} alt="pictureUrl" width="100%" height="100%" style={{opacity : "0.8", borderRadius : 10}} /> 
-            <img src={deleteCertification} alt="deleteCertification" width="25px" height="25px" 
-            style={{
+            <div style={{
+
               float : "right",
-              position : "relative",
-              top : "-28vh",
-              right : "2.5vw",
+              height : 0,
+              position: "relative",
+              top: "1vh",
+              right: "1.5vw"
+              }}>
+              <img src={deleteCertification} alt="deleteCertification" width="25px" height="25px" 
+              style={{
+
               background: "rgba(44, 44, 44, 0.2)",
               boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.15)",
               borderRadius: "14px",
               border: "1px solid #FFFFFF"
-            }} 
-            onClick={(e) => fileOnDeleteAfter(e, memberData[0].registeredId, cardDate)}
-            />
-            {deleteLoading? 
-            (
-              <OverSpin size={"large"} type="loading" style={{ position : "relative", top : "-22vh", left : "1.5vh" }} />
-            ) : 
-            (
-              <>
-              </>
-            )}
+              }} 
+              onClick={(e) => fileOnDeleteAfter(e, memberData[0].challengeBarInfo.registeredId, cardDate)}
+              />
+            </div>
+
+            <img src={pictureUrl} alt="pictureUrl" width="100%" height="100%" style={{opacity : "0.8", borderRadius : 10, position : "relative", zIndex : -1}} /> 
             
-            <CertifiedRequirementContentLayer style={{clear : "both", top : "-70%"}}>{cardDate}</CertifiedRequirementContentLayer>
-            <CertifiedRequirementContentLayer style={{top : "-70%"}}>인증 성공</CertifiedRequirementContentLayer>
+            
+            
+            <CertifiedRequirementContentLayer style={{clear : "both", top : "-60%"}}>{cardDate}</CertifiedRequirementContentLayer>
+            <CertifiedRequirementContentLayer style={{top : "-60%"}}>인증 성공</CertifiedRequirementContentLayer>
             </CertifiedRequirementContent>
             <CertifiedRequirementContentTriangle></CertifiedRequirementContentTriangle>
             <CertifiedRequirementContentText onClick={onOpen}>{certification.resolution}</CertifiedRequirementContentText>
@@ -657,15 +665,15 @@ const MyChallengeDetail = ({
           </ChallengeMemberTitle>
 
           <ChallengeLeader>
-            <ChallengeLeaderImage src={memberData[0].userInfo[0].profile} alt="default" color={memberData[0].userInfo[0].color}/> 
-            <ChallengeLeaderTag color={memberData[0].userInfo[0].color} >{memberData[0].userInfo[0].relationship}</ChallengeLeaderTag>
-            <ChallengeLeaderName>{memberData[0].userInfo[0].name}</ChallengeLeaderName>
+            <ChallengeLeaderImage src={memberData[0].challengeBarInfo.userInfo[0].profile} alt="default" color={memberData[0].challengeBarInfo.userInfo[0].color}/> 
+            <ChallengeLeaderTag color={memberData[0].challengeBarInfo.userInfo[0].color} >{memberData[0].challengeBarInfo.userInfo[0].relationship}</ChallengeLeaderTag>
+            <ChallengeLeaderName>{memberData[0].challengeBarInfo.userInfo[0].name}</ChallengeLeaderName>
             <Challenger>도전자</Challenger>
           </ChallengeLeader>
 
           <div style={{borderBottom : "1px solid lightgray", marginTop : "5%"}}></div>
 
-          {memberData[0].userInfo.map((data,index) => {
+          {memberData[0].challengeBarInfo.userInfo.map((data,index) => {
 
             if(index === 0){
               return '';
