@@ -5,7 +5,7 @@ import { Input, Button, Typography } from "antd";
 import { colorSelector, profileColor } from "../styleUtils/colorStyle";
 import PropType from "prop-types";
 import "./ColorPicker.css";
-import circlePlus from "../images/circlePlus.png";
+import circlePlus from "../images/circlePlus.PNG";
 const { Text } = Typography;
 
 const PaletteItem = ({ color, active, onClick }) => {
@@ -114,7 +114,7 @@ function MyPageModal({
   console.log(name);
   console.log(relation);
   console.log(visible);
-  console.log(myid);
+
   console.log(logged);
   console.log(imageUrl);
   console.log($initImg);
@@ -122,7 +122,7 @@ function MyPageModal({
 
   if (imageUrl) {
     $initImg = (
-      <>
+      <Fragment>
         {/* <label htmlFor="file-input"> */}
         <img
           id={circlePlus}
@@ -139,11 +139,11 @@ function MyPageModal({
           name="file"
           onChange={e => ImgOnChange(e)}
         />
-      </>
+      </Fragment>
     );
   } else {
     $initImg = (
-      <>
+      <Fragment>
         <label htmlFor="file-input">
           <img
             src={circlePlus}
@@ -158,7 +158,7 @@ function MyPageModal({
           name="file"
           onChange={e => ImgOnChange(e)}
         />
-      </>
+      </Fragment>
     );
   }
 
@@ -245,9 +245,8 @@ function MyPageModal({
               color: "darkgray",
               fontweight: "bold"
             }}
-          >
-            {myid}
-          </Text>
+          ></Text>
+          {myid}
         </div>
         <br />
         <Text strong style={{ fontSize: "large" }}>

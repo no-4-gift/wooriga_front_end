@@ -145,16 +145,6 @@ const ChallengeContentTitle = styled.span`
   color: #434444;
 `;
 
-const ChallengeContentDates = styled.span`
-  font-family: Noto Sans KR;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 17px;
-  letter-spacing: -0.02em;
-
-  color: #434444;
-`;
 const ChallengeMaker = styled.div`
   position: absolute;
   top: 14px;
@@ -246,16 +236,7 @@ const ModalFooter = styled.div`
   align-items: center;
   justify-content: center;
 `;
-// const CancleButton = styled.div`
-//   font-family: Noto Sans KR;
-//   font-style: normal;
-//   font-weight: normal;
-//   font-size: 18px;
-//   line-height: 26px;
-//   letter-spacing: -0.02em;
-//   color: #969696;
-//   flex: 0.9;
-// `;
+
 const OkButton = styled.div`
   font-family: Noto Sans KR;
   font-style: normal;
@@ -319,7 +300,6 @@ const InsertText = styled.span`
 
 function CalendarModal({
   id,
-  members,
   visible,
   dates,
   challengeBarInfo,
@@ -330,12 +310,12 @@ function CalendarModal({
 }) {
   const isMysdate =
     dates
-      .filter(elem => elem.id === id)
-      .findIndex(elem => elem.date === selectDate) === -1
+      .filter(elem => elem.userInfo.uid === id)
+      .findIndex(elem => elem.emptyDate === selectDate) === -1
       ? false
       : true;
   let thisDateMembers = dates.filter(elem => elem.emptyDate === selectDate);
-  const myIdx = thisDateMembers.findIndex(elem => elem.id === id);
+  const myIdx = thisDateMembers.findIndex(elem => elem.userInfo.uid === id);
   if (myIdx !== -1) {
     let temp = thisDateMembers[0];
     thisDateMembers[0] = thisDateMembers[myIdx];
@@ -380,59 +360,49 @@ function CalendarModal({
                       <ChallengeContentTitle>
                         <span>{elem.challengeTitle}</span>
                       </ChallengeContentTitle>
-                      <ChallengeContentDates>
-                        <span>
-                          {selectDate}{" "}
-                          {elem.date.length > 1
-                            ? `+(${elem.date.length - 1})`
-                            : ""}
-                        </span>
-                      </ChallengeContentDates>
                     </ChallengeContent>
                     <ChallengeMaker
-                      profile={
-                        members[
-                          members.findIndex(
-                            member => member.uid === elem.chiefId
-                          )
-                        ].profile
-                      }
-                      color={elem.chiefColor}
+                      profile={elem.userInfo[0].profile}
+                      color={elem.userInfo[0].color}
                     />
                   </ChallengeItem>
                 ))}
               </SectionBody>
             </Section>
           )}
-          <Section>
-            <SectionTitle>
-              <span>함께 할 수 있는 가족</span>
-            </SectionTitle>
-            <SectionBody>
-              {thisDateMembers.map(elem => (
-                <ModalItemBlock key={elem.uid}>
-                  <MemberProfilePhoto
-                    profile={elem.profile}
-                    color={elem.color}
-                  />
-                  <MemberProfile>
-                    <MemberNameContainer>
-                      <MemerProfileName>{elem.name}</MemerProfileName>
-                      <MemberColorCircle color={elem.color} />
-                    </MemberNameContainer>
-                    <MemberRelationText>
-                      관계 : {elem.relationship}
-                    </MemberRelationText>
-                  </MemberProfile>
-                  {elem.id === id && (
-                    <DeleteButton onClick={() => onDelete(selectDate)}>
-                      <MdClose />
-                    </DeleteButton>
-                  )}
-                </ModalItemBlock>
-              ))}
-            </SectionBody>
-          </Section>
+          {thisDateMembers.length > 0 && (
+            <Section>
+              <SectionTitle>
+                <span>함께 할 수 있는 가족</span>
+              </SectionTitle>
+              <SectionBody>
+                {thisDateMembers.map(elem => (
+                  <ModalItemBlock key={elem.userInfo.uid}>
+                    <MemberProfilePhoto
+                      profile={elem.userInfo.profile}
+                      color={elem.userInfo.color}
+                    />
+                    <MemberProfile>
+                      <MemberNameContainer>
+                        <MemerProfileName>
+                          {elem.userInfo.name}
+                        </MemerProfileName>
+                        <MemberColorCircle color={elem.userInfo.color} />
+                      </MemberNameContainer>
+                      <MemberRelationText>
+                        관계 : {elem.userInfo.relationship}
+                      </MemberRelationText>
+                    </MemberProfile>
+                    {elem.userInfo.uid === id && (
+                      <DeleteButton onClick={() => onDelete(selectDate)}>
+                        <MdClose />
+                      </DeleteButton>
+                    )}
+                  </ModalItemBlock>
+                ))}
+              </SectionBody>
+            </Section>
+          )}
 
           {!isMysdate && (
             <InsertScheduleContainer onClick={() => onInsert(selectDate)}>
@@ -455,7 +425,6 @@ export default CalendarModal;
 
 CalendarModal.propTypes = {
   id: PropTypes.number,
-  members: PropTypes.array,
   visible: PropTypes.bool,
   dates: PropTypes.array,
   challengeBarInfo: PropTypes.array,

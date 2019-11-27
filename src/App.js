@@ -10,30 +10,37 @@ import "antd/dist/antd.css";
 
 // import Invite from "./components/Invite";
 // import MakeGroup from "./components/MakeGroup";
-import myPageContainer from "./containers/MyPageContainer";
+//import myPageContainer from "./containers/MyPageContainer";
 import myPageDetailContainer from "./containers/MyPageDetailContainer";
 //import checkSignUp from "./components/CheckSignUp";
 // import MakeGroup from "./components/MakeGroup";
 
 import ChallengeAddContainer from "./containers/ChallengeAddContainer";
 
-import styled from 'styled-components';
-import exceptionInage from './images/exceptionResolution.PNG'
+import styled from "styled-components";
+import exceptionInage from "./images/exceptionResolution.PNG";
 function App() {
   console.log(window.innerWidth);
   console.log(window.innerHeight);
-  if((window.innerWidth > 481) || (window.innerWidth === 320 && window.innerHeight === 480)){
+  if (
+    window.innerWidth > 481 ||
+    (window.innerWidth === 320 && window.innerHeight === 480)
+  ) {
     console.log("호환하지 않음");
-  }
-  else {
-    console.log("호환^_^")
+  } else {
+    console.log("호환^_^");
   }
   // 768 : 1024 아이패드
   return (
     <BrowserRouter>
-      {(window.innerWidth > 481) || (window.innerWidth === 320 && window.innerHeight === 480) ? (
+      {window.innerWidth > 481 ||
+      (window.innerWidth === 320 && window.innerHeight === 480) ? (
         <ExceptionLayout>
-          <ExceptionImage src={exceptionInage} alt="excetionImage" height="60%" />
+          <ExceptionImage
+            src={exceptionInage}
+            alt="excetionImage"
+            height="60%"
+          />
         </ExceptionLayout>
       ) : (
         <>
@@ -45,7 +52,6 @@ function App() {
             component={myChallengeDetailContainer}
           />
 
-          <Route path="/mypage" component={myPageContainer} />
           <Route path="/mypage_detail" component={myPageDetailContainer} />
           {/* <Route path="/makegroup" component={MakeGroup} /> 
           <Route path="/invite" component={Invite} />
@@ -55,7 +61,6 @@ function App() {
           {/*<Route path="/" component={Calendar} /> */}
         </>
       )}
-      
     </BrowserRouter>
   );
 }
@@ -63,11 +68,11 @@ function App() {
 export default App;
 
 const ExceptionLayout = styled.div`
-  width : 100vw;
-  height : 100vh;
-  text-align : center;
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
 `;
 
 const ExceptionImage = styled.img`
-  padding-top : 25vh;
+  padding-top: 25vh;
 `;

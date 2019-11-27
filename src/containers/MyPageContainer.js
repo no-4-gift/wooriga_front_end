@@ -91,7 +91,7 @@ class MyPageContainer extends Component {
     let { imageUrl } = this.state;
     let $initImg = null;
     console.log("mypagecontainer-----------");
-    console.log(`id is ${myid}`);
+    //console.log(`id is ${myid}`);
     console.log(visible);
     console.log(members);
     console.log(memberlength);
@@ -125,7 +125,6 @@ class MyPageContainer extends Component {
           $initImg={$initImg}
           onChange={this.handleInputChange}
         />
-        {/* <MyPageDetail backRouter={this.handlebackRouter} /> */}
       </Fragment>
     );
   }
@@ -134,7 +133,6 @@ class MyPageContainer extends Component {
 // 리덕스 스토어 안의 상태를 컴포넌트의 props로 넘겨주기 위해 사용하는 함수
 //state 를 파라미터로 받아온다 . 현재 store 가 가지고 있는 상태
 const mapStateToProps = ({ mypage, login }) => ({
-  imageUrl: mypage.profileImage,
   visible: mypage.visible,
   members: mypage.members,
   logged: login.logged,
