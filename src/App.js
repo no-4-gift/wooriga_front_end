@@ -8,7 +8,7 @@ import myChallengeDetailContainer from "./containers/myChallengeDetailContainer"
 import ChosensLayout from "./containers/ChosensContainer";
 import "antd/dist/antd.css";
 
-// import Invite from "./components/Invite";
+import Invite from "./components/Invite";
 // import MakeGroup from "./components/MakeGroup";
 //import myPageContainer from "./containers/MyPageContainer";
 import myPageDetailContainer from "./containers/MyPageDetailContainer";
@@ -51,7 +51,7 @@ function App() {
             path="/mychallenge_detail/:id"
             component={myChallengeDetailContainer}
           />
-
+          <Route path="/invite" component={Invite} />
           <Route path="/mypage_detail" component={myPageDetailContainer} />
           {/* <Route path="/makegroup" component={MakeGroup} /> 
           <Route path="/invite" component={Invite} />
