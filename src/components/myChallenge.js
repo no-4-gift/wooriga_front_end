@@ -103,10 +103,11 @@ const OverCardPictureBottomTitle = styled.div`
     width : 80%;
     color: #000000;
     margin-top : 3%;
+    white-space : pre-wrap
 `;
 
 const OverCardPictureBottomDetail = styled.div`
-    height : 10vh;
+    height : 68%;
     margin-top : 3%
 `;
 
@@ -167,7 +168,7 @@ const ChallengeContent = styled.div`
   padding: 1em;
   height: 100%;
   flex: 0.75;
-  padding-top : 10%;
+  padding-top : ${props => props.size < 350 ? "15%" : "10%"}
 `;
 
 const ChallengeFixed = styled.div`
@@ -187,7 +188,7 @@ const ChallengeContentTitle = styled.div`
   color: #434444;
   display: flex;
   align-items: center;
-  
+  white-space : pre-wrap;
 `;
 
 const ChallengeContentDate = styled.div`
@@ -203,7 +204,7 @@ const ChallengeContentDate = styled.div`
   line-height: 17px;
   letter-spacing: -0.02em;
   color: #434444;
-  padding-top: 20%;
+  padding-top: ${props => props.size < 350 ? "25%" : "20%"}
 `;
 
 const ChallengeContentProgress = styled.div`
@@ -236,6 +237,7 @@ const ChallengeContentProgressText = styled.div`
 const MyChallenge = ({ detailRouter, bottomDetailRouter, challenger_challenges, participation_challenges }) => {
        console.log("challenger_challenges", challenger_challenges)
        console.log("participation_challenges", participation_challenges)
+       console.log(window.innerWidth);
     return ( 
         <Fragment>
             <ContentsTitle>
@@ -256,8 +258,8 @@ const MyChallenge = ({ detailRouter, bottomDetailRouter, challenger_challenges, 
                                         <OverCardPictureTop>
 
                                             <OverCardPictureTopLayerOne>
-                                                <span style={{color : "white" ,textShadow: "0px 0px 5px rgba(67, 68, 68, 0.6)", fontWeight : "bold", fontSize: 13}}>{`5 0 %`}</span>
-                                                <Progress percent={50} status="active" showInfo={false} strokeColor="#EB6363"/>
+                                                <span style={{color : "white" ,textShadow: "0px 0px 5px rgba(67, 68, 68, 0.6)", fontWeight : "bold", fontSize: 13}}>{elem.challengeBarInfo.percentage}%</span>
+                                                <Progress percent={elem.challengeBarInfo.percentage} status="active" showInfo={false} strokeColor="#EB6363"/>
                                             </OverCardPictureTopLayerOne>
 
                                             <OverCardPictureTopLayerTwo>
@@ -306,7 +308,7 @@ const MyChallenge = ({ detailRouter, bottomDetailRouter, challenger_challenges, 
                             <ChallengeCard key={index} onClick={() => bottomDetailRouter(elem.challengeBarInfo.registeredId)}>
 
                             <ChallengeImg src={elem.challengeImage} alt="" width ="80px" />
-                            <ChallengeContent>
+                            <ChallengeContent size={window.innerWidth}>
 
                             <ChallengeFixed>
                             <ChallengeContentTitle>{elem.challengeBarInfo.challengeTitle}</ChallengeContentTitle>
@@ -317,7 +319,7 @@ const MyChallenge = ({ detailRouter, bottomDetailRouter, challenger_challenges, 
                             </OverCardPictureBottomDetail>
                             </ChallengeFixed>
 
-                            <ChallengeContentDate>
+                            <ChallengeContentDate size={window.innerWidth}>
                                 <OverCardPictureBottomContentImage src={calendarImage} alt="" width = "7%"/>
                                 {elem.challengeBarInfo.viewDate}
                                 <OverCardPictureBottomUserImage src={userImage} alt="" width = "10%"/>
@@ -325,9 +327,9 @@ const MyChallenge = ({ detailRouter, bottomDetailRouter, challenger_challenges, 
                             </ChallengeContentDate>
 
                             <ChallengeContentProgress>
-                                <Progress percent={50} showInfo={false} status="active" size="small" strokeColor="#EB6363"/> 
+                                <Progress percent={elem.challengeBarInfo.percentage} showInfo={false} status="active" size="small" strokeColor="#EB6363"/> 
                                 <ChallengeContentProgressText>        
-                                <span style={{color:"red"}}>{`1`}</span> / {`2`}
+                                <span style={{color:"red"}}>{elem.challengeBarInfo.certificationNum}</span> / {elem.challengeBarInfo.totalNum}
                                 </ChallengeContentProgressText>
                             </ChallengeContentProgress>
 

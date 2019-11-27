@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Card, Spin } from "antd";
+import { Card } from "antd";
 import styled from "styled-components";
 import defaultImage from "../images/default.PNG";
 import { MdArrowBack } from "react-icons/md";
@@ -129,12 +129,14 @@ const OverCardPictureBottomUser = styled.span`
 // Challenge Component by 승준 
 
 const NumberHorizontalLayout = styled.div`
-    padding : 0 5%;
+
+    padding : ${props => props.size < 350 ? "0" : "0 5%"};
     height : 11vh;
     width:100%;
     float:left;
     overflow-x:scroll;
     white-space:nowrap;
+    margin-bottom : ${props => props.size < 350 ? "2%" : "0"};
     -ms-overflow-style: none; // IE에서 스크롤바 감춤
     &::-webkit-scrollbar { 
       display: none !important; // 윈도우 크롬 등
@@ -144,7 +146,7 @@ const NumberHorizontalLayout = styled.div`
 const NumberHorizontalContentBorder = styled.div`
     display:inline-block;
     width: 62px;
-    margin-right : 2%;
+    margin-right : ${props => props.size < 350 ? "1%" : props.size < 370 ? "2%" : props.size < 410 ? "3%" : "4.5%"};
     border-radius : 50%;
     height: 60px;
     white-space:normal;
@@ -156,7 +158,7 @@ const NumberHorizontalContentBorder = styled.div`
 const NumberHorizontalContentBorderFalse = styled.div`
     display:inline-block;
     width: 62px;
-    margin-right : 2%;
+    margin-right : ${props => props.size < 350 ? "1%" : props.size < 370 ? "2%" : props.size < 410 ? "3%" : "4.5%"};
     border-radius : 50%;
     height: 60px;
     white-space:normal;
@@ -280,7 +282,7 @@ const ChallengeLeaderImage = styled.img`
     border-radius: 50px;
     width : 5vh;
     height : 5vh;
-    margin-top : 2%;
+    margin-top : ${props => props.size < 350 ? "5%" : "2%"};
     margin-left : 3%;
     float:left;
 `;
@@ -288,7 +290,7 @@ const ChallengeLeaderImage = styled.img`
 const ChallengeLeaderName = styled.div`
     font-weight: bold;
     position: relative;
-    top: 30%;
+    top: ${props => props.size < 350 ? "27%" : "30%"};
     left: 3%;
     float: left;
 `;
@@ -298,7 +300,7 @@ const ChallengeLeaderTag = styled.div`
     padding : 0 4%;
     float: left;
     margin-left: 5%;
-    margin-top: 5.5%;
+    margin-top: ${props => props.size < 350 ? "6.5%" : "5.5%"};
     border-radius: 10px;
     color: white;
     text-align: center;
@@ -310,7 +312,7 @@ const Challenger= styled.div`
     text-align: right;
     position: relative;
     right: 5%;
-    top : 30%;
+    top : ${props => props.size < 350 ? "27%" : "30%"};
     color: #EB6363;
     font-size: 0.8rem;
     font-weight : bold;
@@ -329,7 +331,7 @@ const ChallengeMemberImage = styled.img`
     border-radius: 50px;
     width : 5vh;
     height : 5vh;
-    margin-top : 2%;
+    margin-top : ${props => props.size < 350 ? "5%" : "2%"};
     margin-left : 3%;
     float:left;
 `;
@@ -337,7 +339,7 @@ const ChallengeMemberImage = styled.img`
 const ChallengeMemberName = styled.div`
     font-weight: bold;
     position: relative;
-    top: 30%;
+    top: ${props => props.size < 350 ? "27%" : "30%"};
     left: 3%;
     float: left;
 `;
@@ -347,7 +349,7 @@ const ChallengeMemberTag = styled.div`
     padding : 0 4%;
     float: left;
     margin-left: 5%;
-    margin-top: 5.5%;
+    margin-top: ${props => props.size < 350 ? "6.5%" : "5.5%"};
     border-radius: 10px;
     color: white;
     text-align: center;
@@ -360,7 +362,7 @@ const Resident = styled.div`
     text-align: right;
     position: relative;
     right: 5%;
-    top : 30%;
+    top : ${props => props.size < 350 ? "27%" : "30%"};
     color: lightgray;
     font-size: 0.8rem;
     font-weight : bold;
@@ -388,13 +390,13 @@ const ChallengeInfoContent = styled.div`
     line-height : 25px;
 `;
 
-const OverSpin = styled(Spin)`
-    &&{
-      .ant-spin-dot-item {
-        background-color : white;
-      }
-    }
-`;
+// const OverSpin = styled(Spin)`
+//     &&{
+//       .ant-spin-dot-item {
+//         background-color : white;
+//       }
+//     }
+// `;
 
 const MyChallengeDetail = ({ 
   backRouter,
@@ -462,7 +464,7 @@ const MyChallengeDetail = ({
           <img src={circlePlus} alt={"circlePlus"} height ="30%"/>
         </label>
         
-        <input style={{display: "none"}} id="file-input" type="file" name="file" onChange={e => fileOnChange(e, memberData[0].challengeBarInfo.registeredId, cardDate)}/>
+        <input style={{display: "none"}} id="file-input" type="file" name="file" accept="image/*" capture="camera" onChange={e => fileOnChange(e, memberData[0].challengeBarInfo.registeredId, cardDate)}/>
         <CertifiedRequirementContentTextFalse>오늘의 챌린지를</CertifiedRequirementContentTextFalse>
         <CertifiedRequirementContentTextFalse
           style={{padding : 0}}
@@ -477,7 +479,7 @@ const MyChallengeDetail = ({
   let TodayTime = moment().format("YYYY-MM-DD");
   
   // console.log(moment(TodayTime).isAfter('2018.01.01'));
-  // console.log('certification : ', certification);
+  console.log('certification : ', certification);
   console.log('certificationArray : ', certificationArray);
   
   cardDate = moment(new Date(cardDate)).format("YYYY-MM-DD");
@@ -522,11 +524,11 @@ const MyChallengeDetail = ({
         </OverCardPicture>
       </OverCard>
 
-      <NumberHorizontalLayout>
+      <NumberHorizontalLayout size={window.innerWidth}>
       {/* pictureFlagRouter은 회색 빛만 가능하도록 적용 필요. */}
       {certificationArray.map((data, index) => {
         if(data.certificationTrue === 1) {
-          return <NumberHorizontalContentBorder key={index}>
+          return <NumberHorizontalContentBorder key={index} size={window.innerWidth}>
           <NumberHorizontalContent onClick={()=>pictureFlagRouter(data.certificationTrue, data.certificationImage, data.cardDate)}>
             {index}
             <NumberHorizontalContentDate>{data.certificationDate}</NumberHorizontalContentDate>
@@ -535,7 +537,7 @@ const MyChallengeDetail = ({
         </NumberHorizontalContentBorder>
         }
         else {
-          return <NumberHorizontalContentBorderFalse key={index}>
+          return <NumberHorizontalContentBorderFalse key={index} size={window.innerWidth}>
           <NumberHorizontalContentFalse onClick={()=>pictureFlagRouter(data.certificationTrue, data.certificationImage, data.cardDate)}>
             {index}
             <NumberHorizontalContentDate>{data.certificationDate}</NumberHorizontalContentDate>
@@ -665,10 +667,10 @@ const MyChallengeDetail = ({
           </ChallengeMemberTitle>
 
           <ChallengeLeader>
-            <ChallengeLeaderImage src={memberData[0].challengeBarInfo.userInfo[0].profile} alt="default" color={memberData[0].challengeBarInfo.userInfo[0].color}/> 
-            <ChallengeLeaderTag color={memberData[0].challengeBarInfo.userInfo[0].color} >{memberData[0].challengeBarInfo.userInfo[0].relationship}</ChallengeLeaderTag>
-            <ChallengeLeaderName>{memberData[0].challengeBarInfo.userInfo[0].name}</ChallengeLeaderName>
-            <Challenger>도전자</Challenger>
+            <ChallengeLeaderImage size={window.innerWidth} src={memberData[0].challengeBarInfo.userInfo[0].profile} alt="default" color={memberData[0].challengeBarInfo.userInfo[0].color}/> 
+            <ChallengeLeaderTag size={window.innerWidth} color={memberData[0].challengeBarInfo.userInfo[0].color} >{memberData[0].challengeBarInfo.userInfo[0].relationship}</ChallengeLeaderTag>
+            <ChallengeLeaderName  size={window.innerWidth}>{memberData[0].challengeBarInfo.userInfo[0].name}</ChallengeLeaderName>
+            <Challenger size={window.innerWidth}>도전자</Challenger>
           </ChallengeLeader>
 
           <div style={{borderBottom : "1px solid lightgray", marginTop : "5%"}}></div>
@@ -680,10 +682,10 @@ const MyChallengeDetail = ({
             }
             return <ChallengeMember key={index}>
 
-              <ChallengeMemberImage src={defaultImage} alt="default" color={data.color}/> 
-              <ChallengeMemberTag color={data.color}>{data.relationship}</ChallengeMemberTag>
-              <ChallengeMemberName>{data.name}</ChallengeMemberName>
-              <Resident>참가자</Resident>
+              <ChallengeMemberImage size={window.innerWidth} src={defaultImage} alt="default" color={data.color}/> 
+              <ChallengeMemberTag size={window.innerWidth} color={data.color}>{data.relationship}</ChallengeMemberTag>
+              <ChallengeMemberName  size={window.innerWidth}>{data.name}</ChallengeMemberName>
+              <Resident  size={window.innerWidth}>참가자</Resident>
 
             </ChallengeMember>
           })}

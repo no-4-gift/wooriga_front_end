@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import styled, { css } from "styled-components";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { colorSelector } from "../styleUtils/colorStyle";
