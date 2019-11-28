@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from "react";
 import styled, { css } from "styled-components";
-import { Input, Button, Typography } from "antd";
+import {  Button, Typography } from "antd";
 import PropType from "prop-types";
-//import "../styleUtils/ColorPicker.css";
 import circlePlus from "../images/circlePlus.PNG";
 const { Text } = Typography;
 
@@ -82,7 +81,7 @@ const ModalTemplate = styled.div`
   background-color: white;
   position: fixed;
   height: auto;
-  height: 34rem;
+  height: 39rem;
   width: 20rem;
   padding: 1rem;
   top: 50%;
@@ -97,6 +96,10 @@ const ModalTemplate = styled.div`
       z-index: 15;
     `}
 `;
+const DivTitle = styled.text`
+font-weight : bold;
+font-size: 24px;
+`;
 const MyIcon = styled.div`
   position: relative;
   width: 80px;
@@ -104,8 +107,8 @@ const MyIcon = styled.div`
   border: 2px solid ${props => props.color};
   border-radius: 5rem;
   text-align: center;
-  float: center;
-  margin: 1rem 36%;
+  float: left;
+  margin: 2rem 36% 0 36%;
 `;
 
 const MyIconimg = styled.img`
@@ -117,6 +120,58 @@ const MyIconimg = styled.img`
   margin-left: 3%;
   float: left;
 `;
+const MemberInfoContainter = styled.div`
+    height: 20%;
+    position: relative;
+`;
+const ProfilImgContainer = styled.div`
+    float:left;
+    width: 10%;
+`;
+const MemberInfo = styled.div`
+    float:right;
+    width:90%;
+    margin:0.6rem 0;
+
+`;
+const PaletteContainer = styled.div`
+    height: 25%;
+    position: relative;
+    margin: 1rem 0;
+`;
+
+
+const InfoDiv = styled.div`
+  margin: 0.2rem 0;
+  fontsize: initial;
+  float:right;
+  width: 70%;
+  `;
+
+const InfoText = styled.text`
+
+color: darkgray;
+font-weight: bold;
+
+${props =>
+    props.IsNotKaKaoInput &&
+    css`
+    width: 30%;
+    `} 
+`;
+
+const InfoInput = styled.textarea.attrs({
+    required: true
+  })`
+
+    border: none;
+    margin: 0 0 0 1.5rem;
+    width: 55%;
+    font-weight: bold;
+    height: 24px;
+    float: right;
+  `
+
 const colors = {
   black: "#000000",
   orangered: "#f44336",
@@ -131,19 +186,15 @@ const colors = {
   yellow: "#ffeb3b",
   orange: "#ffc107"
 };
-function MyPageModal({
+function GroupAddModal({
   members,
   visible,
   myid,
-  logged,
-  onLogout,
   onSave,
   onClose,
-  ImgOnChange,
-  fileOnChange,
   imageUrl,
-  $initImg,
-  onChange
+  $initImg
+
 }) {
   let name = members.find(member => member.id === myid).name;
   let relation = members.find(member => member.id === myid).relation;
@@ -155,9 +206,6 @@ function MyPageModal({
   console.log(relation);
   console.log(visible);
   console.log(myid);
-  console.log(logged);
-  console.log(imageUrl);
-  console.log($initImg);
   console.log("mypagemodal-----------");
 
   //프로필 색깔
@@ -218,88 +266,13 @@ function MyPageModal({
     );
   };
 
-  //프로필 사진
-  if (imageUrl) {
-    $initImg = (
-      <>
-        <label htmlFor="file-input2">
-          {/* <img
-            id={circlePlus}
-            src={imageUrl}
-            alt="imageUrl"
-            width="100%"
-            height="100%"
-          /> */}
-          <img
-            src={circlePlus}
-            alt={"circlePlus"}
-            style={{ width: "40%", height: "40%", margin: "3rem 0 0 3rem" }}
-          />
-        </label>
-        <input
-          style={{ display: "none" }}
-          id="file-input2"
-          type="file"
-          name="file"
-          onChange={e => ImgOnChange(e)}
-        />
-      </>
-    );
-  } else {
-    $initImg = (
-      <>
-        <label htmlFor="file-input">
-          <img src={circlePlus} alt={"circlePlus"} height="30%" />
-        </label>
-
-        <input
-          style={{ display: "none" }}
-          id="file-input"
-          type="file"
-          name="file"
-          accept="image/*"
-          capture="camera"
-          onChange={e =>
-            fileOnChange(
-              e,
-              //memberData[0].challengeBarInfo.registeredId,
-            )
-          }
-        />
-
-        <label htmlFor="file-input">
-          {/* <img
-            src={circlePlus}
-            alt={"circlePlus"}
-            style={{ width: "40%", height: "40%", margin: "3rem 0 0 3rem" }}
-          /> */}
-          <img
-            id={circlePlus}
-            src={imageUrl}
-            alt="imageUrl"
-            width="100%"
-            height="100%"
-          />
-        </label>
-        <input
-          style={{ display: "none" }}
-          id="file-input"
-          type="file"
-          name="file"
-          onChange={e => ImgOnChange(e)}
-        />
-      </>
-    );
-  }
-
   return (
     <ModalBackground visible={visible}>
       <ModalTemplate visible={visible}>
-        <Text style={{ float: "right" }} onClick={onLogout}>
-          로그아웃
-        </Text>
-        <br />
-        {/* <MyIcon /> */}
+      <DivTitle>그룹 확인</DivTitle>
+      <br/>
+          <MemberInfoContainter>
+          <ProfilImgContainer >
         {imageUrl ? (
           <MyIcon color={mycolor}>
             <MyIconimg
@@ -314,22 +287,15 @@ function MyPageModal({
         ) : (
           <MyIcon color={mycolor}>{$initImg}</MyIcon>
         )}
-        {/* <MyIcon onClick {e => ImgOnChange(e)}/> */}
-        {/* <div onClick={e => ImgOnChange(e)}>선택 후 이미지 업로드</div> */}
+        </ProfilImgContainer>
         <br />
-        <div
-          style={{ borderBottom: "1px solid lightgray", fontsize: "initial" }}
-        >
-          <Text
-            style={{
-              width: "30%",
-              color: "darkgray",
-              fontweight: "bold"
-            }}
+        <MemberInfo >
+        <InfoDiv>
+          <InfoText IsNotKaKaoInput={true}
           >
-            이름
-          </Text>
-          <Input
+            가장
+          </InfoText>
+          {/* <Input
             placeholder={name}
             style={{
               border: "none",
@@ -337,21 +303,14 @@ function MyPageModal({
               width: "70%",
               fontweight: "bold"
             }}
-          />
-        </div>
-        <div
-          style={{ borderBottom: "1px solid lightgray", fontsize: "initial" }}
-        >
-          <Text
-            style={{
-              width: "30%",
-              color: "darkgray",
-              fontweight: "bold"
-            }}
-          >
-            관계
-          </Text>
-          <Input
+          /> */}
+          <InfoInput placeholder={name}/>
+        </InfoDiv>
+        <InfoDiv>
+          <InfoText IsNotKaKaoInput={true}>
+            구성원 수
+          </InfoText>
+          {/* <Input
             placeholder={relation}
             style={{
               border: "none",
@@ -359,56 +318,138 @@ function MyPageModal({
               width: "70%",
               fontweight: "bold"
             }}
-          />
-        </div>
+          /> */}
+          <InfoInput placeholder={relation}/>
+        </InfoDiv>
         <div
           style={{
-            borderBottom: "1px solid lightgray",
-            margin: "0.8rem 0",
-            fontsize: "inherit"
+            margin: "0.5rem 0",
+            fontsize: "inherit",
+            float:"right",
+            width:"70%"
           }}
         >
-          <Text style={{ width: "30%", color: "darkgray" }}>KakaoID</Text>
-          <Text
+          <InfoText IsNotKaKaoInput={false}>초대코드</InfoText>
+          {/* <Text
             style={{
               margin: "0 0 0 1.5rem",
               width: "70%",
               color: "darkgray",
               fontweight: "bold"
             }}
-          >
+          > */}
+          <Text style={{ marginLeft: "15px",fontWeight: "bold" }}>
             {myid}
           </Text>
         </div>
+        </MemberInfo>
+        </MemberInfoContainter>
         <br />
-        <Text strong style={{ fontSize: "large" }}>
+        <br />
+        <DivTitle>내 정보 확인</DivTitle>
+        <br/>
+        <MemberInfoContainter>
+          <ProfilImgContainer >
+        {imageUrl ? (
+          <MyIcon color={mycolor}>
+            <MyIconimg
+              id={"circlePlus"}
+              src={imageUrl}
+              alt="imageUrl"
+              width="100%"
+              height="100%"
+            />
+            {$initImg}
+          </MyIcon>
+        ) : (
+          <MyIcon color={mycolor}>{$initImg}</MyIcon>
+        )}
+        </ProfilImgContainer>
+        <br />
+        <MemberInfo >
+        <InfoDiv>
+          <InfoText IsNotKaKaoInput={true} >
+            이름
+          </InfoText>
+          {/* <Input
+            placeholder={name}
+            style={{
+              border: "none",
+              margin: "0 0 0 2.5rem",
+              width: "70%",
+              fontweight: "bold"
+            }}
+          /> */}
+          <InfoInput placeholder={name}/>
+        </InfoDiv>
+        <InfoDiv>
+          <InfoText IsNotKaKaoInput={true}>
+            관계
+          </InfoText>
+          {/* <Input
+            placeholder={relation}
+            style={{
+              border: "none",
+              margin: "0 0 0 2.5rem",
+              width: "70%",
+              fontweight: "bold"
+            }}
+          /> */}
+          <InfoInput placeholder={relation}/>
+        </InfoDiv>
+        <div
+          style={{
+            fontsize: "inherit",
+            float:"right",
+            width:"70%"
+          }}
+        >
+          <InfoText IsNotKaKaoInput={false}>KakaoID</InfoText>
+          {/* <Text
+            style={{
+              margin: "0 0 0 1.5rem",
+              width: "70%",
+              color: "darkgray",
+              fontweight: "bold"
+            }}
+          > */}
+          <Text style={{ marginLeft: "15px",fontWeight: "bold" }}>
+            {myid}
+          </Text>
+        </div>
+        </MemberInfo>
+        </MemberInfoContainter>
+        <PaletteContainer>
+        <DivTitle>
           컬러
-        </Text>
+        </DivTitle>
+        
         <br />
         <Text style={{ fontSize: "small" }}>
           자신을 표현할 색상을 골라주세요
         </Text>
         <Palette selected="#f44336" />
+        </PaletteContainer>
+
         <br /> <br />
-        <Button onClick={onSave} style={{ float: "right", fontweight: "bold" }}>
-          저장
-        </Button>
-        <Button onClick={onClose}>취소</Button>
+        {/* <Button onClick={onSave} style={{ float: "right", fontweight: "bold" }}> */}
+        <Text style={{ float: "right", fontWeight: "bold" , fontSize:"18px"}} onClick={onSave}>   
+          확인
+        </Text>
+        <Text style={{ float: "letf", fontWeight: "bold" ,fontSize:"18px",color: "gray"}} onClick={onClose}>취소</Text>
       </ModalTemplate>
     </ModalBackground>
   );
 }
 //}
 
-MyPageModal.propTypes = {
+GroupAddModal.propTypes = {
   visible: PropType.bool,
   onClose: PropType.func,
+  onSave:PropType.func,
   id: PropType.number,
-  members: PropType.array,
-  onLogout: PropType.func,
   onSave: PropType.func,
-  ImgOnChange: PropType.func,
-  onChange: PropType.func
+  members:PropType.array
 };
 
-export default MyPageModal;
+export default GroupAddModal;

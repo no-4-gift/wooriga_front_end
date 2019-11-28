@@ -4,6 +4,12 @@ const CLOSE_MODAL = "mypage/CLOSE_MODAL"; //모달 창 닫기
 const SAVE_MODAL = "mypage/SAVE_MODAL"; //프로필색깔,이름,가족관계 저장하기
 const SHOWMORE = "mypage/SHOWMORE";
 
+const OPEN_MODAL_CODECOPY = "mypage/OPEN_MODAL_CODECOPY";
+const OPEN_MODAL_CHANGELEADER = "mypage/OPEN_MODAL_CHANGELEADER";
+const OPEN_MODAL_DELETEMEMBER = "mypage/OPEN_MODAL_DELETEMEMBER";
+const REMOVEMEMBER = "mypage/REMOVEMEMBER";
+
+export const POST_PICTURE_UPLOAD = "mypage/POST_PICTURE_UPLOAD";
 /* 액션 생성함수 만들기 */
 export const openMyPageModal = member => ({
   type: OPEN_MODAL,
@@ -18,25 +24,46 @@ export const showMore = memberLenth => ({
   type: SHOWMORE,
   payload: memberLenth
 });
-
-/////////////////////////////////////////////////////////////////
-export const SET_PROFILEIMG = "mypage/SET_PROFILEIMG";
-export const setProfileImg = profileImg => ({
-  type: SET_PROFILEIMG,
-  payload: profileImg
+export const openModalCodeCopy = () => ({
+  type: OPEN_MODAL_CODECOPY
+});
+export const openModalLeaderChange = changeleaderinfo => ({
+  type: OPEN_MODAL_CHANGELEADER,
+  payload: changeleaderinfo
+});
+export const openModalDeleteMember = deletemember => ({
+  type: OPEN_MODAL_DELETEMEMBER,
+  payload: deletemember
 });
 
-/////////////////////////////////////////////////////////////////
+export const removeMember = deletemember => ({
+  type: REMOVEMEMBER,
+  payload: deletemember
+});
+
+export const postCertification = (registeredFk, file) => ({
+  type: POST_PICTURE_UPLOAD,
+  payload: {
+    registeredFk: registeredFk,
+    file: file
+  }
+});
+
+export const visitcode = "AF1G5HTL";
 
 /* 초기 상태 선언 */
 const initialState = {
   /////////////////////////////
 
-  profileImg: "",
-  //imageUrl:'',
-  /////////////////////////////
+  // profileImg: "",
   rowsToDisplay: 2,
   visible: false,
+  codecopyvisible: false,
+  changeleadervisible: false,
+  deletemembervisible: false,
+
+  changeleaderinfo: null,
+  deletemember: null,
   member: "",
   members: [
     {
@@ -91,6 +118,9 @@ export default function mypage(state = initialState, action) {
       return {
         ...state,
         visible: false,
+        codecopyvisible: false,
+        changeleadervisible: false,
+        deletemembervisible: false,
         member: null
       };
     case SAVE_MODAL:
@@ -111,17 +141,36 @@ export default function mypage(state = initialState, action) {
 
         //members: state.members.find(member => member.id === action.payload.id).map(info=>({...myinfo}))
       };
-    ////////////////////////////////////////////
-    // case profileImage:
-    //   return{
-    //     ...state,
-    //     profileImage:action.payload
-    //   }
+    case OPEN_MODAL_CODECOPY:
+      return {
+        ...state,
+        codecopyvisible: true
+      };
+    case OPEN_MODAL_CHANGELEADER:
+      return {
+        ...state,
+        changeleadervisible: true,
+        changeleaderinfo: action.payload
+      };
+    case OPEN_MODAL_DELETEMEMBER:
+      return {
+        ...state,
+        deletemembervisible: true,
+        deletemember: action.payload
+      };
 
-    case SET_PROFILEIMG:
-      return { ...state, profileImg: action.payload };
-    ////////////////////////////////////////////
+    case REMOVEMEMBER:
+      return {
+        ...state,
+        members: state.members.filter(member => member.id !== action.payload)
+      };
 
+    case POST_PICTURE_UPLOAD:
+      console.log("POST_PICTURE_UPLOAD", action.payload);
+      return {
+        ...state,
+        postLoading: true
+      };
     default:
       return state;
   }

@@ -4,16 +4,27 @@ import plusImage from "../images/Vector.png";
 const { Header, Content } = Layout;
 const { Text } = Typography;
 
-class MakeGroup extends Component {
-  constructor(props) {
-    super(props);
+// class GroupAdd extends Component {
+//   constructor(props) {
+//     super(props);
+    
+//     this.state = {
+//       loading: false,
+//     };
+//   }
 
-    this.state = {
-      loading: false
-    };
-  }
-
-  render() {
+//   render() {
+//     const {
+//       onOpenModal,
+//       id,members
+//     } = this.props;
+//     console.log("그룹추가------------");
+//     console.log(id);
+//     console.log(members);
+function GroupAdd({ onOpenModal, id,members,visible,OpenMainPage }) {
+       console.log("그룹추가------------");
+     console.log(id);
+     console.log(members);
     return (
       <Layout style={{ minHeight: "100vh", background: "white" }}>
         <Header style={{ padding: "8vh" }}></Header>
@@ -52,6 +63,7 @@ class MakeGroup extends Component {
               shape="round"
               block
               style={{ margin: "3vh 0" }}
+              onClick={onOpenModal}
             >
               확인
             </Button>
@@ -81,12 +93,13 @@ class MakeGroup extends Component {
               style={{
                 margin: "3vh 18vh"
               }}
+              onClick={onOpenModal}
             />
           </Card>
         </Content>
       </Layout>
     );
   }
-}
+//}
 
-export default MakeGroup;
+export default GroupAdd;

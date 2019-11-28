@@ -5,7 +5,7 @@ import statics from "./statics";
 import challengeAdd from "./challengeAdd";
 import mypage from "./mypage";
 import family from "./family";
-
+import groupAdd from "./groupAdd";
 import mychallengeDetail from "./mychallengeDetail";
 import mychallenge from "./mychallenge"
 export default combineReducers({
@@ -16,5 +16,6 @@ export default combineReducers({
   family,
   mychallengeDetail,
   mypage,
-  mychallenge
+  mychallenge,
+  groupAdd
 });

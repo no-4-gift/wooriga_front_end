@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { Fragment } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
@@ -17,7 +16,6 @@ import {
   message
 } from "antd";
 import Headers from "./statics/HeaderLayout";
-import ChosensContainer from "../containers/ChosensContainer";
 
 //////////////////////
 import defaultImage from "../images/default.PNG";
@@ -185,8 +183,8 @@ const RecordContainer = styled.div`
 
 function MyPage({
   members,
-  myid,
   onShow,
+  myid,
   visible,
   onShowMoreBtn,
   rowsToDisplay,
@@ -194,14 +192,16 @@ function MyPage({
 }) {
   console.log("mypage-----------");
   console.log(visible);
-
+  console.log(myid);
   console.log(rowsToDisplay);
   console.log("mypage-----------");
 
   return (
     <WhiteBackgroundLayout>
+      <Headers content="내정보" />
       <MypageLayout>
         <br />
+
         <div>
           <TitleText>내 정보</TitleText>
           <SettingText onClick={onShow}>설정</SettingText>

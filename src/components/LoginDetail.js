@@ -4,7 +4,7 @@ import logoImage from "../images/logo2.png";
 const { Content } = Layout;
 const { Text, Title } = Typography;
 
-class Invite extends Component {
+class LoginDetail extends Component {
   constructor(props) {
     super(props);
     this.routeChange = this.routeChange.bind(this);
@@ -64,4 +64,4 @@ class Invite extends Component {
   }
 }
 
-export default Invite;
+export default LoginDetail;
