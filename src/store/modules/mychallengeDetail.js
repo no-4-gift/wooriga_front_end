@@ -1,3 +1,5 @@
+import { message } from "antd";
+
 export const PICTUREFLAGTRUE = "mychallengeDetail/PICTUREFLAGTRUE";
 export const PICTUREFLAGFALSE = "mychallengeDetail/PICTUREFLAGFALSE";
 
@@ -9,11 +11,15 @@ export const POST_PICTURE_UPLOAD = "mychallengeDetail/POST_PICTURE_UPLOAD";
 export const POST_PICTURE_UPLOAD_SUCCESS = "mychallengeDetail/POST_PICTURE_UPLOAD_SUCCESS";
 export const POST_PICTURE_UPLOAD_FAILED = "mychallengeDetail/POST_PICTURE_UPLOAD_FAILED";
 export const POST_CERTIFICATION_COLOR = "mychallengeDetail/POST_CERTIFICATION_COLOR";
+export const POST_CERTIFICATION_COLOR_SUCCESS = "mychallengeDetail/POST_CERTIFICATION_COLOR_SUCCESS";
+
 
 export const PUT_PICTURE_DELETE = "mychallengeDetail/PUT_PICTURE_DELETE";
 export const PUT_PICTURE_DELETE_SUCCESS = "mychallengeDetail/PUT_PICTURE_DELETE_SUCCESS";
 export const PUT_PICTURE_DELETE_FAILED = "mychallengeDetail/PUT_PICTURE_DELETE_FAILED";
 export const DELETE_CERTIFICATION_COLOR = "mychallengeDetail/DELETE_CERTIFICATION_COLOR";
+export const DELETE_CERTIFICATION_COLOR_SUCCESS = "mychallengeDetail/DELETE_CERTIFICATION_COLOR_SUCCESS";
+
 
 export const pictureFlagTrue = (image, date) => ({ 
   type: PICTUREFLAGTRUE, 
@@ -28,17 +34,11 @@ export const pictureFlagFalse = (date) => ({ type: PICTUREFLAGFALSE,
   }
 });
 
-export const postCertificationColor = (date) => ({ type: POST_CERTIFICATION_COLOR,
-  payload : {
-    date : date
-  }
-});
+export const postCertificationColor = () => ({ type: POST_CERTIFICATION_COLOR});
 
-export const deleteCertificationColor = (date) => ({ type: DELETE_CERTIFICATION_COLOR,
-  payload : {
-    date : date
-  }
-});
+
+export const deleteCertificationColor = () => ({ type: DELETE_CERTIFICATION_COLOR});
+
 export const getDetail = (registeredId, uid) => ({ 
   type: GET_DETAIL, 
   payload: {
@@ -115,23 +115,33 @@ export default (state = initialState, action) => {
 
 
     case POST_PICTURE_UPLOAD:
+      message.loading('업로드 중 입니다!', 3);
 
         return {
           ...state,
           postLoading : true,
         };
     case POST_PICTURE_UPLOAD_SUCCESS:
+        message.success(`인증에 성공했습니다!`, 2.5)
         return {
           ...state,
-          postLoading : action.payload.postLoading,
+          postLoading : false,
         };
     case POST_PICTURE_UPLOAD_FAILED:
       return {
         ...state,
-        postLoading : action.payload.postLoading,
+        postLoading : false,
       };
 
     case POST_CERTIFICATION_COLOR:
+      
+      return {
+        ...state,
+        
+      };
+
+      case POST_CERTIFICATION_COLOR_SUCCESS:
+      
       return {
         ...state,
         certificationArray : state.certificationArray.map((data, index) => 
@@ -146,6 +156,12 @@ export default (state = initialState, action) => {
       case DELETE_CERTIFICATION_COLOR:
       return {
         ...state,
+        
+      };
+
+      case DELETE_CERTIFICATION_COLOR_SUCCESS:
+      return {
+        ...state,
         certificationArray : state.certificationArray.map((data, index) => 
           data.cardDate === action.payload.date ? 
           {
@@ -155,20 +171,24 @@ export default (state = initialState, action) => {
         )
       };
 
+
       case PUT_PICTURE_DELETE:
+
         return {
           ...state,
           deleteLoading : true
         };
     case PUT_PICTURE_DELETE_SUCCESS:
+
+        message.success(`삭제에 성공했습니다!`, 2.5)
         return {
           ...state,
-          deleteLoading : action.payload.postLoading,
+          deleteLoading : false,
         };
     case PUT_PICTURE_DELETE_FAILED:
       return {
         ...state,
-        deleteLoading : action.payload.postLoading,
+        deleteLoading : false,
       };
     default:
       return state;

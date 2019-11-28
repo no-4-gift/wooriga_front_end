@@ -63,7 +63,7 @@ class myChallengeDetailContainer extends Component {
     }
     
     pictureFlagRouter = (data, image, date) => {
-        console.log(data, image, date);
+        // console.log(data, image, date);
         const { MyChallengeDetailActions } = this.props;
         
         if(data !== 1){
@@ -83,15 +83,15 @@ class myChallengeDetailContainer extends Component {
         
         let file = e.target.files[0];
     
-        console.log('e.target.files[0]', e.target.files[0]);
-        console.log('registeredFk', registeredFk);
-        console.log('date', date);
+        // console.log('e.target.files[0]', e.target.files[0]);
+        // console.log('registeredFk', registeredFk);
+        // console.log('date', date);
         reader.onloadend = () => {
             this.setState({
                 selectedFile : file,
                 imagePreviewUrl: reader.result
             }, () => {
-                console.log(this.state.selectedFile)
+
                 MyChallengeDetailActions.postCertification(registeredFk, date, this.state.selectedFile);
                 let dateColor = moment(new Date(date)).format("YYYY.MM.DD");
                 MyChallengeDetailActions.postCertificationColor(dateColor)
@@ -104,8 +104,6 @@ class myChallengeDetailContainer extends Component {
 
     fileOnDelete = (e, registeredId, date) => {
         const { MyChallengeDetailActions } = this.props;
-
-        console.log("fileOnDelete : ", registeredId, date);
 
         this.setState({
             selectedFile : '',
@@ -126,7 +124,7 @@ class myChallengeDetailContainer extends Component {
         }, 3000)
     }
     render() {
-        const {pictureFlag, certification, certificationArray, pictureUrl, cardDate, deleteLoading} = this.props
+        const {pictureFlag, certification, certificationArray, pictureUrl, cardDate, deleteLoading, postLoading} = this.props
         let {imagePreviewUrl, challenger_challenges, participation_challenges, userType} = this.state;
         let $imagePreview = null;
         // console.log('deleteLoading render : ', deleteLoading)
@@ -155,6 +153,7 @@ class myChallengeDetailContainer extends Component {
                 fileOnDelete={this.fileOnDelete}
                 fileOnDeleteAfter={this.fileOnDeleteAfter}
                 deleteLoading={deleteLoading}
+                postLoading={postLoading}
                 />
             ) : (
                 <>
@@ -197,6 +196,7 @@ const mapStateToProps = ({ mychallengeDetail }) => ({
     cardDate : mychallengeDetail.cardDate,
     certification : mychallengeDetail.certification,
     certificationArray : mychallengeDetail.certificationArray,
+    postLoading : mychallengeDetail.postLoading,
     deleteLoading : mychallengeDetail.deleteLoading
 });
   

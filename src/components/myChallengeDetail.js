@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Card } from "antd";
+import { Card, Spin } from "antd";
 import styled from "styled-components";
 import defaultImage from "../images/default.PNG";
 import { MdArrowBack } from "react-icons/md";
@@ -415,7 +415,8 @@ const MyChallengeDetail = ({
   userType,
   fileOnDelete,
   fileOnDeleteAfter,
-  deleteLoading
+  deleteLoading,
+  postLoading
  }) => {
 
   // cardDate = moment(cardDate).format("YYYY-MM-DD");
@@ -426,12 +427,12 @@ const MyChallengeDetail = ({
   // console.log('certificationArray : ', certificationArray);
 
   // console.log("memberData : ", memberData);
-  console.log("cardDate : ", cardDate);
+  // console.log("cardDate : ", cardDate);
   // console.log("userType : ", userType);
 
    // imagePreview
-  if (imagePreviewUrl) {
-    // 프리뷰!!
+
+  if(deleteLoading) {
     $imagePreview = (
       <CertifiedRequirementContentFalse style={{paddingTop : 0}}>
         <div style={{
@@ -442,52 +443,98 @@ const MyChallengeDetail = ({
           right : "1.5vw"
 
         }}>
-        <img src={deleteCertification} alt="deleteCertification" width="25px" height="25px" 
-            style={{
-              
-              background: "rgba(44, 44, 44, 0.2)",
-              boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.15)",
-              borderRadius: "14px",
-              border: "1px solid #FFFFFF"
-            }} 
-            onClick={(e) => fileOnDelete(e, memberData[0].challengeBarInfo.registeredId, cardDate)}
-            />
+        
         </div>
 
-        <img id={"circlePlus"} src={imagePreviewUrl} alt="imagePreviewUrl" width ="100%" height ="100%" style={{borderRadius : 15}} />
+        <Spin style={{height : "100%", paddingTop : 110}}/>
         
-        <CertifiedRequirementContentLayer style={{clear : "both"}}>{cardDate}</CertifiedRequirementContentLayer>
-        <CertifiedRequirementContentLayer>인증 성공</CertifiedRequirementContentLayer>
       </CertifiedRequirementContentFalse>
     );
-  } else {
-    // 기본!
-    if(userType === "sub"){
-      $imagePreview = (
-        <>
-        참가자는 인증할 수 없습니다.
-        </>
-      )
-    }
-    else {
-      $imagePreview = (
-        <>
-        <CertifiedRequirementContentFalse>
-        <label htmlFor="file-input">
-          <img src={circlePlus} alt={"circlePlus"} height ="30%"/>
-        </label>
-        
-        <input style={{display: "none"}} id="file-input" type="file" name="file" accept="image/*" capture="camera" onChange={e => fileOnChange(e, memberData[0].challengeBarInfo.registeredId, cardDate)}/>
-        <CertifiedRequirementContentTextFalse>오늘의 챌린지를</CertifiedRequirementContentTextFalse>
-        <CertifiedRequirementContentTextFalse
-          style={{padding : 0}}
-        >인증해주세요</CertifiedRequirementContentTextFalse>
-        </CertifiedRequirementContentFalse>
-      </>
-      );
-    }
-
   }
+  else {
+    if (imagePreviewUrl) {
+      // 프리뷰!!
+
+      if(postLoading) {
+        $imagePreview = (
+          <CertifiedRequirementContentFalse style={{paddingTop : 0}}>
+            <div style={{
+              height : 0,
+              float : "right",
+              position : "relative",
+              top : "1vh",
+              right : "1.5vw"
+    
+            }}>
+            
+            </div>
+    
+            <Spin style={{height : "100%", paddingTop : 110}}/>
+            
+          </CertifiedRequirementContentFalse>
+        );
+      }
+      else {
+        $imagePreview = (
+          <CertifiedRequirementContentFalse style={{paddingTop : 0}}>
+            <div style={{
+              height : 0,
+              float : "right",
+              position : "relative",
+              top : "1vh",
+              right : "1.5vw"
+    
+            }}>
+            <img src={deleteCertification} alt="deleteCertification" width="25px" height="25px" 
+                style={{
+                  
+                  background: "rgba(44, 44, 44, 0.2)",
+                  boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.15)",
+                  borderRadius: "14px",
+                  border: "1px solid #FFFFFF"
+                }} 
+                onClick={(e) => fileOnDelete(e, memberData[0].challengeBarInfo.registeredId, cardDate)}
+                />
+            </div>
+    
+            <img id={"circlePlus"} src={imagePreviewUrl} alt="imagePreviewUrl" width ="100%" height ="100%" style={{borderRadius : 15}} />
+            
+            <CertifiedRequirementContentLayer style={{clear : "both"}}>{cardDate}</CertifiedRequirementContentLayer>
+            <CertifiedRequirementContentLayer>인증 성공</CertifiedRequirementContentLayer>
+          </CertifiedRequirementContentFalse>
+        );
+      }
+      
+    } else {
+      // 기본!
+      if(userType === "sub"){
+        $imagePreview = (
+          <>
+          참가자는 인증할 수 없습니다.
+          </>
+        )
+      }
+      else {
+        $imagePreview = (
+          <>
+          <CertifiedRequirementContentFalse>
+          <label htmlFor="file-input">
+            <img src={circlePlus} alt={"circlePlus"} height ="30%"/>
+          </label>
+          
+          <input style={{display: "none"}} id="file-input" type="file" name="file" accept="image/*" capture="camera" onChange={e => fileOnChange(e, memberData[0].challengeBarInfo.registeredId, cardDate)}/>
+          <CertifiedRequirementContentTextFalse>오늘의 챌린지를</CertifiedRequirementContentTextFalse>
+          <CertifiedRequirementContentTextFalse
+            style={{padding : 0}}
+          >인증해주세요</CertifiedRequirementContentTextFalse>
+          </CertifiedRequirementContentFalse>
+        </>
+        );
+      }
+  
+    }
+  }
+  
 
   return (
     <Fragment>
@@ -556,38 +603,61 @@ const MyChallengeDetail = ({
         <>
         {/* (이미지가 존재하는) 오늘 */}
         {moment(TodayTime).isSame(cardDate) ? (
-          <CertifiedRequirement>
-            <CertifiedRequirementContent>
-            <div style={{
+          <>
+          {deleteLoading? (
+            <CertifiedRequirement>
+              <CertifiedRequirementContent>
+                <div style={{
+                  height : 0,
+                  float : "right",
+                  position : "relative",
+                  top : "1vh",
+                  right : "1.5vw"
 
-              float : "right",
-              height : 0,
-              position: "relative",
-              top: "1vh",
-              right: "1.5vw"
-              }}>
-              <img src={deleteCertification} alt="deleteCertification" width="25px" height="25px" 
-              style={{
+                }}>
+                
+                </div>
 
-              background: "rgba(44, 44, 44, 0.2)",
-              boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.15)",
-              borderRadius: "14px",
-              border: "1px solid #FFFFFF"
-              }} 
-              onClick={(e) => fileOnDeleteAfter(e, memberData[0].challengeBarInfo.registeredId, cardDate)}
-              />
-            </div>
+                <Spin style={{height : "100%", paddingTop : 110}}/>
+                
+              </CertifiedRequirementContent>
+            </CertifiedRequirement>
+          ) : (
+            <CertifiedRequirement>
+              <CertifiedRequirementContent>
+              <div style={{
 
-            <img src={pictureUrl} alt="pictureUrl" width="100%" height="100%" style={{opacity : "0.8", borderRadius : 10, position : "relative", zIndex : -1}} /> 
-            
-            
-            
-            <CertifiedRequirementContentLayer style={{clear : "both", top : "-60%"}}>{cardDate}</CertifiedRequirementContentLayer>
-            <CertifiedRequirementContentLayer style={{top : "-60%"}}>인증 성공</CertifiedRequirementContentLayer>
-            </CertifiedRequirementContent>
-            <CertifiedRequirementContentTriangle></CertifiedRequirementContentTriangle>
-            <CertifiedRequirementContentText onClick={onOpen}>{certification.resolution}</CertifiedRequirementContentText>
-          </CertifiedRequirement>
+                float : "right",
+                height : 0,
+                position: "relative",
+                top: "1vh",
+                right: "1.5vw"
+                }}>
+                <img src={deleteCertification} alt="deleteCertification" width="25px" height="25px" 
+                style={{
+
+                background: "rgba(44, 44, 44, 0.2)",
+                boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.15)",
+                borderRadius: "14px",
+                border: "1px solid #FFFFFF"
+                }} 
+                onClick={(e) => fileOnDeleteAfter(e, memberData[0].challengeBarInfo.registeredId, cardDate)}
+                />
+              </div>
+
+              <img src={pictureUrl} alt="pictureUrl" width="100%" height="100%" style={{opacity : "0.8", borderRadius : 10, position : "relative", zIndex : -1}} /> 
+              
+              
+              
+              <CertifiedRequirementContentLayer style={{clear : "both", top : "-60%"}}>{cardDate}</CertifiedRequirementContentLayer>
+              <CertifiedRequirementContentLayer style={{top : "-60%"}}>인증 성공</CertifiedRequirementContentLayer>
+              </CertifiedRequirementContent>
+              <CertifiedRequirementContentTriangle></CertifiedRequirementContentTriangle>
+              <CertifiedRequirementContentText onClick={onOpen}>{certification.resolution}</CertifiedRequirementContentText>
+            </CertifiedRequirement>
+          )}
+          
+          </>
         ) : (
           // 이미지가 존재하지만, 오늘이 아님
           <CertifiedRequirement>
