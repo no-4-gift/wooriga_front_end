@@ -28,8 +28,6 @@ export const postCertification = async (registeredFk , date, file) => {
   })
   .then((response) => {
     console.log(response.status);
-    message.loading('업로드 중 입니다!', 2)
-    .then(() => message.success(`인증에 성공했습니다!`, 2.5))
     
   })
   .catch((err) => {
@@ -51,7 +49,6 @@ export const deleteCertification = async (registeredId , date) => {
   })
   .then((response) => {
     console.log(response.status);
-    message.success(`삭제에 성공했습니다!`, 2.5)
     
   })
   .catch((err) => {
