@@ -142,7 +142,7 @@ const NumberHorizontalLayout = styled.div`
       display: none !important; // 윈도우 크롬 등
     }
 `;
-
+console.log('size : ',window.innerWidth);
 const NumberHorizontalContentBorder = styled.div`
     display:inline-block;
     width: 62px;
@@ -397,7 +397,8 @@ const ChallengeInfoContent = styled.div`
 //       }
 //     }
 // `;
-
+let TodayTime = moment().format("YYYY-MM-DD");
+  
 const MyChallengeDetail = ({ 
   backRouter,
   pictureFlagRouter,
@@ -416,6 +417,18 @@ const MyChallengeDetail = ({
   fileOnDeleteAfter,
   deleteLoading
  }) => {
+
+  // cardDate = moment(cardDate).format("YYYY-MM-DD");
+
+  cardDate = cardDate.replace(/\./g, '-').substring(0, 10);
+  
+  // console.log('certification : ', certification);
+  // console.log('certificationArray : ', certificationArray);
+
+  // console.log("memberData : ", memberData);
+  console.log("cardDate : ", cardDate);
+  // console.log("userType : ", userType);
+
    // imagePreview
   if (imagePreviewUrl) {
     // 프리뷰!!
@@ -476,16 +489,6 @@ const MyChallengeDetail = ({
 
   }
 
-  let TodayTime = moment().format("YYYY-MM-DD");
-  
-  // console.log(moment(TodayTime).isAfter('2018.01.01'));
-  console.log('certification : ', certification);
-  console.log('certificationArray : ', certificationArray);
-  
-  cardDate = moment(new Date(cardDate)).format("YYYY-MM-DD");
-  console.log("memberData : ", memberData);
-  console.log("cardDate : ", cardDate);
-  console.log("userType : ", userType);
   return (
     <Fragment>
   

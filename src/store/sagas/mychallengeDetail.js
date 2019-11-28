@@ -25,7 +25,8 @@ import {
   import moment from 'moment';
 
   let TodayTime = moment().format("YYYY.MM.DD");
-
+ 
+  let TodayDateFormat = new Date().toISOString().substring(0, 10);
   function* certificationArray(action) {
 
     const {registeredId, uid} = action.payload;
@@ -46,16 +47,15 @@ import {
 
       for(let i = 0 ; i < certificationArray.certificationInfoArrayList.length ; i++){
         if (certificationArray.certificationInfoArrayList[i].cardDate === TodayTime){
-          console.log("오늘 존재!!!");
+
           certificationImage = certificationArray.certificationInfoArrayList[i].certificationImage;
           certificationDate = certificationArray.certificationInfoArrayList[i].cardDate;
           certificationFlag = certificationArray.certificationInfoArrayList[i].certificationTrue
         }
       }
       
-      console.log("Here Saga Data : ", certificationImage, certificationDate, certificationFlag)
       if(certificationFlag === 1){
-        console.log("인증 완료", certificationArray.certificationInfoArrayList);
+        // console.log("인증 완료", certificationArray.certificationInfoArrayList);
         yield put({
           type : PICTUREFLAGTRUE,
           payload : {
@@ -66,7 +66,7 @@ import {
       })
       }
       else {
-        console.log("인증 안됌");
+        // console.log("인증 안됌");
         yield put({
           type : PICTUREFLAGFALSE,
           payload : {
@@ -94,11 +94,12 @@ import {
 function* postCertification(action) {
 
   const {registeredFk, date, file} = action.payload;
-  console.log(registeredFk, date, file)
+  console.log(registeredFk, date, file);
+
   const certification = yield call(
     challengerAPI.postCertification,
     registeredFk,
-    date,
+    TodayDateFormat,
     file
   );
 
@@ -132,7 +133,7 @@ function* deleteCertification(action) {
   const certification = yield call(
     challengerAPI.deleteCertification,
     registeredId,
-    date
+    TodayDateFormat
   );
   yield delay(3000)
   try {

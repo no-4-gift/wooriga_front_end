@@ -92,13 +92,12 @@ class myChallengeDetailContainer extends Component {
                 imagePreviewUrl: reader.result
             }, () => {
                 console.log(this.state.selectedFile)
-                MyChallengeDetailActions.postCertification(registeredFk, date, this.state.selectedFile)
+                MyChallengeDetailActions.postCertification(registeredFk, date, this.state.selectedFile);
                 let dateColor = moment(new Date(date)).format("YYYY.MM.DD");
                 MyChallengeDetailActions.postCertificationColor(dateColor)
             })
         }
 
-        console.log('timing');
         reader.readAsDataURL(e.target.files[0])
         
     }
@@ -130,8 +129,8 @@ class myChallengeDetailContainer extends Component {
         const {pictureFlag, certification, certificationArray, pictureUrl, cardDate, deleteLoading} = this.props
         let {imagePreviewUrl, challenger_challenges, participation_challenges, userType} = this.state;
         let $imagePreview = null;
-        console.log('deleteLoading render : ', deleteLoading)
-        console.log('certificationArray render : ',certificationArray);
+        // console.log('deleteLoading render : ', deleteLoading)
+        // console.log('certificationArray render : ',certificationArray);
         return (
             <>
             {challenger_challenges.length > 0 ? (

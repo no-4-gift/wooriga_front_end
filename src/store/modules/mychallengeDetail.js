@@ -48,6 +48,7 @@ export const getDetail = (registeredId, uid) => ({
  });
 
 export const postCertification = (registeredFk , date, file) => ({
+  
   type: POST_PICTURE_UPLOAD,
   payload: {
     registeredFk : registeredFk,
@@ -114,28 +115,23 @@ export default (state = initialState, action) => {
 
 
     case POST_PICTURE_UPLOAD:
-        console.log('POST_PICTURE_UPLOAD', action.payload);
+
         return {
           ...state,
           postLoading : true,
         };
     case POST_PICTURE_UPLOAD_SUCCESS:
-        console.log('POST_PICTURE_UPLOAD_SUCCESS', action.payload)
         return {
           ...state,
           postLoading : action.payload.postLoading,
         };
     case POST_PICTURE_UPLOAD_FAILED:
-        console.log('POST_PICTURE_UPLOAD_FAILED')
       return {
         ...state,
         postLoading : action.payload.postLoading,
       };
 
     case POST_CERTIFICATION_COLOR:
-
-        console.log('POST_CERTIFICATION_COLOR', state.certificationArray)
-        console.log(action.payload.date)
       return {
         ...state,
         certificationArray : state.certificationArray.map((data, index) => 
@@ -148,9 +144,6 @@ export default (state = initialState, action) => {
       };
 
       case DELETE_CERTIFICATION_COLOR:
-
-        console.log('DELETE_CERTIFICATION_COLOR', state.certificationArray)
-        console.log(action.payload.date)
       return {
         ...state,
         certificationArray : state.certificationArray.map((data, index) => 
@@ -163,19 +156,16 @@ export default (state = initialState, action) => {
       };
 
       case PUT_PICTURE_DELETE:
-        console.log('PUT_PICTURE_DELETE');
         return {
           ...state,
           deleteLoading : true
         };
     case PUT_PICTURE_DELETE_SUCCESS:
-        console.log('PUT_PICTURE_DELETE_SUCCESS', action.payload)
         return {
           ...state,
           deleteLoading : action.payload.postLoading,
         };
     case PUT_PICTURE_DELETE_FAILED:
-        console.log('PUT_PICTURE_DELETE_FAILED')
       return {
         ...state,
         deleteLoading : action.payload.postLoading,
