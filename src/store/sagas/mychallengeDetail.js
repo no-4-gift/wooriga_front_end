@@ -19,13 +19,19 @@ import {
     POST_PICTURE_UPLOAD_FAILED,
     PUT_PICTURE_DELETE,
     PUT_PICTURE_DELETE_SUCCESS,
-    PUT_PICTURE_DELETE_FAILED
+    PUT_PICTURE_DELETE_FAILED,
+
+    POST_CERTIFICATION_COLOR_SUCCESS,
+    DELETE_CERTIFICATION_COLOR_SUCCESS
+
   } from "../modules/mychallengeDetail";
 
   import moment from 'moment';
 
   let TodayTime = moment().format("YYYY.MM.DD");
-
+ 
+  let TodayDateFormat = new Date().toISOString().substring(0, 10);
+  let dateColor = moment(TodayDateFormat).format("YYYY.MM.DD");
   function* certificationArray(action) {
 
     const {registeredId, uid} = action.payload;
@@ -46,16 +52,15 @@ import {
 
       for(let i = 0 ; i < certificationArray.certificationInfoArrayList.length ; i++){
         if (certificationArray.certificationInfoArrayList[i].cardDate === TodayTime){
-          console.log("오늘 존재!!!");
+
           certificationImage = certificationArray.certificationInfoArrayList[i].certificationImage;
           certificationDate = certificationArray.certificationInfoArrayList[i].cardDate;
           certificationFlag = certificationArray.certificationInfoArrayList[i].certificationTrue
         }
       }
       
-      console.log("Here Saga Data : ", certificationImage, certificationDate, certificationFlag)
       if(certificationFlag === 1){
-        console.log("인증 완료", certificationArray.certificationInfoArrayList);
+        // console.log("인증 완료", certificationArray.certificationInfoArrayList);
         yield put({
           type : PICTUREFLAGTRUE,
           payload : {
@@ -66,7 +71,7 @@ import {
       })
       }
       else {
-        console.log("인증 안됌");
+        // console.log("인증 안됌");
         yield put({
           type : PICTUREFLAGFALSE,
           payload : {
@@ -93,17 +98,24 @@ import {
 
 function* postCertification(action) {
 
-  const {registeredFk, date, file} = action.payload;
-  console.log(registeredFk, date, file)
+  const {registeredFk, file} = action.payload;
+
   const certification = yield call(
     challengerAPI.postCertification,
     registeredFk,
-    date,
+    TodayDateFormat,
     file
   );
-
+  yield delay(3000)
   try {
-
+      
+        yield put({
+          type : POST_CERTIFICATION_COLOR_SUCCESS,
+          payload : {
+            date : dateColor
+          }
+      })
+      
       yield put({
           type : POST_PICTURE_UPLOAD_SUCCESS,
           payload : {
@@ -127,16 +139,23 @@ function* postCertification(action) {
 
 function* deleteCertification(action) {
 
-  const {registeredId, date} = action.payload;
-  console.log(registeredId, date)
+  const {registeredId} = action.payload;
+
   const certification = yield call(
     challengerAPI.deleteCertification,
     registeredId,
-    date
+    TodayDateFormat
   );
   yield delay(3000)
   try {
+    console.log("saga PUT_PICTURE_DELETE_SUCCESS")
 
+      yield put({
+          type : DELETE_CERTIFICATION_COLOR_SUCCESS,
+          payload : {
+            date : dateColor
+          }
+      })
       yield put({
           type : PUT_PICTURE_DELETE_SUCCESS,
           payload : {
