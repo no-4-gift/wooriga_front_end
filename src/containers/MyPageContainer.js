@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import * as myPageActions from "../store/modules/mypage";
-import * as loginActions from "../store/modules/login";
+import * as authActions from "../store/modules/auth";
 import MyPageModal from "../components/MyPageModal";
 import MyPage from "../components/MyPage";
 import { bindActionCreators } from "redux";
@@ -132,10 +132,10 @@ class MyPageContainer extends Component {
 
 // 리덕스 스토어 안의 상태를 컴포넌트의 props로 넘겨주기 위해 사용하는 함수
 //state 를 파라미터로 받아온다 . 현재 store 가 가지고 있는 상태
-const mapStateToProps = ({ mypage, login }) => ({
+const mapStateToProps = ({ mypage, auth }) => ({
   visible: mypage.visible,
   members: mypage.members,
-  logged: login.logged,
+  logged: auth.logged,
   rowsToDisplay: mypage.rowsToDisplay,
   profileImg: mypage.profileImg
 });
@@ -144,7 +144,7 @@ const mapStateToProps = ({ mypage, login }) => ({
 //store의 내장 함수 dispatch를 파라미터로 받온다.
 const mapDispatchToProps = dispatch => ({
   MyPageActions: bindActionCreators(myPageActions, dispatch),
-  LoginActions: bindActionCreators(loginActions, dispatch)
+  AuthActions: bindActionCreators(authActions, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyPageContainer);

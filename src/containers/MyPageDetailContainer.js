@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as myPageActions from "../store/modules/mypage";
-import * as loginActions from "../store/modules/login";
+import * as authActions from "../store/modules/auth";
 import { bindActionCreators } from "redux";
 import MyPageDetail from "../components/MyPageDetail";
 
@@ -31,7 +31,7 @@ const mapStateToProps = ({ mypage, login }) => ({
 //store의 내장 함수 dispatch를 파라미터로 받온다.
 const mapDispatchToProps = dispatch => ({
   MyPageActions: bindActionCreators(myPageActions, dispatch),
-  LoginActions: bindActionCreators(loginActions, dispatch)
+  AuthActions: bindActionCreators(authActions, dispatch)
 });
 
 export default connect(

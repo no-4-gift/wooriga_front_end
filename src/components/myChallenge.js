@@ -1,28 +1,28 @@
-import React, { Fragment } from 'react';
-import { Layout, Carousel, Card, Progress  } from 'antd'; 
-import styled from 'styled-components';
-import calendarImage from '../images/CalendarMirrored.png';
-import userImage from '../images/user.PNG';
+import React, { Fragment } from "react";
+import { Layout, Carousel, Card, Progress } from "antd";
+import styled from "styled-components";
+import calendarImage from "../images/CalendarMirrored.png";
+import userImage from "../images/user.PNG";
+import {profileColor} from "../styleUtils/colorStyle"
 const { Content } = Layout;
 
-
 const ContentsTitle = styled.div`
-    height : 8vh;
-    padding-top : 5%;
-    margin-bottom : 5%;
-    padding-left : 6%;
-    font-weight: bold;
-    font-size: 1.2rem;
-    font-style : normal;
-    color: rgba(0, 0, 0, 0.75);
+  height: 8vh;
+  padding-top: 5%;
+  margin-bottom: 5%;
+  padding-left: 6%;
+  font-weight: bold;
+  font-size: 1.2rem;
+  font-style: normal;
+  color: rgba(0, 0, 0, 0.75);
 `;
 const Contents = styled(Content)`
-    margin : 0px 15%;
+  margin: 0px 15%;
 `;
 
 const ContentsOne = styled.div``;
 
-// Carousel Entire 
+// Carousel Entire
 const OverCarousel = styled(Carousel)`
     &&{
         .slick-dots li.slick-active button{
@@ -42,15 +42,19 @@ const OverCarousel = styled(Carousel)`
             height : 100%;
         }
     }
-    margin-top : 5%;
+    .slick-track {
+      height: 100%;
+    }
+  
+  margin-top: 5%;
 `;
 
 const OverCard = styled(Card)`
-    &&{
-        .ant-card-body {
-            padding : 0;
-        }
+  && {
+    .ant-card-body {
+      padding: 0;
     }
+  }
 `;
 
 // OverCardPicture Entire
@@ -60,31 +64,29 @@ const OverCardPicture = styled.div`
 `;
 
 const OverCardPictureTop = styled.div`
-    height: 250px;
-    border-radius: 10px 10px 0 0;
-    background: #EDEDED;
+  height: 250px;
+  border-radius: 10px 10px 0 0;
+  background: #ededed;
 `;
 
 const OverCardPictureTopLayerOne = styled.div`
-    position : absolute;
-    z-index : 2;
-    width : 100%;
-    text-align : center;
-    padding : 4% 10%;
-    font-size : 0.7rem;
-    &&{
-        .ant-progress-bg{
-            height : 5px !important;
-        }
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  text-align: center;
+  padding: 4% 10%;
+  font-size: 0.7rem;
+  && {
+    .ant-progress-bg {
+      height: 5px !important;
     }
-    
+  }
 `;
 
 const OverCardPictureTopLayerTwo = styled.div`
-    position : relative;
-    z-index : 1;
-    height: 100%;
-
+  position: relative;
+  z-index: 1;
+  height: 100%;
 `;
 
 const OverCardPictureBottom = styled.div`
@@ -112,26 +114,26 @@ const OverCardPictureBottomDetail = styled.div`
 `;
 
 const OverCardPictureBottomContent = styled.div`
-    clear : both;
-    font-size : 0.7rem;
+  clear: both;
+  font-size: 0.7rem;
 `;
 const OverCardPictureBottomContentImage = styled.img`
-    float :left;
-    margin-right : 2%;
+  float: left;
+  margin-right: 2%;
 `;
 
 const OverCardPictureBottomUserImage = styled.img`
-    padding-left: 3%;
-    float : left;
+  padding-left: 3%;
+  float: left;
 `;
 const OverCardPictureBottomImage = styled.img`
-    width : 5vh;
-    border: 1px solid #F2C94C;
-    box-sizing: border-box;
-    border-radius: 50%;
+  width: 5vh;
+ ${profileColor}
+  box-sizing: border-box;
+  border-radius: 50%;
 `;
 
-// Challenge Component by 승준 
+// Challenge Component by 승준
 
 const ChallengeContainer = styled.div`
   width: 100vw;
@@ -172,9 +174,9 @@ const ChallengeContent = styled.div`
 `;
 
 const ChallengeFixed = styled.div`
-    display : flex;
-    justify-content : space-between;
-    height : 5%;
+  display: flex;
+  justify-content: space-between;
+  height: 5%;
 `;
 const ChallengeContentTitle = styled.div`
   width: 100%;
@@ -192,7 +194,7 @@ const ChallengeContentTitle = styled.div`
 `;
 
 const ChallengeContentDate = styled.div`
-  opacity : 99%;
+  opacity: 99%;
   width: 100%;
   height: 50%;
   display: flex;
@@ -208,28 +210,29 @@ const ChallengeContentDate = styled.div`
 `;
 
 const ChallengeContentProgress = styled.div`
-    margin-top : 5%;
-    width : 95%;
-    text-align : center;
-    font-size : 0.7rem;
-    &&{
-        .ant-progress-text {
-            color : dimgray;
-        }
-        .ant-progress-bg{
-            height : 5px !important;
-        }
-        .ant-progress-small.ant-progress-line, .ant-progress-small.ant-progress-line .ant-progress-text .anticon{
-            padding-right : 20%;
-        }
+  margin-top: 5%;
+  width: 95%;
+  text-align: center;
+  font-size: 0.7rem;
+  && {
+    .ant-progress-text {
+      color: dimgray;
     }
+    .ant-progress-bg {
+      height: 5px !important;
+    }
+    .ant-progress-small.ant-progress-line,
+    .ant-progress-small.ant-progress-line .ant-progress-text .anticon {
+      padding-right: 20%;
+    }
+  }
 `;
 
 const ChallengeContentProgressText = styled.div`
-    position : relative;
-    bottom : 3vh;
-    float :right;
-    color : dimgray;
+  position: relative;
+  bottom: 3vh;
+  float: right;
+  color: dimgray;
 `;
 
 // 함께하고 있는 챌린지 Styled
@@ -272,7 +275,7 @@ const MyChallenge = ({ detailRouter, bottomDetailRouter, challenger_challenges, 
 
                                                 <OverCardPictureBottomTitle>{elem.challengeBarInfo.challengeTitle}</OverCardPictureBottomTitle>
                                                 <OverCardPictureBottomDetail>
-                                                    <OverCardPictureBottomImage src ={elem.challengeBarInfo.userInfo[0].profile} alt ="default" height = "36px" width = "36px" style={{float :"right"}}/>
+                                                    <OverCardPictureBottomImage color={elem.challengeBarInfo.userInfo[0].color} src ={elem.challengeBarInfo.userInfo[0].profile} alt ="default" height = "36px" width = "36px" style={{float :"right"}}/>
                                                 </OverCardPictureBottomDetail>
 
                                             <OverCardPictureBottomContent>
@@ -313,7 +316,7 @@ const MyChallenge = ({ detailRouter, bottomDetailRouter, challenger_challenges, 
                             <ChallengeFixed>
                             <ChallengeContentTitle>{elem.challengeBarInfo.challengeTitle}</ChallengeContentTitle>
                             <OverCardPictureBottomDetail style={{marginTop : 0}}>
-                                <OverCardPictureBottomImage src ={elem.challengeBarInfo.userInfo[0].profile} alt ="default" height = "36px" width = "36px"/>                            
+                                <OverCardPictureBottomImage color={elem.challengeBarInfo.userInfo[0].color} src ={elem.challengeBarInfo.userInfo[0].profile} alt ="default" height = "36px" width = "36px"/>                            
                                 
                                 
                             </OverCardPictureBottomDetail>

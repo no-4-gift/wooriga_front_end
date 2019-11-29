@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import { colorSelector, profileColor } from "../styleUtils/colorStyle";
 import { MdClose } from "react-icons/md";
 import PropTypes from "prop-types";
+import timeDiff from "../utils/timeDiff";
 
 const DarkBackGround = styled.div`
   position: fixed;
@@ -306,7 +307,8 @@ function CalendarModal({
   onCancle,
   onDelete,
   onInsert,
-  selectDate
+  selectDate,
+  onSelectChallenge
 }) {
   const isMysdate =
     dates
@@ -314,6 +316,7 @@ function CalendarModal({
       .findIndex(elem => elem.emptyDate === selectDate) === -1
       ? false
       : true;
+
   let thisDateMembers = dates.filter(elem => elem.emptyDate === selectDate);
   const myIdx = thisDateMembers.findIndex(elem => elem.userInfo.uid === id);
   if (myIdx !== -1) {
@@ -321,9 +324,12 @@ function CalendarModal({
     thisDateMembers[0] = thisDateMembers[myIdx];
     thisDateMembers[myIdx] = temp;
   }
-  const thisDateChallenge = challengeBarInfo.filter(
-    elem => elem.date.findIndex(elem => elem === selectDate) !== -1
-  );
+
+  const thisDateChallenge = timeDiff(selectDate)
+    ? challengeBarInfo.filter(
+        elem => elem.date.findIndex(elem => elem === selectDate) !== -1
+      )
+    : [];
   console.log(thisDateChallenge);
 
   return (
@@ -341,7 +347,12 @@ function CalendarModal({
               </SectionTitle>
               <SectionBody>
                 {thisDateChallenge.map((elem, index) => (
-                  <ChallengeItem key={index}>
+                  <ChallengeItem
+                    key={index}
+                    onClick={() =>
+                      onSelectChallenge(elem.registeredId, elem.userInfo[0].uid)
+                    }
+                  >
                     <ChallengeIcon>
                       <svg
                         width="12"
@@ -431,5 +442,6 @@ CalendarModal.propTypes = {
   onCancle: PropTypes.func,
   onDelete: PropTypes.func,
   onInsert: PropTypes.func,
-  selectDate: PropTypes.string
+  selectDate: PropTypes.string,
+  onSelectChallenge: PropTypes.func.isRequired
 };

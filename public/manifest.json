@@ -1,8 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [    
-  ],
+  "short_name": "Wooriga",
+  "name": "가족들과 함께하는 추억만들기",
+  "icons": [],
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",

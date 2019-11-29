@@ -1,25 +1,58 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as myChallengeDetailActions from "../store/modules/mychallengeDetail";
-import MyChallengeDetail from '../components/myChallengeDetail';
-import moment from 'moment';
+import MyChallengeDetail from "../components/myChallengeDetail";
+import moment from "moment";
 const uid = 19980106;
 
 let reader = new FileReader();
 
 class myChallengeDetailContainer extends Component {
-    constructor(props){
-        super(props);
-        this.state = { 
-            selectedFile: '',
-            imagePreviewUrl : '',
-            challenger_challenges : [],
-            
-            participation_challenges : [],
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedFile: "",
+      imagePreviewUrl: "",
+      challenger_challenges: [],
 
-            userType : ""
-        }
+      participation_challenges: [],
+
+      userType: ""
+    };
+  }
+  componentDidMount = () => {
+    const { MyChallengeDetailActions } = this.props;
+    console.log(this.props.location.state.flag);
+
+    let registeredId = this.props.match.params.id;
+
+    if (this.props.location.state.flag === "main") {
+      MyChallengeDetailActions.getDetail(registeredId, uid);
+      const propsArray = this.props.location.state.challenger_challenges;
+
+      let filterArray = propsArray.filter(
+        elem => elem.challengeBarInfo.registeredId === Number(registeredId)
+      );
+
+      this.setState({
+        challenger_challenges: filterArray,
+        userType: "main"
+      });
+    } else if (this.props.location.state.flag === "sub") {
+      MyChallengeDetailActions.getDetail(registeredId, uid);
+      const propsArray = this.props.location.state.participation_challenges;
+
+      let filterArray = propsArray.filter(
+        elem => elem.challengeBarInfo.registeredId === Number(registeredId)
+      );
+
+      this.setState({
+        participation_challenges: filterArray,
+        userType: "sub"
+      });
+    } else {
+      window.location.assign("/");
     }
     componentDidMount = () => {
         const { MyChallengeDetailActions } = this.props;
@@ -134,6 +167,7 @@ class myChallengeDetailContainer extends Component {
             {challenger_challenges.length > 0 ? (
                 <MyChallengeDetail
 
+
                 onOpen={this.handleOnOpen}
                 backRouter={this.backRouter}
                 pictureFlagRouter={this.pictureFlagRouter}
@@ -144,10 +178,9 @@ class myChallengeDetailContainer extends Component {
                 // imagePreview
                 imagePreviewUrl={imagePreviewUrl}
                 $imagePreview={$imagePreview}
-
                 certification={certification}
                 certificationArray={certificationArray}
-                memberData={challenger_challenges}
+                memberData={participation_challenges}
                 userType={userType}
 
                 fileOnDelete={this.fileOnDelete}
@@ -156,41 +189,18 @@ class myChallengeDetailContainer extends Component {
                 postLoading={postLoading}
                 />
             ) : (
-                <>
-                    {participation_challenges.length > 0 ? (
-                        <MyChallengeDetail
-
-                        onOpen={this.handleOnOpen}
-                        backRouter={this.backRouter}
-                        pictureFlagRouter={this.pictureFlagRouter}
-                        pictureFlag={pictureFlag}
-                        pictureUrl={pictureUrl}
-                        cardDate={cardDate}
-                        fileOnChange={this.fileOnChange}
-
-                        // imagePreview
-                        imagePreviewUrl={imagePreviewUrl}
-                        $imagePreview={$imagePreview}
-
-                        certification={certification}
-                        certificationArray={certificationArray}
-                        memberData={participation_challenges}
-                        userType={userType}
-                        />
-                    ) : (
-                        <div>정상적인 접근이 아닙니다.</div>
-                    )}
-                </>
+              <div>정상적인 접근이 아닙니다.</div>
             )}
-                
-            </>
-        );
-    }
+          </>
+        )}
+      </>
+    );
+  }
 }
-
 
 // store에 있는 counter의 initalState를 가져온다.
 const mapStateToProps = ({ mychallengeDetail }) => ({
+
     pictureFlag: mychallengeDetail.pictureFlag,
     pictureUrl : mychallengeDetail.pictureUrl,
     cardDate : mychallengeDetail.cardDate,
@@ -198,15 +208,18 @@ const mapStateToProps = ({ mychallengeDetail }) => ({
     certificationArray : mychallengeDetail.certificationArray,
     postLoading : mychallengeDetail.postLoading,
     deleteLoading : mychallengeDetail.deleteLoading
+
 });
-  
-  
+
 // **** 함수가 아닌 객체 설정시 자동 bindActionCreators 됨
 const mapDispatchProps = dispatch => ({
-    MyChallengeDetailActions: bindActionCreators(myChallengeDetailActions, dispatch)
-  });
-  
-  export default connect(
-    mapStateToProps,
-    mapDispatchProps
-  )(myChallengeDetailContainer);
+  MyChallengeDetailActions: bindActionCreators(
+    myChallengeDetailActions,
+    dispatch
+  )
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchProps
+)(myChallengeDetailContainer);

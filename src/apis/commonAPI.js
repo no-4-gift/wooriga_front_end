@@ -8,3 +8,12 @@ export const getFamily = async familyId => {
   console.log(response.data);
   return response.data;
 };
+
+export const getMain = async uid => {
+  const response = await axios.get(
+    `http://52.78.149.82:8081/api/main/?uid=${uid}`
+  );
+  console.log(response.data);
+
+  return response.data;
+};

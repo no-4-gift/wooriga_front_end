@@ -12,10 +12,11 @@ import { Alert } from "antd";
 import moment from "moment";
 import styled from "styled-components";
 import { Spin } from "antd";
+import timeDiff from "../utils/timeDiff";
 
 //현재 컴포넌트에서 필수적으로 가져야할 Props
 const familyId = "wooriga";
-const userId = 1615409;
+const userId = 19980106;
 
 const MyAlert = styled(Alert)`
   position: relative;
@@ -134,12 +135,14 @@ class CalenderContainer extends Component {
 
   handleSelectChallengeDates = date => {
     const { CalendarActions, dates, challengeDates } = this.props;
-    if (dates.findIndex(elem => elem.emptyDate === date) !== -1) {
-      CalendarActions.selectChallengeDates(date);
-      if (challengeDates.findIndex(elem => elem === date) !== -1)
-        return CalendarActions.alert(false);
-      if (challengeDates.length >= this.maxChallengeDateLength)
-        CalendarActions.alert(true);
+    if (timeDiff(date)) {
+      if (dates.findIndex(elem => elem.emptyDate === date) !== -1) {
+        CalendarActions.selectChallengeDates(date);
+        if (challengeDates.findIndex(elem => elem === date) !== -1)
+          return CalendarActions.alert(false);
+        if (challengeDates.length >= this.maxChallengeDateLength)
+          CalendarActions.alert(true);
+      }
     }
   };
 
@@ -174,6 +177,22 @@ class CalenderContainer extends Component {
     );
   };
 
+  handleGoChallengeDetail = (registId, registerUid) => {
+    if (userId === registerUid) {
+      const { challenger_challenges } = this.props;
+      this.props.history.push(`/mychallenge_detail/${registId}`, {
+        flag: "main",
+        challenger_challenges: challenger_challenges
+      });
+    } else {
+      const { participation_challenges } = this.props;
+      this.props.history.push(`/mychallenge_detail/${registId}`, {
+        flag: "sub",
+        participation_challenges: participation_challenges
+      });
+    }
+  };
+
   render() {
     const {
       calendarLoading,
@@ -203,83 +222,86 @@ class CalenderContainer extends Component {
         challengeAcitveDates = challengeAcitveDates.concat(challengeDates[i]);
     }
 
-    if (true) {
-      if (familyError || calendarError) {
-        return <div>Error!!!</div>;
-      } else {
-        return (
-          <Fragment>
-            <CalendarModal
-              id={userId}
-              challengeBarInfo={challengeBarInfo}
-              selectDate={selectDate}
-              visible={visible}
-              dates={dates}
-              onCancle={this.handleCloseModal}
-              onDelete={this.handleDeleteSchedule}
-              onInsert={this.handleInsertSchedule}
-            />
-            <Spin
-              tip="Loading..."
-              spinning={calendarLoading || familyLoading || challengeLoading}
-            >
-              <Calendar
-                dates={dates}
-                members={members}
-                userId={userId}
-                today={today}
-                toggle={toggle}
-                challengeDates={challengeDates}
-                onClickDate={this.handleSelectDate}
-                onToggle={this.handleToggle}
-                onPreMonth={this.handlePreMonth}
-                onNextMonth={this.handleNextMonth}
-                onTodayMonth={this.handleGoTodayMonth}
-                onSwipe={this.handleSwipe}
-                GoToChallenge={this.handleGoToChallenge}
-                disable={disable}
-                challengeAcitveDates={challengeAcitveDates}
-              />
-              {alert && (
-                <MyAlert
-                  message="Informational Notes"
-                  description="챌린지 신청 일 수는 최대 10일 입니다."
-                  type="info"
-                  showIcon
-                  closable
-                  onClose={this.handleCloseAlert}
-                />
-              )}
-              {editDateError && (
-                <MyAlert
-                  message="Error"
-                  description="일정 수정에 실패하였습니다."
-                  type="error"
-                  showIcon
-                  closable
-                  onClose={this.handleCloseEditErrorAlert}
-                />
-              )}
-              {challengeAddError && (
-                <MyAlert
-                  message="Error"
-                  description="해당 날짜에 모두 해당하는 인원이 없습니다."
-                  type="error"
-                  showIcon
-                  closable
-                />
-              )}
-            </Spin>
-          </Fragment>
-        );
-      }
+    if (familyError || calendarError) {
+      return <div>Error!!!</div>;
     } else {
-      return <Redirect to="/login" />;
+      return (
+        <Fragment>
+          <CalendarModal
+            id={userId}
+            challengeBarInfo={challengeBarInfo}
+            selectDate={selectDate}
+            visible={visible}
+            dates={dates}
+            onCancle={this.handleCloseModal}
+            onDelete={this.handleDeleteSchedule}
+            onInsert={this.handleInsertSchedule}
+            onSelectChallenge={this.handleGoChallengeDetail}
+          />
+          <Spin
+            tip="Loading..."
+            spinning={calendarLoading || familyLoading || challengeLoading}
+          >
+            <Calendar
+              dates={dates}
+              members={members}
+              userId={userId}
+              today={today}
+              toggle={toggle}
+              challengeDates={challengeDates}
+              onClickDate={this.handleSelectDate}
+              onToggle={this.handleToggle}
+              onPreMonth={this.handlePreMonth}
+              onNextMonth={this.handleNextMonth}
+              onTodayMonth={this.handleGoTodayMonth}
+              onSwipe={this.handleSwipe}
+              GoToChallenge={this.handleGoToChallenge}
+              disable={disable}
+              challengeAcitveDates={challengeAcitveDates}
+            />
+            {alert && (
+              <MyAlert
+                message="Informational Notes"
+                description="챌린지 신청 일 수는 최대 10일 입니다."
+                type="info"
+                showIcon
+                closable
+                onClose={this.handleCloseAlert}
+              />
+            )}
+            {editDateError && (
+              <MyAlert
+                message="Error"
+                description="일정 수정에 실패하였습니다."
+                type="error"
+                showIcon
+                closable
+                onClose={this.handleCloseEditErrorAlert}
+              />
+            )}
+            {challengeAddError && (
+              <MyAlert
+                message="Error"
+                description="해당 날짜에 모두 해당하는 인원이 없습니다."
+                type="error"
+                showIcon
+                closable
+              />
+            )}
+          </Spin>
+        </Fragment>
+      );
     }
   }
 }
 
-const mapStateToProps = ({ calendar, login, family, challengeAdd }) => ({
+const mapStateToProps = ({
+  calendar,
+  login,
+  family,
+  challengeAdd,
+  mychallenge
+}) => ({
   calendarLoading: calendar.loading,
   calendarError: calendar.error,
   challengeBarInfo: calendar.challengeBarInfo,
@@ -297,7 +319,9 @@ const mapStateToProps = ({ calendar, login, family, challengeAdd }) => ({
   members: family.members,
   familyError: family.error,
   challengeAddError: challengeAdd.error,
-  challengeLoading: challengeAdd.loading
+  challengeLoading: challengeAdd.loading,
+  challenger_challenges: mychallenge.challenger_challenges,
+  participation_challenges: mychallenge.participation_challenges
 });
 
 const mapDispatchProps = dispatch => ({
