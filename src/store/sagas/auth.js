@@ -3,9 +3,9 @@ import * as loginAPI from "../../apis/loginAPI";
 import { ONLOGIN, ONLOGIN_SUCCESS, ONLOGIN_ERROR } from "../modules/auth";
 
 function* kakaoLogin(action) {
-  const token = action.payload;
+  const { id, nickname, profile } = action.payload;
   try {
-    const res = yield call(loginAPI.kakaoLoginAPI, token);
+    const res = yield call(loginAPI.kakaoLoginAPI, id, nickname, profile);
     const { firstLogin, uid } = res;
 
     sessionStorage.setItem("uid", uid);

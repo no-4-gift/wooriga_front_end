@@ -4,7 +4,6 @@ import { bindActionCreators } from "redux";
 import * as myChallengeDetailActions from "../store/modules/mychallengeDetail";
 import MyChallengeDetail from "../components/myChallengeDetail";
 import moment from "moment";
-const uid = 19980106;
 
 let reader = new FileReader();
 
@@ -18,7 +17,9 @@ class myChallengeDetailContainer extends Component {
 
       participation_challenges: [],
 
-      userType: ""
+      userType: "",
+      uid: parseInt(sessionStorage.getItem("uid")),
+      familyId: sessionStorage.getItem("familyId")
     };
   }
   componentDidMount = () => {
@@ -28,7 +29,11 @@ class myChallengeDetailContainer extends Component {
     let registeredId = this.props.match.params.id;
 
     if (this.props.location.state.flag === "main") {
-      MyChallengeDetailActions.getDetail(registeredId, uid);
+      console.log("진리 1", this.props.location.state.challenger_challenges);
+      MyChallengeDetailActions.getDetail(
+        registeredId,
+        this.props.location.state.uid
+      );
       const propsArray = this.props.location.state.challenger_challenges;
 
       let filterArray = propsArray.filter(
@@ -40,7 +45,11 @@ class myChallengeDetailContainer extends Component {
         userType: "main"
       });
     } else if (this.props.location.state.flag === "sub") {
-      MyChallengeDetailActions.getDetail(registeredId, uid);
+      console.log("진리 2", this.props.location.state.participation_challenges);
+      MyChallengeDetailActions.getDetail(
+        registeredId,
+        this.props.location.state.uid
+      );
       const propsArray = this.props.location.state.participation_challenges;
 
       let filterArray = propsArray.filter(
@@ -60,7 +69,7 @@ class myChallengeDetailContainer extends Component {
   };
 
   pictureFlagRouter = (data, image, date) => {
-    console.log(data, image, date);
+    // console.log(data, image, date);
     const { MyChallengeDetailActions } = this.props;
 
     if (data !== 1) {
@@ -76,9 +85,9 @@ class myChallengeDetailContainer extends Component {
 
     let file = e.target.files[0];
 
-    console.log("e.target.files[0]", e.target.files[0]);
-    console.log("registeredFk", registeredFk);
-    console.log("date", date);
+    // console.log('e.target.files[0]', e.target.files[0]);
+    // console.log('registeredFk', registeredFk);
+    // console.log('date', date);
     reader.onloadend = () => {
       this.setState(
         {
@@ -86,7 +95,6 @@ class myChallengeDetailContainer extends Component {
           imagePreviewUrl: reader.result
         },
         () => {
-          console.log(this.state.selectedFile);
           MyChallengeDetailActions.postCertification(
             registeredFk,
             date,
@@ -98,14 +106,11 @@ class myChallengeDetailContainer extends Component {
       );
     };
 
-    console.log("timing");
     reader.readAsDataURL(e.target.files[0]);
   };
 
   fileOnDelete = (e, registeredId, date) => {
     const { MyChallengeDetailActions } = this.props;
-
-    console.log("fileOnDelete : ", registeredId, date);
 
     this.setState({
       selectedFile: "",
@@ -132,7 +137,8 @@ class myChallengeDetailContainer extends Component {
       certificationArray,
       pictureUrl,
       cardDate,
-      deleteLoading
+      deleteLoading,
+      postLoading
     } = this.props;
     let {
       imagePreviewUrl,
@@ -141,10 +147,8 @@ class myChallengeDetailContainer extends Component {
       userType
     } = this.state;
     let $imagePreview = null;
-    console.log("deleteLoading render : ", deleteLoading);
-    console.log("certificationArray render : ", certificationArray);
-    console.log("participation_challenges", participation_challenges);
-    console.log("challenger_challenges", challenger_challenges);
+    // console.log('deleteLoading render : ', deleteLoading)
+    // console.log('certificationArray render : ',certificationArray);
     return (
       <>
         {challenger_challenges.length > 0 ? (
@@ -166,6 +170,7 @@ class myChallengeDetailContainer extends Component {
             fileOnDelete={this.fileOnDelete}
             fileOnDeleteAfter={this.fileOnDeleteAfter}
             deleteLoading={deleteLoading}
+            postLoading={postLoading}
           />
         ) : (
           <>
@@ -203,6 +208,7 @@ const mapStateToProps = ({ mychallengeDetail }) => ({
   cardDate: mychallengeDetail.cardDate,
   certification: mychallengeDetail.certification,
   certificationArray: mychallengeDetail.certificationArray,
+  postLoading: mychallengeDetail.postLoading,
   deleteLoading: mychallengeDetail.deleteLoading
 });
 

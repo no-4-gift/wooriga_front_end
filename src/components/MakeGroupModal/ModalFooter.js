@@ -47,17 +47,20 @@ const ConfirmButton = styled.button`
   padding: 0;
 `;
 
-function ModalFooter({ onSubmit, onCancle }) {
+function ModalFooter({ onSubmit, onCancle, disabled }) {
   return (
     <FooterContainer>
       <CancelButton onClick={onCancle}>취소</CancelButton>
-      <ConfirmButton onClick={onSubmit}>확인</ConfirmButton>
+      <ConfirmButton disabled={disabled} onClick={onSubmit}>
+        확인
+      </ConfirmButton>
     </FooterContainer>
   );
 }
 
 ModalFooter.propTypes = {
   onCancle: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired
+  onSubmit: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired
 };
 export default ModalFooter;

@@ -5,18 +5,22 @@ import { withRouter } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import * as myChallengeAction from "../store/modules/mychallenge";
 
-const familyId = "wooriga";
-const uid = 19980106;
-
 class myChallengeContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      uid: parseInt(sessionStorage.getItem("uid")),
+      familyId: sessionStorage.getItem("familyId")
+    };
+  }
   componentDidMount = () => {
     const {
       MyChallengeActions,
       challenger_challenges,
       participation_challenges
     } = this.props;
-    MyChallengeActions.onGetChallenger(familyId, uid);
-    MyChallengeActions.onGetParticipation(familyId, uid);
+    MyChallengeActions.onGetChallenger(this.state.familyId, this.state.uid);
+    MyChallengeActions.onGetParticipation(this.state.familyId, this.state.uid);
 
     console.log("challenger_challenges :", challenger_challenges);
     console.log("participation_challenges : ", participation_challenges);
@@ -26,7 +30,8 @@ class myChallengeContainer extends Component {
     const { challenger_challenges } = this.props;
     this.props.history.push(`/mychallenge_detail/${detailProps}`, {
       flag: "main",
-      challenger_challenges: challenger_challenges
+      challenger_challenges: challenger_challenges,
+      uid: this.state.uid
     });
   };
 
@@ -34,7 +39,8 @@ class myChallengeContainer extends Component {
     const { participation_challenges } = this.props;
     this.props.history.push(`/mychallenge_detail/${bottomProps}`, {
       flag: "sub",
-      participation_challenges: participation_challenges
+      participation_challenges: participation_challenges,
+      uid: this.state.uid
     });
   };
 

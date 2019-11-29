@@ -12,9 +12,13 @@ export const SET_UID = "auth/SET_UID";
 export const SET_FAMILYID = "auth/SET_FAMILYID";
 
 /* 액션 생성함수 만들기 */
-export const onLogin = access_token => ({
+export const onLogin = (id, nickname, profile) => ({
   type: ONLOGIN,
-  payload: access_token
+  payload: {
+    id: id,
+    nickname: nickname,
+    profile: profile
+  }
 });
 
 export const setKakaoError = error => ({

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { colorSelector } from "../../styleUtils/colorStyle";
 import { MdDone } from "react-icons/md";
 import PropTypes from "prop-types";
+import { pallete } from "../../themes/pallete";
 
 const Container = styled.div`
   width: 100%;
@@ -89,25 +90,7 @@ const SelectedPallete = styled.div`
   font-weight: bold;
 `;
 
-const pallete = [
-  "green",
-  "mint",
-  "lightBlue",
-  "blue",
-  "red",
-  "pink",
-  "darkYellow",
-  "yellow",
-  "violet",
-  "darkViolet",
-  "orange",
-  "lightPink"
-];
-
-//dummy
-const colors = ["green", "mint", "lightBlue"];
-
-function Pallete({ selectedColor, onSelectColor }) {
+function Pallete({ selectedColor, onSelectColor, colorList }) {
   return (
     <Container>
       <Title>
@@ -120,7 +103,7 @@ function Pallete({ selectedColor, onSelectColor }) {
         {pallete.map((color, index) => (
           <PalleteItemWrapper key={index}>
             <PalleteItem color={color} onClick={() => onSelectColor(color)} />
-            {colors.findIndex(elem => elem === color) !== -1 && (
+            {colorList.findIndex(elem => elem === color) !== -1 && (
               <UnChoicePallete>
                 <MdDone />
               </UnChoicePallete>
@@ -138,7 +121,8 @@ function Pallete({ selectedColor, onSelectColor }) {
 }
 Pallete.propTypes = {
   selectedColor: PropTypes.string.isRequired,
-  onSelectColor: PropTypes.func.isRequired
+  onSelectColor: PropTypes.func.isRequired,
+  colorList: PropTypes.array.isRequired
 };
 
 export default React.memo(Pallete);

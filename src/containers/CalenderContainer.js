@@ -6,7 +6,7 @@ import { Redirect, withRouter } from "react-router-dom";
 import Calendar from "../components/Calendar";
 import CalendarModal from "../components/CalendarModal";
 import * as calendarActions from "../store/modules/calendar";
-import * as familyActions from "../store/modules/family";
+import family, * as familyActions from "../store/modules/family";
 import * as challengeAddActions from "../store/modules/challengeAdd";
 import { Alert } from "antd";
 import moment from "moment";
@@ -15,8 +15,6 @@ import { Spin } from "antd";
 import timeDiff from "../utils/timeDiff";
 
 //현재 컴포넌트에서 필수적으로 가져야할 Props
-const familyId = "wooriga";
-const userId = 19980106;
 
 const MyAlert = styled(Alert)`
   position: relative;
@@ -26,16 +24,23 @@ const MyAlert = styled(Alert)`
 
 class CalenderContainer extends Component {
   maxChallengeDateLength = 10;
+  constructor(props) {
+    super(props);
+    this.state = {
+      uid: parseInt(sessionStorage.getItem("uid")),
+      familyId: sessionStorage.getItem("familyId")
+    };
+  }
 
   componentDidMount() {
     const { CalendarActions, FamilyActions, today } = this.props;
     const year = today.format("YYYY");
     const month = today.format("MM");
     const cur = moment();
-    CalendarActions.getCalendarData(familyId, year, month);
+    CalendarActions.getCalendarData(this.state.familyId, year, month);
     CalendarActions.addViewedDays(today.format("YYYY-MM"));
-    FamilyActions.getFamilyData(familyId);
-    CalendarActions.goCurMonth(cur);
+    FamilyActions.getFamilyData(this.state.familyId);
+    //CalendarActions.goCurMonth(cur);
   }
   componentWillUnmount() {
     const { CalendarActions } = this.props;
@@ -50,7 +55,7 @@ class CalenderContainer extends Component {
     console.log(next.format("YYYY-MM"));
 
     if (viewedDay.findIndex(date => date === next.format("YYYY-MM")) === -1) {
-      CalendarActions.getCalendarData(familyId, year, month);
+      CalendarActions.getCalendarData(this.state.familyId, year, month);
       CalendarActions.addViewedDays(next.format("YYYY-MM"));
     }
 
@@ -64,7 +69,7 @@ class CalenderContainer extends Component {
     console.log(next.format("YYYY-MM"));
 
     if (viewedDay.findIndex(date => date === next.format("YYYY-MM")) === -1) {
-      CalendarActions.getCalendarData(familyId, year, month);
+      CalendarActions.getCalendarData(this.state.familyId, year, month);
       CalendarActions.addViewedDays(next.format("YYYY-MM"));
     }
     CalendarActions.goPreMonth();
@@ -76,10 +81,10 @@ class CalenderContainer extends Component {
     const month = cur.format("MM");
     console.log(cur.format("YYYY-MM"));
 
-    if (viewedDay.findIndex(date => date === cur.format("YYYY-MM")) === -1) {
+    /*if (viewedDay.findIndex(date => date === cur.format("YYYY-MM")) === -1) {
       CalendarActions.getCalendarData(familyId, year, month);
       CalendarActions.addViewedDays(cur.format("YYYY-MM"));
-    }
+    }*/
     CalendarActions.goCurMonth(cur);
   };
 
@@ -108,24 +113,34 @@ class CalenderContainer extends Component {
 
   handleInsertSchedule = date => {
     const { CalendarActions, members } = this.props;
-    const userInfo = members.filter(elem => elem.uid === userId)[0];
+    const userInfo = members.filter(elem => elem.uid === this.state.uid)[0];
     const newObj = {
       emptyDate: date,
       userInfo
     };
 
-    CalendarActions.postEmptyDate(userId, date, familyId, newObj);
+    CalendarActions.postEmptyDate(
+      this.state.uid,
+      date,
+      this.state.familyId,
+      newObj
+    );
   };
 
   handleDeleteSchedule = date => {
     const { CalendarActions, members } = this.props;
-    const userInfo = members.filter(elem => elem.uid === userId)[0];
+    const userInfo = members.filter(elem => elem.uid === this.state.uid)[0];
     const newObj = {
       emptyDate: date,
       userInfo
     };
 
-    CalendarActions.deleteEmptyDate(userId, date, familyId, newObj);
+    CalendarActions.deleteEmptyDate(
+      this.state.uid,
+      date,
+      this.state.familyId,
+      newObj
+    );
   };
 
   handleToggle = () => {
@@ -171,24 +186,26 @@ class CalenderContainer extends Component {
     this.handleToggle();
 
     ChallengeAddActions.postDateListAndPath(
-      familyId,
+      this.state.familyId,
       challengeDates,
       this.props.history
     );
   };
 
   handleGoChallengeDetail = (registId, registerUid) => {
-    if (userId === registerUid) {
+    if (this.state.uid === registerUid) {
       const { challenger_challenges } = this.props;
       this.props.history.push(`/mychallenge_detail/${registId}`, {
         flag: "main",
-        challenger_challenges: challenger_challenges
+        challenger_challenges: challenger_challenges,
+        uid: registerUid
       });
     } else {
       const { participation_challenges } = this.props;
       this.props.history.push(`/mychallenge_detail/${registId}`, {
         flag: "sub",
-        participation_challenges: participation_challenges
+        participation_challenges: participation_challenges,
+        uid: registerUid
       });
     }
   };
@@ -228,7 +245,7 @@ class CalenderContainer extends Component {
       return (
         <Fragment>
           <CalendarModal
-            id={userId}
+            id={this.state.uid}
             challengeBarInfo={challengeBarInfo}
             selectDate={selectDate}
             visible={visible}
@@ -245,7 +262,7 @@ class CalenderContainer extends Component {
             <Calendar
               dates={dates}
               members={members}
-              userId={userId}
+              userId={this.state.uid}
               today={today}
               toggle={toggle}
               challengeDates={challengeDates}
@@ -297,7 +314,7 @@ class CalenderContainer extends Component {
 
 const mapStateToProps = ({
   calendar,
-  login,
+
   family,
   challengeAdd,
   mychallenge
@@ -314,7 +331,6 @@ const mapStateToProps = ({
   alert: calendar.alert,
   viewedDay: calendar.viewedDay,
   editDateError: calendar.editDateError,
-  logged: login.logged,
   familyLoading: family.loading,
   members: family.members,
   familyError: family.error,
