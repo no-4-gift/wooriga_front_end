@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import styled, { css } from "styled-components";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import { colorSelector } from "../styleUtils/colorStyle";
@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 
 import HitArea from "react-hammerjs";
 import CalendarShowMemberBox from "./CalendarShowMemberBox";
+import timeDiff from "../utils/timeDiff";
 
 //
 const Wrapper = styled.div``;
@@ -208,12 +209,10 @@ function CalendarGenerator({
   let calendar = [];
 
   let curToday = today.clone();
+
   for (let weight = 0; weight < 6; weight++) {
     let week = startWeek + weight;
-
     if (week > 53) {
-      week = 2;
-
       curToday = today.clone().add(1, "year");
     }
     calendar.push(
@@ -247,7 +246,7 @@ function CalendarGenerator({
               challengeAcitveDates.findIndex(
                 elem => elem === current.format("YYYY-MM-DD")
               ) !== -1
-                ? true
+                ? timeDiff(current.format("YYYY-MM-DD"))
                 : false;
 
             let isGrayed =

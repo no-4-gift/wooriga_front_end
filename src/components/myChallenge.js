@@ -3,6 +3,7 @@ import { Layout, Carousel, Card, Progress } from "antd";
 import styled from "styled-components";
 import calendarImage from "../images/CalendarMirrored.png";
 import userImage from "../images/user.PNG";
+import {profileColor} from "../styleUtils/colorStyle"
 const { Content } = Layout;
 
 const ContentsTitle = styled.div`
@@ -23,23 +24,28 @@ const ContentsOne = styled.div``;
 
 // Carousel Entire
 const OverCarousel = styled(Carousel)`
-  && {
-    .slick-dots li.slick-active button {
-      background: black;
-    }
-    .slick-dots li button {
-      background: black;
-    }
-    margin-top: 0;
-    height: 60vh;
-    .slick-list {
-      height: 100%;
-      border-radius: 10px 10px 0 0;
+    &&{
+        .slick-dots li.slick-active button{
+            background : black;
+        }
+        .slick-dots li button {
+            background : black;
+        }
+        margin-top : 0;
+        height : 410px;
+        .slick-list {
+            height : 100%;
+            border-radius: 10px 10px 0 0;
+        }
+        .slick-track {
+            
+            height : 100%;
+        }
     }
     .slick-track {
       height: 100%;
     }
-  }
+  
   margin-top: 5%;
 `;
 
@@ -53,8 +59,8 @@ const OverCard = styled(Card)`
 
 // OverCardPicture Entire
 const OverCardPicture = styled.div`
-  height: 68vh;
-  background-color: whitegray;
+    height: 410px;
+    background-color : whitegray;
 `;
 
 const OverCardPictureTop = styled.div`
@@ -84,26 +90,27 @@ const OverCardPictureTopLayerTwo = styled.div`
 `;
 
 const OverCardPictureBottom = styled.div`
-  height: 22%;
-  padding: 0px 5%;
-  border: 1px solid #ededed;
-  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.15);
-  border-radius: 0 0 10px 10px;
+    height : 28%;
+    padding : 0px 5%;
+    border : 1px solid #EDEDED;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.15);
+    border-radius: 0 0 10px 10px;
 `;
 
 const OverCardPictureBottomTitle = styled.div`
-  float: left;
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 140%;
-  width: 80%;
-  color: #000000;
-  margin-top: 3%;
+    float: left;
+    font-size : 1rem;
+    font-weight: 500;
+    line-height : 140%;
+    width : 80%;
+    color: #000000;
+    margin-top : 3%;
+    white-space : pre-wrap
 `;
 
 const OverCardPictureBottomDetail = styled.div`
-  height: 10vh;
-  margin-top: 3%;
+    height : 68%;
+    margin-top : 3%
 `;
 
 const OverCardPictureBottomContent = styled.div`
@@ -121,7 +128,7 @@ const OverCardPictureBottomUserImage = styled.img`
 `;
 const OverCardPictureBottomImage = styled.img`
   width: 5vh;
-  border: 1px solid #f2c94c;
+ ${profileColor}
   box-sizing: border-box;
   border-radius: 50%;
 `;
@@ -135,9 +142,10 @@ const ChallengeContainer = styled.div`
 `;
 const ChallengeList = styled.div`
   width: 100%;
-  height: 80%;
+  height: 400px;
   overflow: auto;
   margin-top: 27px;
+  margin-bottom : 35px;
 `;
 const ChallengeCard = styled.div`
   display: flex;
@@ -162,7 +170,7 @@ const ChallengeContent = styled.div`
   padding: 1em;
   height: 100%;
   flex: 0.75;
-  padding-top: 10%;
+  padding-top : ${props => props.size < 350 ? "15%" : "10%"}
 `;
 
 const ChallengeFixed = styled.div`
@@ -182,6 +190,7 @@ const ChallengeContentTitle = styled.div`
   color: #434444;
   display: flex;
   align-items: center;
+  white-space : pre-wrap;
 `;
 
 const ChallengeContentDate = styled.div`
@@ -197,7 +206,7 @@ const ChallengeContentDate = styled.div`
   line-height: 17px;
   letter-spacing: -0.02em;
   color: #434444;
-  padding-top: 20%;
+  padding-top: ${props => props.size < 350 ? "25%" : "20%"}
 `;
 
 const ChallengeContentProgress = styled.div`
@@ -228,170 +237,116 @@ const ChallengeContentProgressText = styled.div`
 
 // 함께하고 있는 챌린지 Styled
 
-const MyChallenge = ({
-  detailRouter,
-  bottomDetailRouter,
-  challenger_challenges,
-  participation_challenges
-}) => {
-  console.log("challenger_challenges", challenger_challenges);
-  console.log("participation_challenges", participation_challenges);
-  return (
-    <Fragment>
-      <ContentsTitle>도전중인 챌린지</ContentsTitle>
+const MyChallenge = ({ detailRouter, bottomDetailRouter, challenger_challenges, participation_challenges }) => {
+       console.log("challenger_challenges", challenger_challenges)
+       console.log("participation_challenges", participation_challenges)
+       console.log(window.innerWidth);
+    return ( 
+        <Fragment>
+            <ContentsTitle>
+                도전중인 챌린지
+            </ContentsTitle>
 
-      <Contents>
-        <ContentsOne>
-          {challenger_challenges.length === 0 ? (
-            <div>데이터 없음.</div>
-          ) : (
-            <>
-              <OverCarousel dotPosition={"bottom"}>
-                {challenger_challenges.map((elem, index) => (
-                  <OverCard
-                    bordered={false}
-                    key={index}
-                    onClick={() =>
-                      detailRouter(elem.challengeBarInfo.registeredId)
-                    }
-                  >
-                    <OverCardPicture>
-                      <OverCardPictureTop>
-                        <OverCardPictureTopLayerOne>
-                          <span
-                            style={{
-                              color: "white",
-                              textShadow: "0px 0px 5px rgba(67, 68, 68, 0.6)",
-                              fontWeight: "bold",
-                              fontSize: 13
-                            }}
-                          >{`5 0 %`}</span>
-                          <Progress
-                            percent={50}
-                            status="active"
-                            showInfo={false}
-                            strokeColor="#EB6363"
-                          />
-                        </OverCardPictureTopLayerOne>
+            <Contents>
+                <ContentsOne>
 
-                        <OverCardPictureTopLayerTwo>
-                          <img
-                            src={elem.challengeImage}
-                            alt="default"
-                            height="100%"
-                            width="100%"
-                          />
-                        </OverCardPictureTopLayerTwo>
-                      </OverCardPictureTop>
+                        {challenger_challenges.length === 0 ? (
+                            <div>데이터 없음.</div>
+                         ) : (
+                            <>
+                            <OverCarousel dotPosition={"bottom"}>
+                            {challenger_challenges.map((elem, index) => 
+                                <OverCard bordered={false} key={index} onClick={() => detailRouter(elem.challengeBarInfo.registeredId)}>
+                                    <OverCardPicture>
+                                        <OverCardPictureTop>
 
-                      <OverCardPictureBottom>
-                        <OverCardPictureBottomTitle>
-                          {elem.challengeBarInfo.challengeTitle}
-                        </OverCardPictureBottomTitle>
-                        <OverCardPictureBottomDetail>
-                          <OverCardPictureBottomImage
-                            src={elem.challengeBarInfo.userInfo[0].profile}
-                            alt="default"
-                            height="36px"
-                            width="36px"
-                            style={{ float: "right" }}
-                          />
-                        </OverCardPictureBottomDetail>
+                                            <OverCardPictureTopLayerOne>
+                                                <span style={{color : "white" ,textShadow: "0px 0px 5px rgba(67, 68, 68, 0.6)", fontWeight : "bold", fontSize: 13}}>{elem.challengeBarInfo.percentage}%</span>
+                                                <Progress percent={elem.challengeBarInfo.percentage} status="active" showInfo={false} strokeColor="#EB6363"/>
+                                            </OverCardPictureTopLayerOne>
 
-                        <OverCardPictureBottomContent>
-                          <OverCardPictureBottomContentImage
-                            src={calendarImage}
-                            alt=""
-                            width="6%"
-                          />
-                          <span style={{ float: "left", color: "#434444" }}>
-                            {elem.viewDate}
-                          </span>
-                          <OverCardPictureBottomUserImage
-                            src={userImage}
-                            alt=""
-                            width="10%"
-                          />
-                          <span style={{ color: "#434444" }}>
-                            {elem.challengeBarInfo.userInfo.length}명
-                          </span>
-                        </OverCardPictureBottomContent>
-                      </OverCardPictureBottom>
-                    </OverCardPicture>
-                  </OverCard>
-                ))}
-              </OverCarousel>
-            </>
-          )}
-        </ContentsOne>
-      </Contents>
+                                            <OverCardPictureTopLayerTwo>
+                                                <img src ={elem.challengeImage} alt ="default" height = "100%" width = "100%"/>
+                                            </OverCardPictureTopLayerTwo>
 
-      <ChallengeContainer>
-        <ContentsTitle style={{ paddingLeft: 0 }}>
-          함께하는 챌린지
-        </ContentsTitle>
-        {participation_challenges.length === 0 ? (
-          <div style={{ margin: "0 10%" }}>데이터 없음.</div>
-        ) : (
-          <ChallengeList>
-            {participation_challenges.map((elem, index) => (
-              <ChallengeCard
-                key={index}
-                onClick={() =>
-                  bottomDetailRouter(elem.challengeBarInfo.registeredId)
-                }
-              >
-                <ChallengeImg src={elem.challengeImage} alt="" width="80px" />
-                <ChallengeContent>
-                  <ChallengeFixed>
-                    <ChallengeContentTitle>
-                      {elem.challengeBarInfo.challengeTitle}
-                    </ChallengeContentTitle>
-                    <OverCardPictureBottomDetail style={{ marginTop: 0 }}>
-                      <OverCardPictureBottomImage
-                        src={elem.challengeBarInfo.userInfo[0].profile}
-                        alt="default"
-                        height="36px"
-                        width="36px"
-                      />
-                    </OverCardPictureBottomDetail>
-                  </ChallengeFixed>
+                                        </OverCardPictureTop>
 
-                  <ChallengeContentDate>
-                    <OverCardPictureBottomContentImage
-                      src={calendarImage}
-                      alt=""
-                      width="7%"
-                    />
-                    {elem.viewDate}
-                    <OverCardPictureBottomUserImage
-                      src={userImage}
-                      alt=""
-                      width="10%"
-                    />
-                    <span>{elem.challengeBarInfo.userInfo.length}명</span>
-                  </ChallengeContentDate>
+                                        <OverCardPictureBottom>
 
-                  <ChallengeContentProgress>
-                    <Progress
-                      percent={50}
-                      showInfo={false}
-                      status="active"
-                      size="small"
-                      strokeColor="#EB6363"
-                    />
-                    <ChallengeContentProgressText>
-                      <span style={{ color: "red" }}>{`1`}</span> / {`2`}
-                    </ChallengeContentProgressText>
-                  </ChallengeContentProgress>
-                </ChallengeContent>
-              </ChallengeCard>
-            ))}
-          </ChallengeList>
-        )}
-      </ChallengeContainer>
-    </Fragment>
-  );
-};
+                                                <OverCardPictureBottomTitle>{elem.challengeBarInfo.challengeTitle}</OverCardPictureBottomTitle>
+                                                <OverCardPictureBottomDetail>
+                                                    <OverCardPictureBottomImage color={elem.challengeBarInfo.userInfo[0].color} src ={elem.challengeBarInfo.userInfo[0].profile} alt ="default" height = "36px" width = "36px" style={{float :"right"}}/>
+                                                </OverCardPictureBottomDetail>
 
+                                            <OverCardPictureBottomContent>
+                                                <OverCardPictureBottomContentImage src={calendarImage} alt="" width = "6%"/>
+                                                <span style={{float : "left", color : "#434444"}}>{elem.challengeBarInfo.viewDate}</span>
+                                                <OverCardPictureBottomUserImage src={userImage} alt="" width = "10%"/>
+                                                <span style={{color :"#434444"}}>{elem.challengeBarInfo.userInfo.length}명</span>
+                                            </OverCardPictureBottomContent>
+
+                                        </OverCardPictureBottom>
+                                    </OverCardPicture>
+                                </OverCard>
+                                
+                                )}
+                            </OverCarousel>
+                            </>
+                            
+                         )}
+                </ContentsOne>
+            </Contents>
+
+
+
+            <ChallengeContainer>
+                <ContentsTitle style={{paddingLeft : 0}}>
+                        함께하는 챌린지
+                </ContentsTitle>
+                {participation_challenges.length === 0 ? (
+                            <div style={{margin : "0 10%"}}>데이터 없음.</div>
+                         ) : (
+                    <ChallengeList>
+                        {participation_challenges.map((elem, index) => 
+                            <ChallengeCard key={index} onClick={() => bottomDetailRouter(elem.challengeBarInfo.registeredId)}>
+
+                            <ChallengeImg src={elem.challengeImage} alt="" width ="80px" />
+                            <ChallengeContent size={window.innerWidth}>
+
+                            <ChallengeFixed>
+                            <ChallengeContentTitle>{elem.challengeBarInfo.challengeTitle}</ChallengeContentTitle>
+                            <OverCardPictureBottomDetail style={{marginTop : 0}}>
+                                <OverCardPictureBottomImage color={elem.challengeBarInfo.userInfo[0].color} src ={elem.challengeBarInfo.userInfo[0].profile} alt ="default" height = "36px" width = "36px"/>                            
+                                
+                                
+                            </OverCardPictureBottomDetail>
+                            </ChallengeFixed>
+
+                            <ChallengeContentDate size={window.innerWidth}>
+                                <OverCardPictureBottomContentImage src={calendarImage} alt="" width = "7%"/>
+                                {elem.challengeBarInfo.viewDate}
+                                <OverCardPictureBottomUserImage src={userImage} alt="" width = "10%"/>
+                                <span>{elem.challengeBarInfo.userInfo.length}명</span>
+                            </ChallengeContentDate>
+
+                            <ChallengeContentProgress>
+                                <Progress percent={elem.challengeBarInfo.percentage} showInfo={false} status="active" size="small" strokeColor="#EB6363"/> 
+                                <ChallengeContentProgressText>        
+                                <span style={{color:"red"}}>{elem.challengeBarInfo.certificationNum}</span> / {elem.challengeBarInfo.totalNum}
+                                </ChallengeContentProgressText>
+                            </ChallengeContentProgress>
+
+                            </ChallengeContent>
+                        </ChallengeCard>
+                    )}
+                </ChallengeList>
+                )}
+
+            </ChallengeContainer>
+
+
+        </Fragment> 
+    );
+}
+ 
 export default MyChallenge;

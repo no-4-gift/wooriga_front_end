@@ -12,8 +12,7 @@ class Invite extends Component {
   }
 
   routeChange() {
-    let path = `/makegroup`;
-    this.props.history.push(path);
+    this.props.history.push("/");
   }
 
   render() {

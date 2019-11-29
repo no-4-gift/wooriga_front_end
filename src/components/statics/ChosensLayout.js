@@ -7,6 +7,8 @@ import CalendarContainer from "../../containers/CalenderContainer";
 import MyPageContainer from "../../containers/MyPageContainer";
 import styled, { css } from "styled-components";
 import Headers from "../statics/HeaderLayout";
+import MakeGroup from "../MakeGroup";
+import MakeGroupContainer from "../../containers/MakeGroupContainer";
 
 // Headers Components
 const ChosensLayout = styled.div`
@@ -60,15 +62,21 @@ const ChosenDivThree = styled.div`
 `;
 
 const ChosenImage = styled.img``;
-const Chosens = ({ calendar, maskGroup, contact, checked }) => {
+const Chosens = ({ calendar, maskGroup, contact, checked ,data }) => {
   let $Layout = null;
+  const noGroup = data.isFamily === 0 ? true : false;
 
-  if (checked === 1) {
-    $Layout = <CalendarContainer />;
-  } else if (checked === 2) {
-    $Layout = <MyChallengeContainer />;
-  } else if (checked === 3) {
-    $Layout = <MyPageContainer />;
+  if (noGroup) {
+    $Layout = <MakeGroupContainer />;
+  } else {
+    
+    if (checked === 1) {
+      $Layout = <CalendarContainer />;
+    } else if (checked === 2) {
+      $Layout = <MyChallengeContainer />;
+    } else if (checked === 3) {
+      $Layout = <MyPageContainer />;
+    }
   }
 
   return (
@@ -81,7 +89,11 @@ const Chosens = ({ calendar, maskGroup, contact, checked }) => {
         </ChosenDivOne>
 
         <ChosenDivTwo checked={checked} onClick={maskGroup}>
-          <ChosenImage style={{paddingTop : "3%"}} src={maskGroupImage} alt="" />
+          <ChosenImage
+            style={{ paddingTop: "3%" }}
+            src={maskGroupImage}
+            alt=""
+          />
         </ChosenDivTwo>
 
         <ChosenDivThree checked={checked} onClick={contact}>

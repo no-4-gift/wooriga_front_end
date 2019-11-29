@@ -13,7 +13,7 @@ import Invite from "./components/Invite";
 //import myPageContainer from "./containers/MyPageContainer";
 import myPageDetailContainer from "./containers/MyPageDetailContainer";
 //import checkSignUp from "./components/CheckSignUp";
-// import MakeGroup from "./components/MakeGroup";
+import MakeGroup from "./components/MakeGroup";
 
 import ChallengeAddContainer from "./containers/ChallengeAddContainer";
 
@@ -53,12 +53,7 @@ function App() {
           />
           <Route path="/invite" component={Invite} />
           <Route path="/mypage_detail" component={myPageDetailContainer} />
-          {/* <Route path="/makegroup" component={MakeGroup} /> 
-          <Route path="/invite" component={Invite} />
-          <Route path="/checksignup" component={checkSignUp} />*/}
-          {/*<Route path="/" component={Calendar} /> */}
-
-          {/*<Route path="/" component={Calendar} /> */}
+          <Route path="/makegroup" component={MakeGroup} />
         </>
       )}
     </BrowserRouter>

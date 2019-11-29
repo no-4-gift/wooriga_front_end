@@ -13,6 +13,7 @@ export const POST_CERTIFICATION_COLOR = "mychallengeDetail/POST_CERTIFICATION_CO
 export const PUT_PICTURE_DELETE = "mychallengeDetail/PUT_PICTURE_DELETE";
 export const PUT_PICTURE_DELETE_SUCCESS = "mychallengeDetail/PUT_PICTURE_DELETE_SUCCESS";
 export const PUT_PICTURE_DELETE_FAILED = "mychallengeDetail/PUT_PICTURE_DELETE_FAILED";
+export const DELETE_CERTIFICATION_COLOR = "mychallengeDetail/DELETE_CERTIFICATION_COLOR";
 
 export const pictureFlagTrue = (image, date) => ({ 
   type: PICTUREFLAGTRUE, 
@@ -28,6 +29,12 @@ export const pictureFlagFalse = (date) => ({ type: PICTUREFLAGFALSE,
 });
 
 export const postCertificationColor = (date) => ({ type: POST_CERTIFICATION_COLOR,
+  payload : {
+    date : date
+  }
+});
+
+export const deleteCertificationColor = (date) => ({ type: DELETE_CERTIFICATION_COLOR,
   payload : {
     date : date
   }
@@ -140,6 +147,20 @@ export default (state = initialState, action) => {
         )
       };
 
+      case DELETE_CERTIFICATION_COLOR:
+
+        console.log('DELETE_CERTIFICATION_COLOR', state.certificationArray)
+        console.log(action.payload.date)
+      return {
+        ...state,
+        certificationArray : state.certificationArray.map((data, index) => 
+          data.cardDate === action.payload.date ? 
+          {
+            ...data,
+            data : data.certificationTrue = 0
+          } : data
+        )
+      };
 
       case PUT_PICTURE_DELETE:
         console.log('PUT_PICTURE_DELETE');
