@@ -42,8 +42,7 @@ export const joinGroup = async (uid, familyId, color, relationShip) => {
 export const getMyInfo = async uid => {
   const response = await axios.get("http://52.78.149.82:8081/api/family", {
     params: {
-      uid: uid,
-      code: ""
+      uid: uid
     }
   });
   console.log(response.data);

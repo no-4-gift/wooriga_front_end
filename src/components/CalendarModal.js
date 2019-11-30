@@ -156,7 +156,7 @@ const ChallengeMaker = styled.div`
   box-sizing: border-box;
   border-radius: 20px;
   background-image: url(${props => props.profile});
-  background-size: contain;
+  background-size: cover;
 
   &::before {
     content: "|";
@@ -186,7 +186,7 @@ const MemberProfilePhoto = styled.div`
   box-sizing: border-box;
   border-radius: 30px;
   background-image: url(${props => props.profile});
-  background-size: contain;
+  background-size: cover;
 `;
 
 const MemberProfile = styled.div`
