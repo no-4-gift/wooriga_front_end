@@ -237,16 +237,21 @@ function MyPageModal({
   };
 
   //프로필 사진
-  if (members.find(member => member.uid === userId).profile) {
+  if (members.find(member => member.uid === userId)) {
     $imagePreview = (
       <>
         <label htmlFor="file-input">
-          <img
+          {/* <img
             id={circlePlus}
             src={circlePlus}
             alt="imageUrl"
             width="100%"
             height="100%"
+          /> */}
+          <img
+            src={circlePlus}
+            alt={"circlePlus"}
+            style={{ width: "40%", height: "40%", margin: "3rem 0 0 3rem" }}
           />
         </label>
         <input
@@ -286,119 +291,115 @@ function MyPageModal({
           로그아웃
         </Text>
         <br />
-        <form onSubmit={this.handleSubmit}>
-          {members
-            .filter(x => x.uid === userId)
-            .map(member => (
-              <>
-                {member.profile ? (
-                  <MyIcon color={member.color} img={member.profile}>
-                    <input
-                      style={{ display: "none" }}
-                      id="file-input"
-                      type="file"
-                      name="file"
-                      accept="image/*"
-                      capture="camera"
-                      onChange={e => fileOnChange(e, userId)}
-                    />
-                    <MyIconimg
-                      id={"circlePlus"}
-                      src={circlePlus}
-                      alt="circlePlus"
-                      width="100%"
-                      height="100%"
-                    />
-                  </MyIcon>
-                ) : (
-                  <MyIcon color={member.color}></MyIcon>
-                )}
-                <br />
-                <div
-                  style={{
-                    borderBottom: "1px solid lightgray",
-                    fontsize: "initial"
-                  }}
-                >
-                  <MemberInfoTitle>이름</MemberInfoTitle>
-
-                  <Input
-                    placeholder={member.name}
-                    style={{
-                      border: "none",
-                      margin: "0 0 0 2.5rem",
-                      width: "70%",
-                      fontweight: "bold",
-                      fontSize: "20px"
-                    }}
-                    value={myname}
-                    name="myname"
-                    onChange={this.handleChange}
+        {/* <form onSubmit={this.handleSubmit}> */}
+        {members
+          .filter(x => x.uid === userId)
+          .map(member => (
+            <>
+              {member.profile ? (
+                <MyIcon color={member.color} img={member.profile}>
+                  <input
+                    style={{ display: "none" }}
+                    id="file-input"
+                    type="file"
+                    name="file"
+                    accept="image/*"
+                    capture="camera"
+                    onChange={e => fileOnChange(e, userId)}
                   />
-                </div>
-                <div
-                  style={{
-                    borderBottom: "1px solid lightgray",
-                    fontsize: "initial"
-                  }}
-                >
-                  <MemberInfoTitle>관계</MemberInfoTitle>
-                  <Input
-                    placeholder={member.relationship}
-                    style={{
-                      border: "none",
-                      margin: "0 0 0 2.5rem",
-                      width: "70%",
-                      fontweight: "bold",
-                      fontSize: "20px"
-                    }}
-                    value={myrelation}
-                    name="myrelation"
-                    onChange={this.handleChange}
+                  <MyIconimg
+                    id={"circlePlus"}
+                    src={circlePlus}
+                    alt="circlePlus"
+                    width="100%"
+                    height="100%"
                   />
-                </div>
-                <div
+                </MyIcon>
+              ) : (
+                <MyIcon color={member.color}></MyIcon>
+              )}
+              <br />
+              <div
+                style={{
+                  borderBottom: "1px solid lightgray",
+                  fontsize: "initial"
+                }}
+              >
+                <MemberInfoTitle>이름</MemberInfoTitle>
+
+                <Input
+                  placeholder={member.name}
                   style={{
-                    borderBottom: "1px solid lightgray",
-                    margin: "0.8rem 0",
-                    fontsize: "inherit"
+                    border: "none",
+                    margin: "0 0 0 2.5rem",
+                    width: "70%",
+                    fontweight: "bold",
+                    fontSize: "20px"
+                  }}
+                  value={myname}
+                  name="myname"
+                  // onChange={this.handleChange}
+                />
+              </div>
+              <div
+                style={{
+                  borderBottom: "1px solid lightgray",
+                  fontsize: "initial"
+                }}
+              >
+                <MemberInfoTitle>관계</MemberInfoTitle>
+                <Input
+                  placeholder={member.relationship}
+                  style={{
+                    border: "none",
+                    margin: "0 0 0 2.5rem",
+                    width: "70%",
+                    fontweight: "bold",
+                    fontSize: "20px"
+                  }}
+                  value={myrelation}
+                  name="myrelation"
+                  // onChange={this.handleChange}
+                />
+              </div>
+              <div
+                style={{
+                  borderBottom: "1px solid lightgray",
+                  margin: "0.8rem 0",
+                  fontsize: "inherit"
+                }}
+              >
+                <MemberInfoTitle>KakaoID</MemberInfoTitle>
+                <Text
+                  style={{
+                    margin: "0 0 0 1.5rem",
+                    width: "70%",
+                    color: "darkgray",
+                    fontweight: "bold",
+                    fontSize: "20px"
                   }}
                 >
-                  <MemberInfoTitle>KakaoID</MemberInfoTitle>
-                  <Text
-                    style={{
-                      margin: "0 0 0 1.5rem",
-                      width: "70%",
-                      color: "darkgray",
-                      fontweight: "bold",
-                      fontSize: "20px"
-                    }}
-                  >
-                    {userId}
-                  </Text>
-                </div>
+                  {userId}
+                </Text>
+              </div>
 
-                <br />
-                <Text strong style={{ fontSize: "large" }}>
-                  컬러
-                </Text>
-                <br />
-                <Text style={{ fontSize: "small" }}>
-                  자신을 표현할 색상을 골라주세요
-                </Text>
-                <Palette selected="#f44336" />
-              </>
-            ))}
-          <br /> <br />
-          <Button
-            type="submit"
-            onClick={onSave}
-            style={{ float: "right", fontweight: "bold" }}
-          >
-            저장
-          </Button>
-          <Button onClick={onClose}>취소</Button>
-        </form>
+              <br />
+              <Text strong style={{ fontSize: "large" }}>
+                컬러
+              </Text>
+              <br />
+              <Text style={{ fontSize: "small" }}>
+                자신을 표현할 색상을 골라주세요
+              </Text>
+              <Palette selected="#f44336" />
+            </>
+          ))}
+        <br /> <br />
+        <Button onClick={onSave} style={{ float: "right", fontweight: "bold" }}>
+          저장
+        </Button>
+        <Button onClick={onClose}>취소</Button>
+        {/* </form> */}
       </ModalTemplate>
     </ModalBackground>
   );

@@ -214,6 +214,32 @@ function MyPage({
   let aa = AllChallenge.filter(
     elem => elem.challengeBarInfo.percentage === 100
   );
+
+  // let percentage =
+  //   AllChallenge.length === 0
+  //     ? "0%입니다"
+  //     : ((AllChallenge.filter(elem => elem.challengeBarInfo.percentage === 100)
+  //         .length /
+  //         AllChallenge.length) *
+  //       100)+"%";
+
+  let percentage =
+    AllChallenge.length === 0 ? (
+      <Text style={{ color: "white", fontSize: "xlarge" }}>챌린지없음</Text>
+    ) : (
+      <>
+        <Text style={{ fontSize: "medium", color: "white" }}>달성률</Text>
+        <Text strong style={{ fontSize: "20px", color: "white" }}>
+          {(AllChallenge.filter(
+            elem => elem.challengeBarInfo.percentage === 100
+          ).length /
+            AllChallenge.length) *
+            100}{" "}
+          %
+        </Text>
+      </>
+    );
+
   console.log("mypage-----------!!");
   console.log(members);
   console.log(userId);
@@ -303,19 +329,7 @@ function MyPage({
           <div style={{ margin: "3% 0px 13% 0" }}>
             <RecordInnerCircle>
               <RecordCircle>
-                <RecordCircleInfo>
-                  <Text style={{ fontSize: "medium", color: "white" }}>
-                    달성률
-                  </Text>
-                  <Text strong style={{ fontSize: "20px", color: "white" }}>
-                    {(AllChallenge.filter(
-                      elem => elem.challengeBarInfo.percentage === 100
-                    ).length /
-                      AllChallenge.length) *
-                      100}
-                    %
-                  </Text>
-                </RecordCircleInfo>
+                <RecordCircleInfo>{percentage}</RecordCircleInfo>
               </RecordCircle>
             </RecordInnerCircle>
             <RecordContainer>

@@ -11,12 +11,18 @@ import CodeCopyModal from "../components/CodeCopyModal";
 import LeaderChangeModal from "../components/LeaderChangeModal";
 import DeleteMemberModal from "../components/DeleteMemberModal";
 
-const familyId = "wooriga";
-const userId = 1615409;
 class MyPageDetailContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userId: parseInt(sessionStorage.getItem("uid")),
+      familyId: sessionStorage.getItem("familyId")
+    };
+  }
+
   componentDidMount() {
     const { FamilyActions } = this.props;
-    FamilyActions.getFamilyData(familyId);
+    FamilyActions.getFamilyData(this.state.familyId);
   }
 
   //이전 페이지로 이동
@@ -56,9 +62,9 @@ class MyPageDetailContainer extends Component {
     const { MyPageActions, members } = this.props;
     let uid = members.map(member => member.uid)[0];
     console.log(chiefId); //미래 가족장
-    console.log(familyId);
+    console.log(this.state.familyId);
     console.log(uid); //원래 가족장
-    MyPageActions.changeLeader(familyId, uid, chiefId);
+    MyPageActions.changeLeader(this.state.familyId, uid, chiefId);
     this.handleCloseModal();
   };
   render() {
@@ -77,41 +83,41 @@ class MyPageDetailContainer extends Component {
     } = this.props;
     console.log("MyPageDetailContainer-----------");
     console.log(members);
-    console.log(userId);
+    console.log(this.state.userId);
     console.log("MyPageDetailContainer-----------");
     return (
       <Fragment>
         <MyPageDetail
           backPage={this.handleMoveMyPage}
           members={members}
-          userId={userId}
+          userId={this.state.userId}
           onOpenCodeCopy={this.handleOpenModalCodeCopy}
           onOpenLeaderChange={this.handleOpenModalLeaderChange}
           onOpenDeleteMember={this.handleOpenModalDeleteMember}
           //visible={visible}
         />
         <CodeCopyModal
-          userId={userId}
+          userId={this.state.userId}
           visible={codecopyvisible}
           onClose={this.handleCloseModal}
           members={members}
-          visitcode={familyId}
+          visitcode={this.state.familyId}
         />
         <LeaderChangeModal
-          userId={userId}
+          userId={this.state.userId}
           visible={changeleadervisible}
           onClose={this.handleCloseModal}
           members={members}
           leaderId={leaderId}
           onChangeLeader={this.handleChangeLeader}
-          familyId={familyId}
+          familyId={this.state.familyId}
         />
         <DeleteMemberModal
-          userId={userId}
+          userId={this.state.userId}
           visible={deletemembervisible}
           onClose={this.handleCloseModal}
           members={members}
-          visitcode={familyId}
+          visitcode={this.state.familyId}
           deleteId={deleteId}
           onRemove={this.handleOnDeleteMember}
         />

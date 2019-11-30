@@ -10,10 +10,20 @@ import MyPageModal from "../components/MyPageModal";
 import MyPage from "../components/MyPage";
 import { bindActionCreators } from "redux";
 
-const familyId = "wooriga";
-const userId = 1615409;
 let reader = new FileReader();
 class MyPageContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      uid: parseInt(sessionStorage.getItem("uid")),
+      familyId: sessionStorage.getItem("familyId"),
+      selectedFile: "",
+      imagePreviewUrl: "",
+      challenger_challenges: [],
+      participation_challenges: []
+    };
+  }
+
   componentDidMount() {
     const {
       FamilyActions,
@@ -21,20 +31,7 @@ class MyPageContainer extends Component {
       challenger_challenges,
       participation_challenges
     } = this.props;
-    FamilyActions.getFamilyData(familyId);
-    MyChallengeActions.onGetChallenger(familyId, userId);
-    MyChallengeActions.onGetParticipation(familyId, userId);
-    console.log(FamilyActions.getFamilyData(familyId));
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedFile: "",
-      imagePreviewUrl: "",
-      challenger_challenges: [],
-      participation_challenges: []
-    };
+    FamilyActions.getFamilyData(this.state.familyId);
   }
 
   //모달 열기& 닫기
@@ -206,7 +203,7 @@ class MyPageContainer extends Component {
     let $imagePreview = null;
     let memberlength = members.length;
     console.log("mypagecontainer-----------");
-    console.log(`id is ${userId}`);
+    console.log(`id is ${this.state.userId}`);
     //console.log(logged);
     console.log("mypagecontainer-----------");
 
@@ -216,7 +213,7 @@ class MyPageContainer extends Component {
       return (
         <Fragment>
           <MyPage
-            userId={userId}
+            userId={this.state.uid}
             visible={visible}
             members={members}
             onShow={this.handleShowModal}
@@ -229,7 +226,7 @@ class MyPageContainer extends Component {
             bottomDetailRouter={this.bottomDetailRouter}
           />
           <MyPageModal
-            userId={userId}
+            userId={this.state.uid}
             visible={visible}
             members={members}
             // onSave={this.handleSaveModal}

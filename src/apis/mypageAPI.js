@@ -2,7 +2,7 @@ import axios from "axios";
 import { message } from "antd";
 
 export const changeLeader = async (familyId, uid, chiefId) => {
-  console.log("(changeLeader)여기까지 왔다;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
+  console.log("(changeLeader)여기까지 왔다;;;;;;;;;;;;;;;;;;;;;;;;;;;");
   let leader = {
     familyId: familyId,
     uid: uid,

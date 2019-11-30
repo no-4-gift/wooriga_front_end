@@ -10,7 +10,7 @@ import "antd/dist/antd.css";
 
 import Invite from "./components/Invite";
 // import MakeGroup from "./components/MakeGroup";
-//import myPageContainer from "./containers/MyPageContainer";
+import myPageContainer from "./containers/MyPageContainer";
 import myPageDetailContainer from "./containers/MyPageDetailContainer";
 //import checkSignUp from "./components/CheckSignUp";
 import MakeGroup from "./components/MakeGroup";
@@ -54,6 +54,7 @@ function App() {
           <Route path="/invite" component={Invite} />
           <Route path="/mypage_detail" component={myPageDetailContainer} />
           <Route path="/makegroup" component={MakeGroup} />
+          <Route path="/mypage" component={myPageContainer} />
         </>
       )}
     </BrowserRouter>
