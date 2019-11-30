@@ -157,7 +157,7 @@ function MyPageModal({
   pictureUrl,
   fileOnChange,
   $imagePreview,
-  imagePreviewUrl,
+  imagePreviewUrl
 }) {
   let myinfo = members.filter(elem => elem.uid === userId)[0];
   let memberColors = members.map(elem => elem.color);
@@ -232,60 +232,52 @@ function MyPageModal({
             active={selected === color}
           />
         ))}
-        {/* {Object.keys(colors).map(color => (
-          <PaletteItem
-            color={color}
-            customcolor={colors[color]}
-            key={color}
-            active={selected === color}
-          />
-        ))} */}
       </PaletteDiv>
     );
   };
 
-  // //프로필 사진
-  // if (imageUrl) {
-  //   $initImg = (
-  //     <>
-  //       <label htmlFor="file-input">
-  //         <img
-  //           id={circlePlus}
-  //           src={imageUrl}
-  //           alt="imageUrl"
-  //           width="100%"
-  //           height="100%"
-  //         />
-  //       </label>
-  //       <input
-  //         style={{ display: "none" }}
-  //         id="file-input"
-  //         type="file"
-  //         name="file"
-  //         onChange={e => ImgOnChange(e)}
-  //       />
-  //     </>
-  //   );
-  // } else {
-  //   $initImg = (
-  //     <>
-  //       <label htmlFor="file-input">
-  //         <img
-  //           src={circlePlus}
-  //           alt={"circlePlus"}
-  //           style={{ width: "40%", height: "40%", margin: "3rem 0 0 3rem" }}
-  //         />
-  //       </label>
-  //       <input
-  //         style={{ display: "none" }}
-  //         id="file-input"
-  //         type="file"
-  //         name="file"
-  //         onChange={e => ImgOnChange(e)}
-  //       />
-  //     </>
-  //   );
-  // }
+  //프로필 사진
+  if (members.find(member => member.uid === userId).profile) {
+    $imagePreview = (
+      <>
+        <label htmlFor="file-input">
+          <img
+            id={circlePlus}
+            src={circlePlus}
+            alt="imageUrl"
+            width="100%"
+            height="100%"
+          />
+        </label>
+        <input
+          style={{ display: "none" }}
+          id="file-input"
+          type="file"
+          name="file"
+          onChange={e => fileOnChange(e)}
+        />
+      </>
+    );
+  } else {
+    $imagePreview = (
+      <>
+        <label htmlFor="file-input">
+          <img
+            src={circlePlus}
+            alt={"circlePlus"}
+            style={{ width: "40%", height: "40%", margin: "3rem 0 0 3rem" }}
+          />
+        </label>
+        <input
+          style={{ display: "none" }}
+          id="file-input"
+          type="file"
+          name="file"
+          onChange={e => fileOnChange(e)}
+        />
+      </>
+    );
+  }
 
   return (
     <ModalBackground visible={visible}>
@@ -301,7 +293,15 @@ function MyPageModal({
               <>
                 {member.profile ? (
                   <MyIcon color={member.color} img={member.profile}>
-                    <input style={{display: "none"}} id="file-input" type="file" name="file" accept="image/*" capture="camera" onChange={e => fileOnChange(e,userId  )}/
+                    <input
+                      style={{ display: "none" }}
+                      id="file-input"
+                      type="file"
+                      name="file"
+                      accept="image/*"
+                      capture="camera"
+                      onChange={e => fileOnChange(e, userId)}
+                    />
                     <MyIconimg
                       id={"circlePlus"}
                       src={circlePlus}
@@ -311,7 +311,7 @@ function MyPageModal({
                     />
                   </MyIcon>
                 ) : (
-                  <MyIcon color={member.color}>{$initImg}</MyIcon>
+                  <MyIcon color={member.color}></MyIcon>
                 )}
                 <br />
                 <div
@@ -389,93 +389,6 @@ function MyPageModal({
                 <Palette selected="#f44336" />
               </>
             ))}
-          {/* {imageUrl ? (
-          <MyIcon>
-            <MyIconimg
-              id={"circlePlus"}
-              src={imageUrl}
-              alt="imageUrl"
-              width="100%"
-              height="100%"
-            />
-            {$initImg}
-          </MyIcon>
-        ) : (
-          <MyIcon color={"black"}>{$initImg}</MyIcon>
-        )}
-        <br />
-        <div
-          style={{ borderBottom: "1px solid lightgray", fontsize: "initial" }}
-        >
-          <Text
-            style={{
-              width: "30%",
-              color: "darkgray",
-              fontweight: "bold"
-            }}
-          >
-            이름
-          </Text>
-          <Input
-            //placeholder={userInfo.name}
-            style={{
-              border: "none",
-              margin: "0 0 0 2.5rem",
-              width: "70%",
-              fontweight: "bold"
-            }}
-          />
-        </div>
-        <div
-          style={{ borderBottom: "1px solid lightgray", fontsize: "initial" }}
-        >
-          <Text
-            style={{
-              width: "30%",
-              color: "darkgray",
-              fontweight: "bold"
-            }}
-          >
-            관계
-          </Text>
-          <Input
-            //placeholder={userInfo.relationship}
-            style={{
-              border: "none",
-              margin: "0 0 0 2.5rem",
-              width: "70%",
-              fontweight: "bold"
-            }}
-          />
-        </div>
-        <div
-          style={{
-            borderBottom: "1px solid lightgray",
-            margin: "0.8rem 0",
-            fontsize: "inherit"
-          }}
-        >
-          <Text style={{ width: "30%", color: "darkgray" }}>KakaoID</Text>
-          <Text
-            style={{
-              margin: "0 0 0 1.5rem",
-              width: "70%",
-              color: "darkgray",
-              fontweight: "bold"
-            }}
-          >
-            {userId}
-          </Text>
-        </div>
-        <br />
-        <Text strong style={{ fontSize: "large" }}>
-          컬러
-        </Text>
-        <br />
-        <Text style={{ fontSize: "small" }}>
-          자신을 표현할 색상을 골라주세요
-        </Text>
-        {/* <Palette selected="#f44336" /> */}
           <br /> <br />
           <Button
             type="submit"
@@ -490,7 +403,6 @@ function MyPageModal({
     </ModalBackground>
   );
 }
-//}
 
 MyPageModal.propTypes = {
   visible: PropType.bool,
