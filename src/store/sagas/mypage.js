@@ -7,9 +7,9 @@ import {
   DELETE_MEMBER,
   DELETE_MEMBER_SUCCESS,
   DELETE_MEMBER_ERROR,
-  POST_PICTURE_UPLOAD,
-  POST_PICTURE_UPLOAD_SUCCESS,
-  POST_PICTURE_UPLOAD_FAILED
+  POST_MYINFO_UPLOAD,
+  POST_MYINFO_UPLOAD_SUCCESS,
+  POST_MYINFO_UPLOAD_FAILED
 } from "../modules/mypage";
 
 //그룹장 변경
@@ -95,7 +95,7 @@ function* postMyInfo(action) {
 
   try {
     yield put({
-      type: POST_PICTURE_UPLOAD_SUCCESS,
+      type: POST_MYINFO_UPLOAD_SUCCESS,
       payload: {
         postloading: false,
         info: info
@@ -104,7 +104,7 @@ function* postMyInfo(action) {
   } catch (e) {
     console.error(e);
     yield put({
-      type: POST_PICTURE_UPLOAD_FAILED,
+      type: POST_MYINFO_UPLOAD_FAILED,
       error: e,
       payload: {
         postloading: false
@@ -113,7 +113,7 @@ function* postMyInfo(action) {
   }
 }
 function* PostMyInfo() {
-  yield takeEvery(POST_PICTURE_UPLOAD, postMyInfo);
+  yield takeEvery(POST_MYINFO_UPLOAD, postMyInfo);
 }
 
 function* ChangeLeaderSaga() {
