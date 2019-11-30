@@ -19,8 +19,11 @@ class MakeGroupContainer extends Component {
     MakeGroupActions.getMyInfo(this.state.uid);
   };
   handleOpenJoinGroup = () => {
-    const { MakeGroupActions } = this.props;
-    MakeGroupActions.openJoinGroup();
+    const {
+      MakeGroupActions,
+      input: { code }
+    } = this.props;
+    MakeGroupActions.getFamilyInfo(this.state.uid, code);
   };
   handleCloseModal = () => {
     const { MakeGroupActions } = this.props;
