@@ -1,5 +1,3 @@
-import { GETCHALLENGER_SUCCESS } from "./mychallenge";
-
 /* 액션 타입 만들기 */
 export const ONCALENDAR = "statics/ONCALENDAR";
 export const ONMASKGROUP = "statics/ONMASKGROUP";

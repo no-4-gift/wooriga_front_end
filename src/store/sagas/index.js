@@ -6,6 +6,7 @@ import { FamilySaga } from "./family";
 import challengeAddRootSaga from "./challengeAdd";
 import rootAuthSaga from "./auth";
 import getFamilyIdSaga from "./statics";
+import makeGroupRootSaga from "./makeGroup";
 
 export default function* rootSaga() {
   yield all([
@@ -15,6 +16,7 @@ export default function* rootSaga() {
     FamilySaga(),
     challengeAddRootSaga(),
     rootAuthSaga(),
-    getFamilyIdSaga()
+    getFamilyIdSaga(),
+    makeGroupRootSaga()
   ]);
 }

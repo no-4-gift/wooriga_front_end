@@ -7,14 +7,20 @@ import queryString from "querystring";
 import { Spin, Alert } from "antd";
 import styled from "styled-components";
 //현재 컴포넌트에서 필수적으로 가져야할 Props
-const familyId = "wooriga";
-const userId = 1615409;
 
 const PostErrorAlert = styled(Alert)`
   top: 8vh;
 `;
 
 class ChallengeAddContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      uid: parseInt(sessionStorage.getItem("uid")),
+      familyId: sessionStorage.getItem("familyId")
+    };
+  }
+
   componentDidMount() {
     window.addEventListener("scroll", this.handleScroll);
     const values = queryString.parse(this.props.location.search);
@@ -25,7 +31,7 @@ class ChallengeAddContainer extends Component {
     );
     if (members.length === 0 && challengeList.length === 0) {
       ChallengeAddActions.postDateList(
-        familyId,
+        this.state.familyId,
         Object.values(values).filter(elem => elem !== "")
       );
     }
@@ -98,8 +104,8 @@ class ChallengeAddContainer extends Component {
     ChallengeAddActions.postChallengeRegist(
       participatntFK,
       challengeIdFK,
-      userId,
-      familyId,
+      this.state.userId,
+      this.state.familyId,
       resolution,
       registeredDate,
       this.props.history

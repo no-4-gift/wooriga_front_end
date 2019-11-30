@@ -62,14 +62,13 @@ const ChosenDivThree = styled.div`
 `;
 
 const ChosenImage = styled.img``;
-const Chosens = ({ calendar, maskGroup, contact, checked ,data }) => {
+const Chosens = ({ calendar, maskGroup, contact, checked, data }) => {
   let $Layout = null;
   const noGroup = data.isFamily === 0 ? true : false;
 
   if (noGroup) {
     $Layout = <MakeGroupContainer />;
   } else {
-    
     if (checked === 1) {
       $Layout = <CalendarContainer />;
     } else if (checked === 2) {

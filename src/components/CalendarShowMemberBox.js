@@ -83,7 +83,7 @@ const MemberProfile = styled.div`
   box-sizing: border-box;
   border-radius: 20px;
   background-image: url(${props => props.img});
-  background-size: contain;
+  background-size: cover;
   background-repeat: none;
 
   & + & {
@@ -124,8 +124,9 @@ const InviteCode = styled.span`
 //자신의 id 받아와야 함
 function CalendarShowMemberBox({ members, userId }) {
   const [toggle, setToggle] = useState(false);
-
-  const isAdmin = true; // members.filter(member => member.uid === userId).admin;
+  const code = sessionStorage.getItem("familyId");
+  const isAdmin =
+    members.length > 0 ? (members[0].uid === userId ? true : false) : false; // members.filter(member => member.uid === userId).admin;
 
   const handleClickArrow = () => {
     setToggle(!toggle);
@@ -161,7 +162,7 @@ function CalendarShowMemberBox({ members, userId }) {
               <GroupInviteTitle>그룹 초대 코드</GroupInviteTitle>
             </div>
             <div>
-              <InviteCode>AF1G5HTL</InviteCode>
+              <InviteCode>{code}</InviteCode>
             </div>
           </MemberProfileBox>
         )}

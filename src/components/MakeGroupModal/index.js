@@ -56,20 +56,48 @@ function MakeGroupModal({
   kind,
   code,
   color,
+  data,
   onChange,
   onCancle,
   onSubmit,
   onSelectColor
 }) {
+  const { userInfo, familyCount, colorList, ...rest } = data;
+  const manager = rest;
+  const disabled = text.length !== 0 && color !== "black" ? false : true;
+  console.log(userInfo);
+  console.log(familyCount);
+  console.log(colorList);
+  console.log(manager);
   return (
     <BackgroundWrapper active={toggle}>
       <ModalTemplate active={toggle}>
         <ModalBody>
-          <TopContent title={title} kind={kind} code={code} />
-          <BottomContent text={text} onChange={onChange} />
-          <Pallete selectedColor={color} onSelectColor={onSelectColor} />
+          <TopContent
+            title={title}
+            kind={kind}
+            code={code}
+            userInfo={Object.keys(manager).length !== 0 ? manager : userInfo}
+            familyCount={familyCount}
+            color={Object.keys(manager).length !== 0 ? manager.color : color}
+          />
+          <BottomContent
+            text={text}
+            onChange={onChange}
+            userInfo={userInfo}
+            color={color}
+          />
+          <Pallete
+            selectedColor={color}
+            onSelectColor={onSelectColor}
+            colorList={colorList}
+          />
         </ModalBody>
-        <ModalFooter onCancle={onCancle} onSubmit={onSubmit} />
+        <ModalFooter
+          onCancle={onCancle}
+          onSubmit={onSubmit}
+          disabled={disabled}
+        />
       </ModalTemplate>
     </BackgroundWrapper>
   );
@@ -82,6 +110,7 @@ MakeGroupModal.propTypes = {
   text: PropTypes.string.isRequired,
   kind: PropTypes.number.isRequired,
   code: PropTypes.string,
+  data: PropTypes.object,
   color: PropTypes.string.isRequired,
   onCancle: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,

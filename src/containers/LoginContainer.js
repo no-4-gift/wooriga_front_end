@@ -21,11 +21,15 @@ class LoginContainer extends Component {
   responseKakao = res => {
     console.log(res);
     const { AuthActions } = this.props;
+    const { profile } = res;
     const {
-      response: { access_token }
-    } = res;
-    console.log(access_token);
-    AuthActions.onLogin(access_token);
+      id,
+      kakao_account: {
+        profile: { nickname, profile_image_url }
+      }
+    } = profile;
+
+    AuthActions.onLogin(id, nickname, profile_image_url);
   };
 
   //Login Fail

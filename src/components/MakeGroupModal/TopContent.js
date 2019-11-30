@@ -33,6 +33,9 @@ const Profile = styled.div`
   border-radius: 50px;
   ${profileColor}
   background: gray;
+  background-image: url(${props => props.profile});
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
 
 const DetailBlock = styled.div`
@@ -94,21 +97,24 @@ const DetailText = styled.div`
   }
 `;
 
-function TopContent({ title, kind, code }) {
+function TopContent({ title, kind, code, userInfo, color, familyCount }) {
   const nomal = kind === 1 ? true : false;
   const large = kind === 2 ? true : false;
   return (
     <Container>
       <Text>{title}</Text>
       <ContentBlock>
-        <Profile color={"red"} />
+        <Profile profile={userInfo.profile} color={color} />
         <DetailBlock>
           <Detail>
             <DetailTitle>
               <span>가장</span>
             </DetailTitle>
             <DetailText>
-              <span>유인선{kind === 1 && <span>(관리자)</span>}</span>
+              <span>
+                {userInfo.name}
+                {kind === 1 && <span>(관리자)</span>}
+              </span>
             </DetailText>
           </Detail>
           <Detail>
@@ -116,7 +122,7 @@ function TopContent({ title, kind, code }) {
               <span>구성원 수</span>
             </DetailTitle>
             <DetailText>
-              {kind === 1 ? <span>1명</span> : <span>3명</span>}
+              <span>{familyCount}명</span>
             </DetailText>
           </Detail>
           <Detail>
@@ -136,7 +142,10 @@ function TopContent({ title, kind, code }) {
 TopContent.proptTypes = {
   title: PropTypes.string.isRequired,
   kind: PropTypes.number.isRequired,
-  code: PropTypes.string.isRequired
+  code: PropTypes.string.isRequired,
+  userInfo: PropTypes.object,
+  color: PropTypes.string.isRequired,
+  familyCount: PropTypes.number.isRequired
 };
 
 export default React.memo(TopContent);

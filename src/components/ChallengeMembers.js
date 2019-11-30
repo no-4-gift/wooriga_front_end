@@ -67,7 +67,7 @@ const Member = styled.div`
   height: 100%;
   ${profileColor}
   background-image: url(${props => props.src});
-  background-size: contain;
+  background-size: cover;
   background-repeat: none;
   box-sizing: border-box;
   border-radius: 30px;

@@ -4,32 +4,33 @@ import { bindActionCreators } from "redux";
 import Chosens from "../components/statics/ChosensLayout";
 import * as staticsActions from "../store/modules/statics";
 import { Redirect } from "react-router-dom";
-import {Spin, Alert} from "antd";
+import { Spin, Alert } from "antd";
 import styled from "styled-components";
 
 const LoadingLayout = styled.div`
-    width: 100vw;
-    height: 100vh;
-    background: white;
-`
-
+  width: 100vw;
+  height: 100vh;
+  background: white;
+`;
 
 class ChosensContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        uid: sessionStorage.getItem("uid")
+      uid: parseInt(sessionStorage.getItem("uid"))
     };
   }
 
   componentDidMount() {
-      const {StaticsActions} = this.props;
-      //const uid = sessionStorage.getItem("uid");
-      const uid = 19980106; 
-      if(uid) {
-        StaticsActions.getFamilyId(uid);
-      }
-      
+    const { StaticsActions } = this.props;
+
+    if (this.state.uid) {
+      StaticsActions.getFamilyId(this.state.uid);
+    }
+  }
+  componentWillUnmount() {
+    const { StaticsActions } = this.props;
+    StaticsActions.onMaskGroup();
   }
   calendar = () => {
     const { StaticsActions } = this.props;
@@ -47,44 +48,41 @@ class ChosensContainer extends Component {
   };
 
   render() {
-    const { checked ,loading, data, error} = this.props;
+    const { checked, loading, data, error } = this.props;
     //const uid = sessionStorage.getItem("uid");
-    const uid = 19980106; //this.uid
+    const uid = this.state.uid;
 
-    
     if (uid) {
-        if(loading) {
-            return(
-            <Spin tip="Loading...">
+      if (loading) {
+        return (
+          <Spin tip="Loading...">
             <LoadingLayout />
-            </Spin>
-            )
-        }
-        else if(error) {
-            return (
-                <LoadingLayout>
-                <Alert
-                message="Error"
-                description="데이터 조회 실패 새로 고침해주세요."
-                type="error"
-                showIcon
-              />
-                </LoadingLayout>
-            )
-        }
-        else {
-      return (
-        <Fragment>
-          <Chosens
-            calendar={this.calendar}
-            maskGroup={this.maskGroup}
-            contact={this.contact}
-            checked={checked}
-            data={data}
-          />
-        </Fragment>
-      );
-        }
+          </Spin>
+        );
+      } else if (error) {
+        return (
+          <LoadingLayout>
+            <Alert
+              message="Error"
+              description="데이터 조회 실패 새로 고침해주세요."
+              type="error"
+              showIcon
+            />
+          </LoadingLayout>
+        );
+      } else {
+        return (
+          <Fragment>
+            <Chosens
+              calendar={this.calendar}
+              maskGroup={this.maskGroup}
+              contact={this.contact}
+              checked={checked}
+              data={data}
+            />
+          </Fragment>
+        );
+      }
     } else {
       return <Redirect to="/login" />;
     }

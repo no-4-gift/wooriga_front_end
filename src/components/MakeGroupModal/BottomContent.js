@@ -34,6 +34,9 @@ const Profile = styled.div`
   border-radius: 50px;
   ${profileColor}
   background: gray;
+  background-image: url(${props => props.profile});
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
 
 const DetailBlock = styled.div`
@@ -100,29 +103,22 @@ const RelationInput = styled.input`
   line-height: 14px;
 `;
 
-function BottomContent({ text, onChange }) {
+function BottomContent({ text, onChange, userInfo, color }) {
   return (
     <Container>
       <Text>내 정보 확인</Text>
       <ContentBlock>
-        <Profile color={"red"} />
+        <Profile profile={userInfo.profile} color={color} />
         <DetailBlock>
           <Detail>
             <DetailTitle>
               <span>이름</span>
             </DetailTitle>
             <DetailText>
-              <span>유인선</span>
+              <span>{userInfo.name}</span>
             </DetailText>
           </Detail>
-          <Detail>
-            <DetailTitle>
-              <span>카카오 ID</span>
-            </DetailTitle>
-            <DetailText large>
-              <span>kakao@kakao.com</span>
-            </DetailText>
-          </Detail>
+
           <Detail>
             <DetailTitle>
               <span>관계</span>
@@ -143,7 +139,9 @@ function BottomContent({ text, onChange }) {
 
 BottomContent.proptTypes = {
   text: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
+  userInfo: PropTypes.object,
+  color: PropTypes.string.isRequired
 };
 
 export default React.memo(BottomContent);
