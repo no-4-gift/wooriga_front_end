@@ -27,7 +27,7 @@ export const changeLeader = async (familyId, uid, chiefId) => {
 
 export const deleteMember = async uid => {
   let member = { uid: uid };
-  console.log("(deleteMember)여기까지 왔다;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
+  console.log("(deleteMember)여기까지 왔다;;;;;;;;;;;;;;;;;;;;;;;;;");
   console.log(JSON.stringify(member));
   const params = JSON.stringify(member);
   const response = await axios
