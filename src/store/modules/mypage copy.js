@@ -192,6 +192,7 @@ export default function mypage(state = initialState, action) {
         deleteloading: action.payload.deleteloading
       };
 
+    ////////////////////////////////////////////
     case POST_MYINFO_UPLOAD:
       return {
         ...state,
