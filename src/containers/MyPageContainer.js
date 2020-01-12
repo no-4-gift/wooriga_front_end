@@ -27,9 +27,9 @@ class MyPageContainer extends Component {
   componentDidMount() {
     const {
       FamilyActions,
-      MyChallengeActions,
-      challenger_challenges,
-      participation_challenges
+      // MyChallengeActions,
+      // challenger_challenges,
+      // participation_challenges
     } = this.props;
     FamilyActions.getFamilyData(this.state.familyId);
   }
@@ -190,10 +190,10 @@ class MyPageContainer extends Component {
       //logged,
       rowsToDisplay,
       pictureUrl,
-      familyLoading,
-      changeLoading,
-      deleteLoading,
-      postLoading
+      // familyLoading,
+      // changeLoading,
+      // deleteLoading,
+      // postLoading
     } = this.props;
     let {
       imagePreviewUrl,
@@ -201,7 +201,7 @@ class MyPageContainer extends Component {
       participation_challenges
     } = this.state;
     let $imagePreview = null;
-    let memberlength = members.length;
+    // let memberlength = members.length;
     console.log("mypagecontainer-----------");
     console.log(`id is ${this.state.userId}`);
     //console.log(logged);

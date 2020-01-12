@@ -1,26 +1,14 @@
-import React, { Fragment } from "react";
-import styled, { css } from "styled-components";
+import React from "react";
+import styled from "styled-components";
 import PropTypes from "prop-types";
 import {
   Layout,
   Typography,
   Card,
-  Avatar,
-  Icon,
   Button,
-  Modal,
-  Skeleton,
-  List,
-  Tag,
-  Upload,
-  message
-} from "antd";
+  List} from "antd";
 import Headers from "./statics/HeaderLayout";
-import calendarImage from "../images/CalendarMirrored.png";
-import userImage from "../images/user.PNG";
-//////////////////////
-import defaultImage from "../images/default.PNG";
-import { colorSelector, profileColor } from "../styleUtils/colorStyle";
+import { profileColor } from "../styleUtils/colorStyle";
 const { Content } = Layout;
 const { Text } = Typography;
 
@@ -197,7 +185,6 @@ function MyPage({
   members,
   onShow,
   userId,
-  visible,
   onShowMoreBtn,
   rowsToDisplay,
   MovedetailPage,

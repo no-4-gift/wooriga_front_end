@@ -20,7 +20,6 @@ GETPARTICIPATION_ERROR
         familyId,
         uid,
     );
-
     yield put({
       type: GETCHALLENGER_SUCCESS,
       payload: {

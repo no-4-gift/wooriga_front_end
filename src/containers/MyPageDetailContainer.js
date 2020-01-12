@@ -2,10 +2,10 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import * as myPageActions from "../store/modules/mypage";
 import * as loginActions from "../store/modules/auth";
-import * as myChallengeAction from "../store/modules/mychallenge";
+// import * as myChallengeAction from "../store/modules/mychallenge";
 import * as familyActions from "../store/modules/family";
 import { bindActionCreators } from "redux";
-import { withRouter } from "react-router-dom";
+// import { withRouter } from "react-router-dom";
 import MyPageDetail from "../components/MyPageDetail";
 import CodeCopyModal from "../components/CodeCopyModal";
 import LeaderChangeModal from "../components/LeaderChangeModal";
@@ -75,11 +75,11 @@ class MyPageDetailContainer extends Component {
       codecopyvisible,
       changeleadervisible,
       deletemembervisible,
-      visitcode,
+      // visitcode,
       leaderId,
       deleteId,
-      mypageLoading,
-      mypageError
+      // mypageLoading,
+      // mypageError
     } = this.props;
     console.log("MyPageDetailContainer-----------");
     console.log(members);

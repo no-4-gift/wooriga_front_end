@@ -4,7 +4,7 @@ import MakeGroupModal from "../components/MakeGroupModal";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as makeGroupActions from "../store/modules/makeGroup";
-import { Redirect, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { Spin, Alert } from "antd";
 
 class MakeGroupContainer extends Component {

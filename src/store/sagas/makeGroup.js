@@ -61,7 +61,9 @@ function* getFamilyInfoSaga() {
 }
 
 function* createGroup(action) {
-  const { uid, color, relationShip, history } = action.payload;
+  const { uid, color, relationShip, 
+    // history 
+  } = action.payload;
   try {
     const res1 = yield call(makeGroupAPI.createGroup, uid);
     yield sessionStorage.setItem("familyId", res1.familyId);
@@ -86,7 +88,9 @@ function* createGroupSaga() {
 }
 
 function* joinGroup(action) {
-  const { uid, color, relationShip, familyId, history } = action.payload;
+  const { uid, color, relationShip, familyId, 
+    // history
+   } = action.payload;
   try {
     const res = yield call(
       makeGroupAPI.joinGroup,

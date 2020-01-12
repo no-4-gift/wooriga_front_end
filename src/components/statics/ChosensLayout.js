@@ -7,7 +7,7 @@ import CalendarContainer from "../../containers/CalenderContainer";
 import MyPageContainer from "../../containers/MyPageContainer";
 import styled, { css } from "styled-components";
 import Headers from "../statics/HeaderLayout";
-import MakeGroup from "../MakeGroup";
+// import MakeGroup from "../MakeGroup";
 import MakeGroupContainer from "../../containers/MakeGroupContainer";
 
 // Headers Components
