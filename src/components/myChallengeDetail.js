@@ -15,12 +15,9 @@ const BackTapContainer = styled.div`
   padding-right: 7%;
   display: flex;
   align-items: center;
-
-
   display: flex;
   align-items: center;
   letter-spacing: -0.02em;
-
   color: #434444;
   background: white;
   position: fixed;
@@ -32,7 +29,6 @@ const BackTapContainer = styled.div`
 const BackButton = styled.div`
   width: 10%;
   height: 20px;
-
   align-items: center;
   font-family: Noto Sans KR;
   font-size: 24px;
@@ -47,7 +43,6 @@ const TitleBlock = styled.div`
   position: relative;
   top: 0;
   left: 3%;
-
   span {
     font-family: Noto Sans KR;
     font-style: normal;
@@ -56,7 +51,6 @@ const TitleBlock = styled.div`
     line-height: 29px;
     align-items: center;
     letter-spacing: -0.02em;
-
     color: #434444;
   }
 `;
@@ -354,7 +348,6 @@ const ChallengeMemberTag = styled.div`
     color: white;
     text-align: center;
     font-size : 0.8rem;
-
     background: ${props => props.color};
 `;
 
@@ -783,4 +776,3 @@ const MyChallengeDetail = ({
   );
 };
 export default MyChallengeDetail;
-

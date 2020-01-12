@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React from "react";
 import styled, { css } from "styled-components";
 
 import PropType from "prop-types";
@@ -83,7 +83,7 @@ function LeaderChangeModal({
   onChangeLeader,
   familyId
 }) {
-  const leaderInfo = members.filter(member => member.uid === leaderId);
+  // const leaderInfo = members.filter(member => member.uid === leaderId);
   let uid = members.map(member => member.uid)[0];
   let chiefId = leaderId;
   console.log("LeaderChangeModal-----------");

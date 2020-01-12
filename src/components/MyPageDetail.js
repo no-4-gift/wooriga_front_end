@@ -2,13 +2,13 @@ import React, { Fragment } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { MdArrowBack } from "react-icons/md";
-import { Layout, Typography, Card, List, Tag } from "antd";
+import { Typography} from "antd";
 import { profileColor } from "../styleUtils/colorStyle";
 import questionMark from "../images/questionMark.png";
 import crown from "../images/crown.png";
 import yellowcrown from "../images/yellowcrown.png";
 import x from "../images/x.png";
-import defaultImage from "../images/default.PNG";
+// import defaultImage from "../images/default.PNG";
 import plusImg from "../images/Vector.png";
 const { Text } = Typography;
 
@@ -173,7 +173,7 @@ function MyPageDetail({
 }) {
   let leaderInfo = members[0];
   let exceptLeader = members.filter(member => member !== leaderInfo);
-  let color = members.map(num => num.color)[0];
+  // let color = members.map(num => num.color)[0];
   console.log("mypageDetail-----------");
   //console.log(leaderInfo);
   console.log(exceptLeader);

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React from "react";
 import styled, { css } from "styled-components";
 import PropType from "prop-types";
 

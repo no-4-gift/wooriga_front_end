@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from "react";
+import React from "react";
 import styled, { css } from "styled-components";
 import { Input, Button, Typography } from "antd";
 import PropType from "prop-types";
-import { colorSelector, profileColor } from "../styleUtils/colorStyle";
+import { profileColor } from "../styleUtils/colorStyle";
 import circlePlus from "../images/circlePlus.PNG";
 const { Text } = Typography;
 
@@ -169,14 +169,14 @@ function MyPageModal({
   console.log(userId);
   console.log("mypagemodal-----------");
 
-  const handleChange = e => {
-    console.log("-----------이게 바뀌나?");
-    console.log(this.state.myname);
-    console.log(this.state.myrelation);
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  };
+  // const handleChange = e => {
+  //   console.log("-----------이게 바뀌나?");
+  //   console.log(this.state.myname);
+  //   console.log(this.state.myrelation);
+  //   this.setState({
+  //     [e.target.name]: e.target.value
+  //   });
+  // };
 
   //프로필 색깔
   const PaletteItem = ({ color, active, onClick, customcolor }) => {

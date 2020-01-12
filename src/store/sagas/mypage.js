@@ -1,5 +1,5 @@
 import * as mypageAPI from "../../apis/mypageAPI";
-import { all, call, put, fork, takeEvery, delay } from "redux-saga/effects";
+import { all, call, put, takeEvery } from "redux-saga/effects";
 import {
   CHANGE_LEADER,
   CHANGE_LEADER_SUCCESS,
