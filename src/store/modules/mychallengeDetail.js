@@ -1,106 +1,195 @@
+import { message } from "antd";
+
 export const PICTUREFLAGTRUE = "mychallengeDetail/PICTUREFLAGTRUE";
 export const PICTUREFLAGFALSE = "mychallengeDetail/PICTUREFLAGFALSE";
 
-export const SET_MEMBERS = "mychallengeDetail/SET_MEMBERS";
-export const SET_MEMBERSSUCCESS = "mychallengeDetail/SET_MEMBERSSUCCESS";
-export const SET_MEMBERSFAILED = "mychallengeDetail/SET_MEMBERSFAILED";
+export const GET_DETAIL = "mychallengeDetail/GET_DETAIL";
+export const GET_DETAIL_SUCCESS = "mychallengeDetail/GET_DETAIL_SUCCESS";
+export const GET_DETAIL_FAILED = "mychallengeDetail/GET_DETAIL_FAILED";
 
-export const TOGGLE_VISIBLE = "mychallengeDetail/TOGGLE_VISIBLE";
-export const SET_TEXT = "mychallengeDetail/SET_TEXT"; 
+export const POST_PICTURE_UPLOAD = "mychallengeDetail/POST_PICTURE_UPLOAD";
+export const POST_PICTURE_UPLOAD_SUCCESS = "mychallengeDetail/POST_PICTURE_UPLOAD_SUCCESS";
+export const POST_PICTURE_UPLOAD_FAILED = "mychallengeDetail/POST_PICTURE_UPLOAD_FAILED";
+export const POST_CERTIFICATION_COLOR = "mychallengeDetail/POST_CERTIFICATION_COLOR";
+export const POST_CERTIFICATION_COLOR_SUCCESS = "mychallengeDetail/POST_CERTIFICATION_COLOR_SUCCESS";
 
-export const SUBMIT_TEXT = "mychallengeDetail/SUBMIT_TEXT"; 
-export const SUBMIT_TEXTSUCCESS = "mychallengeDetail/SUBMIT_TEXTSUCCESS";
-export const SUBMIT_TEXTFAILED = "mychallengeDetail/SET_MEMBERSFAILED";
+
+export const PUT_PICTURE_DELETE = "mychallengeDetail/PUT_PICTURE_DELETE";
+export const PUT_PICTURE_DELETE_SUCCESS = "mychallengeDetail/PUT_PICTURE_DELETE_SUCCESS";
+export const PUT_PICTURE_DELETE_FAILED = "mychallengeDetail/PUT_PICTURE_DELETE_FAILED";
+export const DELETE_CERTIFICATION_COLOR = "mychallengeDetail/DELETE_CERTIFICATION_COLOR";
+export const DELETE_CERTIFICATION_COLOR_SUCCESS = "mychallengeDetail/DELETE_CERTIFICATION_COLOR_SUCCESS";
 
 
-export const pictureFlagTrue = () => ({ type: PICTUREFLAGTRUE });
-export const pictureFlagFalse = () => ({ type: PICTUREFLAGFALSE });
-
-export const setMembers = data => ({ type: SET_MEMBERS, payload: data });
-export const toggleVisible = visible => ({
-  type: TOGGLE_VISIBLE,
-  payload: visible
+export const pictureFlagTrue = (image, date) => ({ 
+  type: PICTUREFLAGTRUE, 
+  payload : {
+    image : image, 
+    date : date
+  } 
 });
-export const setText = text => ({ type: SET_TEXT, payload: text });
-export const submitText = text => ({ type : SUBMIT_TEXT, payload : text});
+export const pictureFlagFalse = (date) => ({ type: PICTUREFLAGFALSE,
+  payload : {
+    date : date
+  }
+});
 
+export const postCertificationColor = () => ({ type: POST_CERTIFICATION_COLOR});
+
+
+export const deleteCertificationColor = () => ({ type: DELETE_CERTIFICATION_COLOR});
+
+export const getDetail = (registeredId, uid) => ({ 
+  type: GET_DETAIL, 
+  payload: {
+    registeredId : registeredId,
+    uid : uid
+  }
+ });
+
+export const postCertification = (registeredFk , date, file) => ({
+  
+  type: POST_PICTURE_UPLOAD,
+  payload: {
+    registeredFk : registeredFk,
+    date : date,
+    file : file
+  }
+})
+
+export const deleteCertification = (registeredId , date) => ({
+  type: PUT_PICTURE_DELETE,
+  payload: {
+    registeredId : registeredId,
+    date : date
+  }
+})
 /* 초기 상태 선언 */
 const initialState = {
   pictureFlag : true,
-  members: [{
-    id: 1,
-    name: "브루스 웨인",
-    relation: "아빠",
-    color: "#BC61F4",
-    thumbnail: ""
-  },
-  {
-    id: 2,
-    name: "할리 퀸",
-    relation: "엄마",
-    color: "aqua",
-    thumbnail: ""
-  },
-  {
-    id: 3,
-    name: "조커",
-    relation: "형",
-    color: "orangered",
-    thumbnail: ""
-  },
-],
-  visible: false,
-  text: "",
-  successInfo : [true, false, false, false, true, true, false, false, false, true]
+  pictureUrl : "",
+  cardDate : "",
+  certification : [],
+  certificationArray : [],
+
+  postLoading : false,
+  deleteLoading : false
 };
 /* 리듀서 선언 */
 export default (state = initialState, action) => {
   switch (action.type) {
     case PICTUREFLAGTRUE:
+
         return {
             ...state,
-            pictureFlag: true
+            pictureFlag: 1,
+            pictureUrl : action.payload.image,
+            cardDate : action.payload.date
         };
     case PICTUREFLAGFALSE:
         return {
         ...state,
-        pictureFlag: false
+        pictureFlag: 0,
+        pictureUrl : "",
+        cardDate : action.payload.date,
         };
 
-    case SET_MEMBERS:
+    case GET_DETAIL:
         return {
           ...state,
-          members: action.payload
+          certification : [],
+          certificationArray : [],
         };
-    case SET_MEMBERSSUCCESS:
+    case GET_DETAIL_SUCCESS:
         return {
           ...state,
-          members: []
+          certification : action.payload.certification,
+          certificationArray : action.payload.certification.certificationInfoArrayList,
         };
-    case SET_MEMBERSFAILED:
+    case GET_DETAIL_FAILED:
     return {
       ...state,
-      members: []
+      certification : [],
+      certificationArray : [],
     };
-    case TOGGLE_VISIBLE:
-      return { ...state, visible: action.payload };
-    case SET_TEXT:
-      return { ...state, text: action.payload };
-    case SUBMIT_TEXT:
+
+
+    case POST_PICTURE_UPLOAD:
+      message.loading('업로드 중 입니다!', 3);
+
+        return {
+          ...state,
+          postLoading : true,
+        };
+    case POST_PICTURE_UPLOAD_SUCCESS:
+        message.success(`인증에 성공했습니다!`, 2.5)
+        return {
+          ...state,
+          postLoading : false,
+        };
+    case POST_PICTURE_UPLOAD_FAILED:
       return {
-        ...state, text: action.payload
-    };
+        ...state,
+        postLoading : false,
+      };
 
-    case SUBMIT_TEXTSUCCESS:
-      console.log(action);
-    return {
-      ...state, text: action.submitText, visible : false
-    }
-    case SUBMIT_TEXTFAILED:
+    case POST_CERTIFICATION_COLOR:
+      
+      return {
+        ...state,
+        
+      };
 
-    return {
-      ...state, text: "error", visible : false
-    }
+      case POST_CERTIFICATION_COLOR_SUCCESS:
+      
+      return {
+        ...state,
+        certificationArray : state.certificationArray.map((data, index) => 
+          data.cardDate === action.payload.date ? 
+          {
+            ...data,
+            data : data.certificationTrue = 1
+          } : data
+        )
+      };
+
+      case DELETE_CERTIFICATION_COLOR:
+      return {
+        ...state,
+        
+      };
+
+      case DELETE_CERTIFICATION_COLOR_SUCCESS:
+      return {
+        ...state,
+        certificationArray : state.certificationArray.map((data, index) => 
+          data.cardDate === action.payload.date ? 
+          {
+            ...data,
+            data : data.certificationTrue = 0
+          } : data
+        )
+      };
+
+
+      case PUT_PICTURE_DELETE:
+
+        return {
+          ...state,
+          deleteLoading : true
+        };
+    case PUT_PICTURE_DELETE_SUCCESS:
+
+        message.success(`삭제에 성공했습니다!`, 2.5)
+        return {
+          ...state,
+          deleteLoading : false,
+        };
+    case PUT_PICTURE_DELETE_FAILED:
+      return {
+        ...state,
+        deleteLoading : false,
+      };
     default:
       return state;
   }

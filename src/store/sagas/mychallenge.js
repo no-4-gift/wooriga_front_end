@@ -13,10 +13,9 @@ GETPARTICIPATION_ERROR
   function* getChallengerDataSaga(action) {
 
     const {familyId, uid} = action.payload
-    console.log(familyId, uid);
 
     try {
-    const { challengerInfo } = yield call(
+    const challengerInfo = yield call(
         challengerAPI.getChallenger,
         familyId,
         uid,
@@ -38,10 +37,9 @@ GETPARTICIPATION_ERROR
     function* getParticipationDataSaga(action){
 
     const {familyId, uid} = action.payload
-    console.log(familyId);
 
     try {
-    const { participationInfo } = yield call(
+    const participationInfo = yield call(
         challengerAPI.getParticipation,
         familyId,
         uid,

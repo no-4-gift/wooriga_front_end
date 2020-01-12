@@ -10,8 +10,11 @@ function ChallengeMembers({ members, onSelectMembers }) {
     <ShowMembersContent>
       <ShowMembersContainer>
         {members.map(elem => (
-          <MemberWrapper onClick={() => onSelectMembers(elem.id)} key={elem.id}>
-            <Member src={elem.thumbnail} color={elem.color} />
+          <MemberWrapper
+            onClick={() => onSelectMembers(elem.uid)}
+            key={elem.uid}
+          >
+            <Member src={elem.profile} color={elem.color} />
             {elem.done && (
               <MemberCheck>
                 <MdDone />
@@ -64,6 +67,8 @@ const Member = styled.div`
   height: 100%;
   ${profileColor}
   background-image: url(${props => props.src});
+  background-size: cover;
+  background-repeat: none;
   box-sizing: border-box;
   border-radius: 30px;
 `;

@@ -2,77 +2,93 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Redirect } from "react-router-dom";
-import * as loginActions from "../store/modules/login";
+import * as authActions from "../store/modules/auth";
 import Login from "../components/Login";
+import { Alert } from "antd";
 
 class LoginContainer extends Component {
-  constructor(props) {
-    super(props);
-    console.log("까꿍");
-    this.state = {
-      id: "",
-      name: ""
-    };
+  //KaKao Login
+
+  componentDidMount() {
+    const uid = sessionStorage.getItem("uid");
+    console.log(uid);
+    const { AuthActions } = this.props;
+    if (uid) {
+      AuthActions.onLogged();
+    }
   }
 
-  //KaKao Login
   responseKakao = res => {
     console.log(res);
-    this.setState({
-      id: res.profile.id,
-      name: res.profile.properties.nickname
-    });
+    const { AuthActions } = this.props;
+    const { profile } = res;
+    const {
+      id,
+      kakao_account: {
+        profile: { nickname, profile_image_url }
+      }
+    } = profile;
 
-    this.doSingUp();
-    console.log(res.profile.id);
-    console.log(res.profile.properties.nickname);
+    AuthActions.onLogin(id, nickname, profile_image_url);
   };
 
   //Login Fail
   responseFail = err => {
     console.log("실패");
     console.error(err);
-  };
-
-  doSingUp = () => {
-    const { id, name } = this.state;
-    window.sessionStorage.setItem("id", id);
-    window.sessionStorage.setItem("name", name);
-
-    const { LoginActions } = this.props;
-    LoginActions.onLogin();
-    //this.props.history.push("/invite");
-  };
-  handleLogout = () => {
-    const { LoginActions } = this.props;
-    LoginActions.onLogout();
+    const { AuthActions } = this.props;
+    AuthActions.setKakaoError(err);
   };
 
   render() {
-    const { logged } = this.props;
-    const id = window.sessionStorage.getItem("id");
-    return (
-      <Fragment>
-        {logged ? (
-          id ? (
-            <Redirect to="/" />
-          ) : null
-        ) : (
+    const { logged, error, kakaoError, firstLogin } = this.props;
+    //const uid = sessionStorage.getItem("uid");
+
+    if (logged === true) {
+      if (firstLogin === true) {
+        return <Redirect to="/invite" />;
+      } else {
+        return <Redirect to="/" />;
+      }
+    } else {
+      return (
+        <Fragment>
+          {kakaoError && (
+            <Alert
+              message="Error"
+              description="카카오 로그인에 실패 하셨습니다."
+              type="error"
+              showIcon
+              closable
+            />
+          )}
+          {error && (
+            <Alert
+              message="Error"
+              description="서버 오류"
+              type="error"
+              showIcon
+              closable
+            />
+          )}
           <Login
             responseKakao={this.responseKakao}
             responseFail={this.responseFail}
           />
-        )}
-      </Fragment>
-    );
+        </Fragment>
+      );
+    }
   }
 }
 
-const mapStateToProps = ({ login }) => ({
-  logged: login.logged
+const mapStateToProps = ({ auth }) => ({
+  logged: auth.logged,
+  kakaoError: auth.kakaoError,
+  error: auth.error,
+  firstLogin: auth.firstLogin
 });
 const mapDispatchToProps = dispatch => ({
-  LoginActions: bindActionCreators(loginActions, dispatch)
+  AuthActions: bindActionCreators(authActions, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer);

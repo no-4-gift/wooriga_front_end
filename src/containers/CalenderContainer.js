@@ -1,26 +1,20 @@
+/* eslint-disable no-unused-vars */
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import Calendar from "../components/Calendar";
 import CalendarModal from "../components/CalendarModal";
 import * as calendarActions from "../store/modules/calendar";
-import * as familyActions from "../store/modules/family";
+import family, * as familyActions from "../store/modules/family";
+import * as challengeAddActions from "../store/modules/challengeAdd";
 import { Alert } from "antd";
 import moment from "moment";
 import styled from "styled-components";
+import { Spin } from "antd";
+import timeDiff from "../utils/timeDiff";
 
-//자신의 id props 필요
-
-const userInfo = {
-  id: 4,
-  name: "데드 샷",
-  relation: "나",
-  color: "yellow"
-};
-
-const familyId = "wooriga";
-const userId = 1615409;
+//현재 컴포넌트에서 필수적으로 가져야할 Props
 
 const MyAlert = styled(Alert)`
   position: relative;
@@ -30,36 +24,67 @@ const MyAlert = styled(Alert)`
 
 class CalenderContainer extends Component {
   maxChallengeDateLength = 10;
+  constructor(props) {
+    super(props);
+    this.state = {
+      uid: parseInt(sessionStorage.getItem("uid")),
+      familyId: sessionStorage.getItem("familyId")
+    };
+  }
 
   componentDidMount() {
     const { CalendarActions, FamilyActions, today } = this.props;
     const year = today.format("YYYY");
     const month = today.format("MM");
-    console.log(month);
-    CalendarActions.getCalendarData(familyId, year, month);
-    FamilyActions.getFamilyData(familyId);
+    const cur = moment();
+    CalendarActions.getCalendarData(this.state.familyId, year, month);
+    CalendarActions.addViewedDays(today.format("YYYY-MM"));
+    FamilyActions.getFamilyData(this.state.familyId);
+    //CalendarActions.goCurMonth(cur);
+  }
+  componentWillUnmount() {
+    const { CalendarActions } = this.props;
+    CalendarActions.initCalendar();
   }
 
   handleNextMonth = () => {
-    const { CalendarActions, today } = this.props;
-    const year = today
-      .clone()
-      .add(1, "month")
-      .format("YYYY");
-    const month = today
-      .clone()
-      .add(1, "month")
-      .format("MM");
-    console.log(month);
+    const { CalendarActions, today, viewedDay } = this.props;
+    const next = today.clone().add(1, "month");
+    const year = next.format("YYYY");
+    const month = next.format("MM");
+    console.log(next.format("YYYY-MM"));
+
+    if (viewedDay.findIndex(date => date === next.format("YYYY-MM")) === -1) {
+      CalendarActions.getCalendarData(this.state.familyId, year, month);
+      CalendarActions.addViewedDays(next.format("YYYY-MM"));
+    }
+
     CalendarActions.goNextMonth();
   };
   handlePreMonth = () => {
-    const { CalendarActions } = this.props;
+    const { CalendarActions, today, viewedDay } = this.props;
+    const next = today.clone().add(-1, "month");
+    const year = next.format("YYYY");
+    const month = next.format("MM");
+    console.log(next.format("YYYY-MM"));
+
+    if (viewedDay.findIndex(date => date === next.format("YYYY-MM")) === -1) {
+      CalendarActions.getCalendarData(this.state.familyId, year, month);
+      CalendarActions.addViewedDays(next.format("YYYY-MM"));
+    }
     CalendarActions.goPreMonth();
   };
   handleGoTodayMonth = () => {
-    const { CalendarActions } = this.props;
+    const { CalendarActions, viewedDay } = this.props;
     const cur = moment();
+    const year = cur.format("YYYY");
+    const month = cur.format("MM");
+    console.log(cur.format("YYYY-MM"));
+
+    /*if (viewedDay.findIndex(date => date === cur.format("YYYY-MM")) === -1) {
+      CalendarActions.getCalendarData(familyId, year, month);
+      CalendarActions.addViewedDays(cur.format("YYYY-MM"));
+    }*/
     CalendarActions.goCurMonth(cur);
   };
 
@@ -88,24 +113,34 @@ class CalenderContainer extends Component {
 
   handleInsertSchedule = date => {
     const { CalendarActions, members } = this.props;
-    const userInfo = members.filter(elem => elem.uid === userId)[0];
+    const userInfo = members.filter(elem => elem.uid === this.state.uid)[0];
     const newObj = {
-      ...userInfo,
-      date: date
+      emptyDate: date,
+      userInfo
     };
-    this.handleCloseModal();
-    CalendarActions.insertSchedule(newObj);
+
+    CalendarActions.postEmptyDate(
+      this.state.uid,
+      date,
+      this.state.familyId,
+      newObj
+    );
   };
 
   handleDeleteSchedule = date => {
     const { CalendarActions, members } = this.props;
-    const userInfo = members.filter(elem => elem.uid === userId)[0];
+    const userInfo = members.filter(elem => elem.uid === this.state.uid)[0];
     const newObj = {
-      ...userInfo,
-      date: date
+      emptyDate: date,
+      userInfo
     };
-    this.handleCloseModal();
-    CalendarActions.deleteSchedule(newObj);
+
+    CalendarActions.deleteEmptyDate(
+      this.state.uid,
+      date,
+      this.state.familyId,
+      newObj
+    );
   };
 
   handleToggle = () => {
@@ -115,18 +150,25 @@ class CalenderContainer extends Component {
 
   handleSelectChallengeDates = date => {
     const { CalendarActions, dates, challengeDates } = this.props;
-    if (dates.findIndex(elem => elem.date === date) !== -1) {
-      CalendarActions.selectChallengeDates(date);
-      if (challengeDates.findIndex(elem => elem === date) !== -1)
-        return CalendarActions.alert(false);
-      if (challengeDates.length >= this.maxChallengeDateLength)
-        CalendarActions.alert(true);
+    if (timeDiff(date)) {
+      if (dates.findIndex(elem => elem.emptyDate === date) !== -1) {
+        CalendarActions.selectChallengeDates(date);
+        if (challengeDates.findIndex(elem => elem === date) !== -1)
+          return CalendarActions.alert(false);
+        if (challengeDates.length >= this.maxChallengeDateLength)
+          CalendarActions.alert(true);
+      }
     }
   };
 
   handleCloseAlert = () => {
     const { CalendarActions } = this.props;
     CalendarActions.alert(false);
+  };
+
+  handleCloseEditErrorAlert = () => {
+    const { CalendarActions } = this.props;
+    CalendarActions.closeEditErrorAlert();
   };
   handleSelectDate = date => {
     console.log("날짜 선택");
@@ -139,22 +181,33 @@ class CalenderContainer extends Component {
   };
 
   handleGoToChallenge = () => {
-    const { CalendarActions, challengeDates } = this.props;
-    const cur = moment();
-    this.handleToggle();
-    CalendarActions.goToChallenge(cur);
+    const { ChallengeAddActions, challengeDates } = this.props;
 
-    const queryDates = [];
-    for (let i = 0; i < this.maxChallengeDateLength; i++) queryDates[i] = "";
-    challengeDates.sort();
-    for (let i = 0; i < challengeDates.length; i++)
-      queryDates[i] = challengeDates[i];
-    let queryString = "";
-    for (let i = 0; i < this.maxChallengeDateLength; i++) {
-      queryString += `date${i + 1}=${queryDates[i]}`;
-      if (i !== this.maxChallengeDateLength - 1) queryString += "&";
+    this.handleToggle();
+
+    ChallengeAddActions.postDateListAndPath(
+      this.state.familyId,
+      challengeDates,
+      this.props.history
+    );
+  };
+
+  handleGoChallengeDetail = (registId, registerUid) => {
+    if (this.state.uid === registerUid) {
+      const { challenger_challenges } = this.props;
+      this.props.history.push(`/mychallenge_detail/${registId}`, {
+        flag: "main",
+        challenger_challenges: challenger_challenges,
+        uid: registerUid
+      });
+    } else {
+      const { participation_challenges } = this.props;
+      this.props.history.push(`/mychallenge_detail/${registId}`, {
+        flag: "sub",
+        participation_challenges: participation_challenges,
+        uid: registerUid
+      });
     }
-    this.props.history.push(`/challenge_regist?${queryString}`);
   };
 
   render() {
@@ -169,42 +222,47 @@ class CalenderContainer extends Component {
       toggle,
       selectDate,
       alert,
+      editDateError,
       familyLoading,
       members,
-      familyError
+      familyError,
+      challengeAddError,
+      challengeLoading
     } = this.props;
-    //const id = parseInt(window.sessionStorage.getItem("id")); //로그인 한 유저 정보는 store 나 localStorage에 저장 되어있어야함
+
     const disable = challengeDates.length > 0 ? false : true;
-    console.log(disable);
-    //console.log(`id is ${id}`);
-    const challengeAcitveDates =
-      challengeBarInfo.length > 0
-        ? challengeBarInfo.map(elem => elem.date)
-        : [];
-    console.log(challengeAcitveDates);
-    if (true) {
-      if (calendarError || familyError) {
-        return <div>Error!!!</div>;
-      } else if (calendarLoading === true || familyLoading === true) {
-        return <div>Loading....</div>;
-      } else {
-        return (
-          <Fragment>
-            <CalendarModal
-              id={userId}
-              challengeBarInfo={challengeBarInfo}
-              members={members}
-              selectDate={selectDate}
-              visible={visible}
-              dates={dates}
-              onCancle={this.handleCloseModal}
-              onDelete={this.handleDeleteSchedule}
-              onInsert={this.handleInsertSchedule}
-            />
+
+    let challengeAcitveDates = [];
+    if (challengeBarInfo.length > 0) {
+      const challengeDates = challengeBarInfo.map(elem => elem.date);
+      for (let i = 0; i < challengeDates.length; i++)
+        challengeAcitveDates = challengeAcitveDates.concat(challengeDates[i]);
+    }
+
+    if (familyError || calendarError) {
+      return <div>Error!!!</div>;
+    } else {
+      return (
+        <Fragment>
+          <CalendarModal
+            id={this.state.uid}
+            challengeBarInfo={challengeBarInfo}
+            selectDate={selectDate}
+            visible={visible}
+            dates={dates}
+            onCancle={this.handleCloseModal}
+            onDelete={this.handleDeleteSchedule}
+            onInsert={this.handleInsertSchedule}
+            onSelectChallenge={this.handleGoChallengeDetail}
+          />
+          <Spin
+            tip="Loading..."
+            spinning={calendarLoading || familyLoading || challengeLoading}
+          >
             <Calendar
               dates={dates}
               members={members}
-              userId={userId}
+              userId={this.state.uid}
               today={today}
               toggle={toggle}
               challengeDates={challengeDates}
@@ -216,6 +274,7 @@ class CalenderContainer extends Component {
               onSwipe={this.handleSwipe}
               GoToChallenge={this.handleGoToChallenge}
               disable={disable}
+              challengeAcitveDates={challengeAcitveDates}
             />
             {alert && (
               <MyAlert
@@ -227,16 +286,39 @@ class CalenderContainer extends Component {
                 onClose={this.handleCloseAlert}
               />
             )}
-          </Fragment>
-        );
-      }
-    } else {
-      return <Redirect to="/login" />;
+            {editDateError && (
+              <MyAlert
+                message="Error"
+                description="일정 수정에 실패하였습니다."
+                type="error"
+                showIcon
+                closable
+                onClose={this.handleCloseEditErrorAlert}
+              />
+            )}
+            {challengeAddError && (
+              <MyAlert
+                message="Error"
+                description="해당 날짜에 모두 해당하는 인원이 없습니다."
+                type="error"
+                showIcon
+                closable
+              />
+            )}
+          </Spin>
+        </Fragment>
+      );
     }
   }
 }
 
-const mapStateToProps = ({ calendar, login, family }) => ({
+const mapStateToProps = ({
+  calendar,
+
+  family,
+  challengeAdd,
+  mychallenge
+}) => ({
   calendarLoading: calendar.loading,
   calendarError: calendar.error,
   challengeBarInfo: calendar.challengeBarInfo,
@@ -247,15 +329,24 @@ const mapStateToProps = ({ calendar, login, family }) => ({
   toggle: calendar.toggle,
   selectDate: calendar.selectDate,
   alert: calendar.alert,
-  logged: login.logged,
+  viewedDay: calendar.viewedDay,
+  editDateError: calendar.editDateError,
   familyLoading: family.loading,
   members: family.members,
-  familyError: family.error
+  familyError: family.error,
+  challengeAddError: challengeAdd.error,
+  challengeLoading: challengeAdd.loading,
+  challenger_challenges: mychallenge.challenger_challenges,
+  participation_challenges: mychallenge.participation_challenges
 });
 
 const mapDispatchProps = dispatch => ({
   CalendarActions: bindActionCreators(calendarActions, dispatch),
-  FamilyActions: bindActionCreators(familyActions, dispatch)
+  FamilyActions: bindActionCreators(familyActions, dispatch),
+  ChallengeAddActions: bindActionCreators(challengeAddActions, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchProps)(CalenderContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchProps
+)(withRouter(CalenderContainer));

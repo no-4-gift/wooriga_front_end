@@ -34,43 +34,46 @@ const initialState = {
     error: null
 };
 /* 리듀서 선언 */
-export default function counter(state = initialState, action) {
+export default (state = initialState, action) => {
   switch (action.type) {
+    
     case GETCHALLENGER:
-      console.log("GETCHALLENGER");
+      
       return {
         ...state,
-        loading: true
+        loading: true,
+        challenger_challenges : []
     };
     case GETPARTICIPATION:
-      console.log("GETPARTICIPATION");
+      
       return {
         ...state,
-        loading: true
+        loading: true,
+        participation_challenges : []
     };
     case GETCHALLENGER_SUCCESS:
-      console.log("GETCHALLENGER_SUCCESS");
+    console.log("GETCHALLENGER_SUCCESS", action.payload.challengerInfo)
       return {
         ...state,
         loading: false,
         challenger_challenges : action.payload.challengerInfo
     };
     case GETPARTICIPATION_SUCCESS:
-      console.log("GETPARTICIPATION_SUCCESS");
+      console.log("GETPARTICIPATION_SUCCESS", action.payload.participationInfo)
       return {
         ...state,
         loading: false,
         participation_challenges : action.payload.participationInfo
     };
     case GETCHALLENGER_ERROR:
-      console.log("GETCHALLENGER_ERROR");
+      
       return {
         ...state,
         loading: false,
         error : action.payload
     };
     case GETPARTICIPATION_ERROR:
-      console.log("GETPARTICIPATION_ERROR");
+      
       return {
         ...state,
         loading: false,

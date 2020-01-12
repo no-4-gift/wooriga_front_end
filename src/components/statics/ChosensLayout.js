@@ -2,10 +2,13 @@ import React from "react";
 import calendarImage from "../../images/CalendarMirrored.png";
 import contactImage from "../../images/Contact.png";
 import maskGroupImage from "../../images/MaskGroup.png";
-import MyChallengeContainer from "../../containers/myChallengeContainer"
+import MyChallengeContainer from "../../containers/myChallengeContainer";
 import CalendarContainer from "../../containers/CalenderContainer";
+import MyPageContainer from "../../containers/MyPageContainer";
 import styled, { css } from "styled-components";
-import Headers from "../statics/HeaderLayout"
+import Headers from "../statics/HeaderLayout";
+// import MakeGroup from "../MakeGroup";
+import MakeGroupContainer from "../../containers/MakeGroupContainer";
 
 // Headers Components
 const ChosensLayout = styled.div`
@@ -14,7 +17,7 @@ const ChosensLayout = styled.div`
   background: white;
   text-align: center;
   padding: 0 15px !important;
-  margin-top: 8vh;
+  margin-top: 9vh;
   margin-right: 0;
   && {
   }
@@ -59,39 +62,45 @@ const ChosenDivThree = styled.div`
 `;
 
 const ChosenImage = styled.img``;
-const Chosens = ({ calendar, maskGroup, contact, checked }) => {
+const Chosens = ({ calendar, maskGroup, contact, checked, data }) => {
+  let $Layout = null;
+  const noGroup = data.isFamily === 0 ? true : false;
 
-  let $Layout = null
+  if (noGroup) {
+    $Layout = <MakeGroupContainer />;
+  } else {
+    if (checked === 1) {
+      $Layout = <CalendarContainer />;
+    } else if (checked === 2) {
+      $Layout = <MyChallengeContainer />;
+    } else if (checked === 3) {
+      $Layout = <MyPageContainer />;
+    }
+  }
 
-  if (checked === 1) {
-    $Layout = <CalendarContainer />
-   
-  }
-  else if(checked === 2) {
-    $Layout = <MyChallengeContainer/>
-  }
-  else {
-    $Layout = ""
-  }
   return (
     <>
-    <Headers/>
-    
-    <ChosensLayout>
-      <ChosenDivOne checked={checked} onClick={calendar}>
-        <ChosenImage src={calendarImage} alt="" />
-      </ChosenDivOne>
+      <Headers />
 
-      <ChosenDivTwo checked={checked} onClick={maskGroup}>
-        <ChosenImage src={maskGroupImage} alt="" />
-      </ChosenDivTwo>
+      <ChosensLayout>
+        <ChosenDivOne checked={checked} onClick={calendar}>
+          <ChosenImage src={calendarImage} alt="" />
+        </ChosenDivOne>
 
-      <ChosenDivThree checked={checked} onClick={contact}>
-        <ChosenImage src={contactImage} alt="" />
-      </ChosenDivThree>
-    </ChosensLayout>
+        <ChosenDivTwo checked={checked} onClick={maskGroup}>
+          <ChosenImage
+            style={{ paddingTop: "3%" }}
+            src={maskGroupImage}
+            alt=""
+          />
+        </ChosenDivTwo>
 
-    {$Layout}
+        <ChosenDivThree checked={checked} onClick={contact}>
+          <ChosenImage src={contactImage} alt="" />
+        </ChosenDivThree>
+      </ChosensLayout>
+
+      {$Layout}
     </>
   );
 };

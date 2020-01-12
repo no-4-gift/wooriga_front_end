@@ -1,90 +1,201 @@
+import * as challengerAPI from "../../apis/challengeAPI"
 import {
     all,
     call,
     put,
     fork,
-    takeEvery
+    takeEvery,
+    delay,
   } from "redux-saga/effects";
-//   import axios from "axios";
+
   import {
-    SET_MEMBERS,
-    SET_MEMBERSSUCCESS,
-    SET_MEMBERSFAILED,
-    SUBMIT_TEXT,
-    SUBMIT_TEXTSUCCESS,
-    SUBMIT_TEXTFAILED
+    PICTUREFLAGTRUE,
+    PICTUREFLAGFALSE,
+    GET_DETAIL,
+    GET_DETAIL_SUCCESS,
+    GET_DETAIL_FAILED,
+    POST_PICTURE_UPLOAD,
+    POST_PICTURE_UPLOAD_SUCCESS,
+    POST_PICTURE_UPLOAD_FAILED,
+    PUT_PICTURE_DELETE,
+    PUT_PICTURE_DELETE_SUCCESS,
+    PUT_PICTURE_DELETE_FAILED,
+
+    POST_CERTIFICATION_COLOR_SUCCESS,
+    DELETE_CERTIFICATION_COLOR_SUCCESS
+
   } from "../modules/mychallengeDetail";
+
+  import moment from 'moment';
+
+  let TodayTime = moment().format("YYYY.MM.DD");
+ 
+  let TodayDateFormat = new Date().toISOString().substring(0, 10);
+  let dateColor = moment(TodayDateFormat).format("YYYY.MM.DD");
+  function* certificationArray(action) {
+
+    const {registeredId, uid} = action.payload;
+
+    const certificationArray = yield call(
+      challengerAPI.getDetail,
+      registeredId,
+      uid
+    );
+
+    let certificationImage, certificationDate, certificationFlag;
+    
+    try {
   
-  // eslint-disable-next-line require-yield
-  const getMemberAPI = async (action) => {
-      const response = {data : 1};
-    return response.data;
+      certificationImage = certificationArray.certificationInfoArrayList[0].certificationImage;
+      certificationDate = certificationArray.certificationInfoArrayList[0].cardDate;
+      certificationFlag = certificationArray.certificationInfoArrayList[0].certificationTrue
+
+      for(let i = 0 ; i < certificationArray.certificationInfoArrayList.length ; i++){
+        if (certificationArray.certificationInfoArrayList[i].cardDate === TodayTime){
+
+          certificationImage = certificationArray.certificationInfoArrayList[i].certificationImage;
+          certificationDate = certificationArray.certificationInfoArrayList[i].cardDate;
+          certificationFlag = certificationArray.certificationInfoArrayList[i].certificationTrue
+        }
+      }
+      
+      if(certificationFlag === 1){
+        // console.log("인증 완료", certificationArray.certificationInfoArrayList);
+        yield put({
+          type : PICTUREFLAGTRUE,
+          payload : {
+            image : certificationImage,
+            date : certificationDate,
+          }
+
+      })
+      }
+      else {
+        // console.log("인증 안됌");
+        yield put({
+          type : PICTUREFLAGFALSE,
+          payload : {
+            date : certificationDate,
+          }
+      })
+      }
+
+        yield put({
+            type : GET_DETAIL_SUCCESS,
+            payload : {
+              certification : certificationArray
+            }
+        })
+
+    } catch (e) {
+      console.error(e);
+      yield put({
+        type : GET_DETAIL_FAILED,
+        error: e
+      });
+    }
   }
-  
-  const submitTextAPI = async (res) => {
-    console.log("res : ",res);
-    const response = {data : res};
-  return response.data;
+
+function* postCertification(action) {
+
+  const {registeredFk, file} = action.payload;
+
+  const certification = yield call(
+    challengerAPI.postCertification,
+    registeredFk,
+    TodayDateFormat,
+    file
+  );
+  yield delay(3000)
+  try {
+      
+        yield put({
+          type : POST_CERTIFICATION_COLOR_SUCCESS,
+          payload : {
+            date : dateColor
+          }
+      })
+      
+      yield put({
+          type : POST_PICTURE_UPLOAD_SUCCESS,
+          payload : {
+            postLoading : false,
+            certification : certification
+          }
+      })
+
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type : POST_PICTURE_UPLOAD_FAILED,
+      error: e,
+      payload : {
+        postLoading : false
+      }
+    });
+  }
 }
 
 
-  //--------------------------------------------------------
-  
-  function* memberArray() {
+function* deleteCertification(action) {
 
-    const memberArray = yield call(getMemberAPI);
-    try {
+  const {registeredId} = action.payload;
 
-        yield put({
-            type : SET_MEMBERSSUCCESS,
-            memberArray
-        })
+  const certification = yield call(
+    challengerAPI.deleteCertification,
+    registeredId,
+    TodayDateFormat
+  );
+  yield delay(3000)
+  try {
+    console.log("saga PUT_PICTURE_DELETE_SUCCESS")
 
-    } catch (e) {
-      console.error(e);
       yield put({
-        type : SET_MEMBERSFAILED,
-        error: e
-      });
-    }
-  }
-
-  function* submitText(action) {
-
-    const submitText = yield call(submitTextAPI, action.payload);
-    console.log("submitText :", submitText);
-    try {
-
-        yield put({
-            type : SUBMIT_TEXTSUCCESS,
-            submitText
-        })
-
-    } catch (e) {
-      console.error(e);
+          type : DELETE_CERTIFICATION_COLOR_SUCCESS,
+          payload : {
+            date : dateColor
+          }
+      })
       yield put({
-        type : SUBMIT_TEXTFAILED,
-        error: e
-      });
-    }
-  }
+          type : PUT_PICTURE_DELETE_SUCCESS,
+          payload : {
+            deleteLoading : false,
+            certification : certification
+          }
+      })
 
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type : PUT_PICTURE_DELETE_FAILED,
+      error: e,
+      payload : {
+        deleteLoading : false
+      }
+    });
+  }
+}
   //---------------------------------------------
   
-  function* watchMemberArray() {
-    yield takeEvery(SET_MEMBERS, memberArray);
-  }
+function* watchCertificationArray() {
+  yield takeEvery(GET_DETAIL, certificationArray);
+}
 
-  function* watchSubmitText() {
-    yield takeEvery(SUBMIT_TEXT, submitText);
-  }
+function* watchPostCertification() {
+  yield takeEvery(POST_PICTURE_UPLOAD, postCertification);
+}
+
+function* watchDeleteCertification() {
+  yield takeEvery(PUT_PICTURE_DELETE, deleteCertification);
+}
 
 
   //---------------------------------------
   
   export default function* userSaga() {
     yield all([
-      fork(watchMemberArray),
-      fork(watchSubmitText),
+      fork(watchCertificationArray),
+      fork(watchPostCertification),
+      fork(watchDeleteCertification)
     ]);
   }
