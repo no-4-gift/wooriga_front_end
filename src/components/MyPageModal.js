@@ -20,7 +20,8 @@ const PaletteDiv = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
   }
-  &: h2 {
+
+  &:h2 {
     margin-top: 0;
     margin-bottom: 1rem;
   }

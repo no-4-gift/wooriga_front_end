@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 import styled, { css } from "styled-components";
-
 import PropType from "prop-types";
 
 const CloseTxt = styled.text`
@@ -8,12 +7,14 @@ const CloseTxt = styled.text`
   font-size: 21px;
   margin: 0 5%;
 `;
+
 const CopyTxt = styled.text`
   float: right;
   font-size: 21px;
   margin: 0 5%;
   color: #eb6363;
 `;
+
 const VisitCodeText = styled.text`
   font-size: xx-large;
   font-weight: bold;

@@ -37,9 +37,12 @@ class CalenderContainer extends Component {
     const year = today.format("YYYY");
     const month = today.format("MM");
     const cur = moment();
+    
+    
     CalendarActions.getCalendarData(this.state.familyId, year, month);
     CalendarActions.addViewedDays(today.format("YYYY-MM"));
     FamilyActions.getFamilyData(this.state.familyId);
+    
     //CalendarActions.goCurMonth(cur);
   }
   componentWillUnmount() {
