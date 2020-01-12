@@ -1,6 +1,5 @@
 import React from "react";
 import styled, { css } from "styled-components";
-
 import PropType from "prop-types";
 
 const TitleBlackTxt = styled.text`
@@ -31,7 +30,7 @@ const ContentText = styled.text`
 
 const ChangeLeaderName = styled.text`
   text-align: center;
-  margin: 0 3% 0 3%
+  margin: 0 3% 0 3%;
   font-size: large;
   color: #eb6363;
 `;

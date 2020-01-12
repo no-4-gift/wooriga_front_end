@@ -207,19 +207,16 @@ function CalendarGenerator({
   console.log(`startWeek: ${startWeek}`);
 
   let calendar = [];
-
   let curToday = today.clone();
 
   for (let weight = 0; weight < 6; weight++) {
     let week = startWeek + weight;
-    if (week > 53) {
-      curToday = today.clone().add(1, "year");
-    }
+
     calendar.push(
       <CalendarRow key={week}>
         {Array(7)
           .fill(0)
-          // eslint-disable-next-line no-loop-func
+          //eslint-disable-next-line no-loop-func
           .map((n, i) => {
             let current = curToday
               .clone()

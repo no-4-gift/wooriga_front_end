@@ -7,7 +7,6 @@ import CalendarContainer from "../../containers/CalenderContainer";
 import MyPageContainer from "../../containers/MyPageContainer";
 import styled, { css } from "styled-components";
 import Headers from "../statics/HeaderLayout";
-// import MakeGroup from "../MakeGroup";
 import MakeGroupContainer from "../../containers/MakeGroupContainer";
 
 // Headers Components
@@ -66,7 +65,7 @@ const Chosens = ({ calendar, maskGroup, contact, checked, data }) => {
   let $Layout = null;
   const noGroup = data.isFamily === 0 ? true : false;
 
-  if (noGroup) {
+  if (false) {
     $Layout = <MakeGroupContainer />;
   } else {
     if (checked === 1) {
@@ -81,7 +80,6 @@ const Chosens = ({ calendar, maskGroup, contact, checked, data }) => {
   return (
     <>
       <Headers />
-
       <ChosensLayout>
         <ChosenDivOne checked={checked} onClick={calendar}>
           <ChosenImage src={calendarImage} alt="" />

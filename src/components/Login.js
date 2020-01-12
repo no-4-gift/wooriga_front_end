@@ -8,6 +8,7 @@ import styled from "styled-components";
 const { Content } = Layout;
 const { Text } = Typography;
 
+//84b358f5c1cd46c9190e1d6299fdb79b
 function Login({ responseKakao, responseFail }) {
   return (
     <Layout style={{ minHeight: "100vh", background: "white" }}>
@@ -33,7 +34,7 @@ function Login({ responseKakao, responseFail }) {
         <br />
         <div>
           <KakaoButton
-            jsKey={"84b358f5c1cd46c9190e1d6299fdb79b"}
+            jsKey={"0e90cd39a6df9461f958fe90e56f7507"}
             buttonText="Kakao"
             onSuccess={responseKakao}
             onFailure={responseFail}
